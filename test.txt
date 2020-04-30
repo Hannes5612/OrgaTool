@@ -1,2 +1,4 @@
 ﻿﻿Der Mond steht heute südlich den hauses. Es ist ein Vollmond. hallo merge-conflict
-Merge-Konflikt
+Morgen soll die Höchsttemperatur bei 16,7 ′C liegen!
+Tatsächlich war die Temperatur nur 15.8 Grad und es hat geregnet :(
+
