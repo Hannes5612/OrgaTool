@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d05817ba-f5c9-486f-9850-3d1a6ec03685" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZzqpwYyr0oubWrJcgx3Wra1pls" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.JavaFX" />
+  </component>
+  <component name="RunManager" selected="Maven.Run">
+    <configuration name="Run" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="compile" />
+                <option value="javafx:run" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="Test" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="compile" />
+                <option value="test" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Maven.Run" />
+      <item itemvalue="Maven.Test" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d05817ba-f5c9-486f-9850-3d1a6ec03685" name="Default Changelist" comment="" />
+      <created>1585852456282</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585852456282</updated>
+      <workItem from="1591295512630" duration="849000" />
+      <workItem from="1591296377049" duration="65000" />
+      <workItem from="1591296456196" duration="67000" />
+      <workItem from="1591297352218" duration="1200000" />
+      <workItem from="1591302433128" duration="30000" />
+      <workItem from="1591302493206" duration="59000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="734" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585855088363">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="734" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1585855088363" />
+    <state x="1060" y="456" key="FileChooserDialogImpl" timestamp="1585855044944">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="456" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1585855044944" />
+    <state width="909" height="334" key="GridCell.Tab.0.bottom" timestamp="1591302551396">
+      <screen x="52" y="27" width="1868" height="1053" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1585855097383" />
+    <state width="909" height="334" key="GridCell.Tab.0.bottom/52.27.1868.1053@52.27.1868.1053" timestamp="1591302551396" />
+    <state width="973" height="363" key="GridCell.Tab.0.bottom/52.27.1996.1125@52.27.1996.1125" timestamp="1591296361739" />
+    <state width="909" height="334" key="GridCell.Tab.0.center" timestamp="1591302551393">
+      <screen x="52" y="27" width="1868" height="1053" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1585855097383" />
+    <state width="909" height="334" key="GridCell.Tab.0.center/52.27.1868.1053@52.27.1868.1053" timestamp="1591302551393" />
+    <state width="973" height="363" key="GridCell.Tab.0.center/52.27.1996.1125@52.27.1996.1125" timestamp="1591296361739" />
+    <state width="909" height="334" key="GridCell.Tab.0.left" timestamp="1591302551393">
+      <screen x="52" y="27" width="1868" height="1053" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1585855097383" />
+    <state width="909" height="334" key="GridCell.Tab.0.left/52.27.1868.1053@52.27.1868.1053" timestamp="1591302551393" />
+    <state width="973" height="363" key="GridCell.Tab.0.left/52.27.1996.1125@52.27.1996.1125" timestamp="1591296361739" />
+    <state width="909" height="334" key="GridCell.Tab.0.right" timestamp="1591302551396">
+      <screen x="52" y="27" width="1868" height="1053" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1585855097383" />
+    <state width="909" height="334" key="GridCell.Tab.0.right/52.27.1868.1053@52.27.1868.1053" timestamp="1591302551396" />
+    <state width="973" height="363" key="GridCell.Tab.0.right/52.27.1996.1125@52.27.1996.1125" timestamp="1591296361739" />
+    <state x="478" y="184" width="1016" height="742" key="SettingsEditor" timestamp="1591302524781">
+      <screen x="52" y="27" width="1868" height="1053" />
+    </state>
+    <state x="478" y="184" width="1016" height="742" key="SettingsEditor/52.27.1868.1053@52.27.1868.1053" timestamp="1591302524781" />
+    <state x="509" y="196" key="SettingsEditor/52.27.1996.1125@52.27.1996.1125" timestamp="1591296346516" />
+    <state width="498" height="398" key="SwitcherDM" timestamp="1585853400692">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="498" height="398" key="SwitcherDM/0.0.2560.1400@0.0.2560.1400" timestamp="1585853400692" />
+  </component>
+</project>
