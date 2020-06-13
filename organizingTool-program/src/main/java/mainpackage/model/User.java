@@ -1,57 +1,37 @@
 package mainpackage.model;
 
 public class User {
-    private String firstName,lastName,userName,password,gender;
+    private String userName, password;
+    private int userid;
 
-    public User(String firstName, String lastName, String userName, String password, String gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.gender = gender;
     }
 
-    public User(){
+    public User() {
 
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getUserName() {
         return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    @Override
+    public java.lang.String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", userid='" + userid + '\'' +
+                '}';
     }
 }

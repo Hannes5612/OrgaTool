@@ -2,10 +2,7 @@ package mainpackage.database;
 
 import mainpackage.model.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseHandler extends Config{
     Connection dbConnection;
@@ -24,15 +21,12 @@ public class DatabaseHandler extends Config{
 
     public void signupUser(User user){
 
-        String insert = "INSERT INTO "+Const.USER_TABLE+"("+Const.USER_FIRSTNAME+","+Const.USER_LASTNAME+","
-                +Const.USER_USERNAME+","+Const.USER_PASSWORD+","+Const.USER_GENDER+") VALUES(?,?,?,?,?)";
+        String insert = "INSERT INTO "+USER_TABLE+"("
+                +USER_USERNAME+","+USER_PASSWORD+") VALUES(?,?)";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getUserName());
-            preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getGender());
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getPassword());
 
             preparedStatement.executeUpdate();
 
@@ -42,5 +36,33 @@ public class DatabaseHandler extends Config{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public ResultSet getUser(User user){
+
+        ResultSet resultSet = null;
+
+        if (!user.getUserName().equals("")||!user.getPassword().equals("")){
+            String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_USERNAME + "=?" + " AND "
+                    + USER_PASSWORD + "=?";
+
+            try {
+                PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+                preparedStatement.setString(1,user.getUserName());
+                preparedStatement.setString(2,user.getPassword());
+
+                resultSet = preparedStatement.executeQuery();
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("Please enter your credentials ");
+        }
+        return resultSet;
     }
 }

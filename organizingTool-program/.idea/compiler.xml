@@ -9,8 +9,8 @@
         <module name="organizingTool" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="organizingTool" target="14" />
+    <bytecodeTargetLevel target="11">
+      <module name="organizingTool" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
