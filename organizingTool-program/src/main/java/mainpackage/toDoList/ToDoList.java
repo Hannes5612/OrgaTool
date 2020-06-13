@@ -1,5 +1,7 @@
 package mainpackage.toDoList;
 
+import java.util.Date;
+
 /**
  * Class manages tasks created by the user.
  */
@@ -11,8 +13,8 @@ public class ToDoList {
         final String name = "Imput from user. (name)";
         final String content = "Input from user. (content)";
         final String color = "Input from user. (color)";
-        final Date dueDate; // = ?
-        final Date reminder; // = ?
+        final Date dueDate = null; // = ?
+        final Date reminder= null; // = ?
 
         Task task = new Task("Test 1", "", numberOfTasks, color, dueDate, reminder);
     }
