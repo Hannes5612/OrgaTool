@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXColorPicker?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.Create"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="502.0" prefWidth="307.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Create">
+   <children>
+      <AnchorPane prefHeight="58.0" prefWidth="329.0" style="-fx-background-color: #3F51B5;">
+         <children>
+            <JFXButton fx:id="newTaskOnlyNoteButton" layoutX="212.0" layoutY="16.0" style="-fx-background-color: #303F9F;" text="Create only note" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <JFXTextField fx:id="newTaskTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </JFXTextField>
+      <Label layoutX="34.0" layoutY="13.0" text="New Task" textFill="WHITE">
+         <font>
+            <Font name="Calibri" size="27.0" />
+         </font>
+      </Label>
+      <JFXTextArea fx:id="newTaskContent" focusColor="#3f51b5" layoutX="34.0" layoutY="127.0" prefHeight="141.0" prefWidth="263.0" promptText="Enter a detailed description here" unFocusColor="BLACK">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </JFXTextArea>
+      <JFXComboBox fx:id="newTaskPriority" focusColor="#3f51b5" layoutX="166.0" layoutY="292.0" prefHeight="26.0" prefWidth="130.0" promptText="Default" unFocusColor="BLACK" />
+      <Label layoutX="35.0" layoutY="294.0" text="Choose priority:">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="50.0" layoutY="348.0" text="Choose color:">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </Label>
+      <JFXDatePicker fx:id="newTaskDueDate" defaultColor="#3f51b5" layoutX="166.0" layoutY="395.0" prefHeight="28.0" prefWidth="130.0" promptText="Tomorrow" />
+      <Label layoutX="77.0" layoutY="398.0" text="Due date:">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="newTaskCreateButton" layoutX="270.0" layoutY="463.0" style="-fx-background-color: #3F51B5;" text="Create" textFill="WHITE" />
+      <JFXColorPicker fx:id="newTaskColor" layoutX="165.0" layoutY="346.0" prefHeight="26.0" prefWidth="130.0" />
+   </children>
 </AnchorPane>

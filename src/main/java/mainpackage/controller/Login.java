@@ -77,6 +77,7 @@ public class Login {
                         System.out.println("Login successful!");
                         login(loginUser);                                   //start login method
                     } else {
+
                         Alert usernamealert = new Alert(Alert.AlertType.ERROR, "Wrong username/password", ButtonType.OK);
                         usernamealert.showAndWait();
                     }
@@ -111,7 +112,7 @@ public class Login {
     /**
      * Closes current window after successful user check from database.
      * Opens the overview and passes the logged in user.
-     * @param user
+     * @param user user to create task with
      */
 
     private void login(User user) {
@@ -133,6 +134,7 @@ public class Login {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Overview");
+        stage.setResizable(false);
         stage.showAndWait();
 
     }

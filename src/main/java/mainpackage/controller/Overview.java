@@ -2,16 +2,17 @@ package mainpackage.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Task;
 import mainpackage.model.User;
 
 /**
@@ -51,17 +54,13 @@ public class Overview implements Runnable{
     //Initializing variables
 
     private User loggedInUser;
+    private ArrayList<Task> Tasks;
+    //private ArrayList<Note> Notes;
     private Thread thread = null;
     private String time = "", month = "", day = "";
     private SimpleDateFormat format;
     private Date date;
     private Calendar calendar;
-
-
-    @FXML
-    void sayHello(){
-        System.out.println(loggedInUser);
-    }
 
     @FXML
     void initialize() {
@@ -85,7 +84,25 @@ public class Overview implements Runnable{
         });
 
         overviewAddItemImage.setOnMouseClicked(mouseEvent ->{
-            System.out.println("Hallo, hier wird eine Notiz erstellt");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/Create.fxml"));
+
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Create controller = loader.getController();
+            controller.setUser(loggedInUser);
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("New Task");
+            stage.showAndWait();
+
+
         });
 
         thread = new Thread(this);
@@ -116,13 +133,10 @@ public class Overview implements Runnable{
 
                 //Setting elements to pane:
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        dateLabel.setText(String.valueOf(month));
-                        timeLabel.setText(time);
+                Platform.runLater(() -> {
+                    dateLabel.setText(String.valueOf(month));
+                    timeLabel.setText(time);
 
-                    }
                 });
 
                 Thread.sleep(1000);

@@ -13,7 +13,12 @@ public class Const {
 
     public static final String TASK_ID = "taskid";
     public static final String TASK_USER = "userid";
-    public static final String TASK_DATE = "date";
+    public static final String TASK_TYPE = "type";
     public static final String TASK_TITLE = "title";
-    public static final String TASK_NOTE = "note";
+    public static final String TASK_CONTENT = "content";
+    public static final String TASK_PRIO = "prio";
+    public static final String TASK_COLOR = "color";
+    public static final String TASK_DUEDATE = "dueDate";
+    public static final String TASK_CREATIONDATE = "creationDate";
+    public static final String TASK_STATE = "state";
 }

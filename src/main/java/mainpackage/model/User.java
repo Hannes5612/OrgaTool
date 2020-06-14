@@ -18,6 +18,8 @@ public class User {
     }
 
 
+    public int getUserid(){return this.userid;}
+
     public String getUserName() {
         return userName;
     }

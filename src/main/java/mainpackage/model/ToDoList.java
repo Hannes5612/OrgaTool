@@ -16,7 +16,6 @@ public class ToDoList {
         final Date dueDate = null; // = ?
         final Date reminder= null; // = ?
 
-        Task task = new Task("Test 1", "", numberOfTasks, color, dueDate, reminder);
     }
 
     public void deleteTask() {
