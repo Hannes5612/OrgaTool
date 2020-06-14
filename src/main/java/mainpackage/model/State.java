@@ -1,4 +1,4 @@
-package mainpackage.toDoList;
+package mainpackage.model;
 
 public enum State {
 
