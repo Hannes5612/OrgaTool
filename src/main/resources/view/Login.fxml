@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Login">
+   <children>
+      <AnchorPane prefHeight="37.0" prefWidth="1080.0" style="-fx-background-color: #303F9F;">
+         <children>
+            <Label layoutX="473.0" layoutY="5.0" text="Organizing Tool" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="880.0" layoutY="674.0" text="No account yet?">
+         <font>
+            <Font name="Calibri" size="17.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd00" height="194.0" layoutX="376.0" layoutY="263.0" stroke="#303f9f" strokeType="INSIDE" width="329.0" />
+      <JFXTextField fx:id="loginUsername" focusColor="#303f9f" layoutX="420.0" layoutY="296.0" prefHeight="26.0" prefWidth="240.0" promptText="Username" unFocusColor="#c5cae9">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXTextField>
+      <JFXPasswordField fx:id="loginPassword" focusColor="#303f9f" layoutX="420.0" layoutY="346.0" prefHeight="26.0" prefWidth="240.0" promptText="Password" unFocusColor="#c5cae9">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXPasswordField>
+      <JFXButton fx:id="loginLoginButton" layoutX="607.0" layoutY="404.0" style="-fx-background-color: #3F51B5;" text="Login" textFill="WHITE">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="loginSignupButton" layoutX="1005.0" layoutY="671.0" style="-fx-background-color: #3F51B5;" text="Signup" textFill="WHITE">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="271.0" layoutY="87.0" text="Get your life under control!" textFill="#212121">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Label>
+      <Ellipse fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fill="#c5cae9" layoutX="197.0" layoutY="739.0" radiusX="304.0" radiusY="146.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fill="#31419e" layoutX="-25.0" layoutY="791.0" radiusX="467.0" radiusY="289.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+   </children>
+</AnchorPane>
