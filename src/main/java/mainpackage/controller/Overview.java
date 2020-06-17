@@ -11,15 +11,17 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -54,32 +56,38 @@ public class Overview implements Runnable{
     //Initializing variables
 
     private User loggedInUser;
-    private ArrayList<Task> Tasks;
-    //private ArrayList<Note> Notes;
     private Thread thread = null;
     private String time = "", month = "", day = "";
     private SimpleDateFormat format;
     private Date date;
     private Calendar calendar;
+    private DatabaseHandler databaseHandler = new DatabaseHandler();
+    private ArrayList<Task> usersTasks = new ArrayList<>();
 
     @FXML
     void initialize() {
+
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> {
+            usersTasks.clear();
+            setUser(loggedInUser);
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
 
             try {
                 loader.load();
-            } catch (IOException e) {
+            } catch (IOException e) {                                                         //Load overview screen
                 e.printStackTrace();
             }
-
+            mainpackage.controller.Calendar controller = loader.getController();
+            controller.setTasks(usersTasks);
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Calendar");
+            stage.setResizable(false);
             stage.showAndWait();
+
 
         });
 
@@ -103,6 +111,7 @@ public class Overview implements Runnable{
             stage.showAndWait();
 
 
+
         });
 
         thread = new Thread(this);
@@ -112,6 +121,34 @@ public class Overview implements Runnable{
     }
     void setUser(User user){
         this.loggedInUser=user;
+
+        ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
+        try {
+            while (taskRow.next()) {
+                int taskid = taskRow.getInt("taskid");
+                String name = taskRow.getString("title");
+                String content = taskRow.getString("content");
+                String prio = taskRow.getString("prio");
+                String color = taskRow.getString("color");
+                java.sql.Date due = taskRow.getDate("dueDate");
+                java.sql.Date creation = taskRow.getDate("creationDate");
+                int state = taskRow.getInt("state");
+
+                Task task = new Task(taskid,name,content,prio,color,due,creation,state);
+
+                usersTasks.add(task);
+            }
+
+        } catch (SQLException e) {
+            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+            connectionalert.showAndWait();
+        }
+    }
+
+    @FXML
+    void reload(ActionEvent event) {
+        usersTasks.clear();
+        setUser(loggedInUser);
     }
 
     @Override
@@ -148,4 +185,5 @@ public class Overview implements Runnable{
 
 
     }
+
 }
