@@ -56,7 +56,7 @@ public class Create {
             Task createdTask = new Task(title,content,prio,color,duedate,today);
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
-            databaseHandler.createTask(createdTask,user,"Task");
+            databaseHandler.createTask(createdTask,user);
 
             newTaskCreateButton.getScene().getWindow().hide();
 

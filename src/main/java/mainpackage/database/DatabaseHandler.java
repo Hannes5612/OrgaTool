@@ -74,7 +74,7 @@ public class DatabaseHandler extends Config {
         return resultSet;
     }
 
-    public void createTask(Task task, User user, String type){
+    public void createTask(Task task, User user){
 
         String insert = "INSERT INTO " + TASK_TABLE + "("
                 + TASK_USER + "," + TASK_TYPE + "," + TASK_TITLE + "," + TASK_CONTENT + "," + TASK_PRIO + "," +
@@ -82,7 +82,7 @@ public class DatabaseHandler extends Config {
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, user.getUserid());
-            preparedStatement.setString(2, type);
+            preparedStatement.setString(2, "Task");
             preparedStatement.setString(3, task.getName());
             preparedStatement.setString(4, task.getContent());
             preparedStatement.setString(5, task.getPriority());
