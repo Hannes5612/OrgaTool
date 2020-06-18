@@ -16,6 +16,15 @@ public class Task{
     private Date creationDate;
     private State state = State.ACTIVE;
 
+    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.name = name;
+        this.content = content;
+        this.priority = priority;
+        this.color = color;
+        this.dueDate = dueDate;
+        this.creationDate = creationDate;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,26 +51,13 @@ public class Task{
 
     public int getState() {
         switch (state) {
-            case ACTIVE:    return 0;
-            case FINISHED:   return 1;
-            case ARCHIVED:    return 2;
+            case ACTIVE:   return 0;
+            case FINISHED: return 1;
+            case ARCHIVED: return 2;
+            // default: return eigeneException?
         }
         return 0;
     }
-
-
-
-
-    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.name = name;
-        this.content = content;
-        this.priority = priority;
-        this.color = color;
-        this.dueDate = dueDate;
-        this.creationDate = creationDate;
-    }
-
-    // Notiz: Überprüfen, ob Setter verwendet werden sollen oder ob in ToDoList ein neues Objekt erstellt werden soll, wenn es eine Änderung gibt.
 
     public void setName(String name) {
         this.name = name;
