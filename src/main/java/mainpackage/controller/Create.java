@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
@@ -61,6 +62,11 @@ public class Create {
             newTaskCreateButton.getScene().getWindow().hide();
 
         });
+
+    }
+    @FXML
+    void close(ActionEvent event) {
+        newTaskTitle.getScene().getWindow().hide();
 
     }
 

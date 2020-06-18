@@ -1,8 +1,7 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.*;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,11 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.User;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,8 +32,11 @@ public class Login {
     private Button loginLoginButton;
     @FXML
     private Button loginSignupButton;
+    @FXML
+    private JFXSpinner loginSpinner;
 
-    private DatabaseHandler databaseHandler;
+    private final DatabaseHandler databaseHandler = new DatabaseHandler();
+    private ResultSet userRow;
 
     /**
      * Handle button presses.
@@ -46,6 +46,7 @@ public class Login {
      */
     @FXML
     void initialize() {
+        loginSpinner.setVisible(false);
 
         loginSignupButton.setOnAction(event -> {
             System.out.println("Signup clicked, changing screen");
@@ -56,7 +57,6 @@ public class Login {
         loginLoginButton.setOnAction(event -> {
 
             System.out.println("Login clicked, checking credentials!");
-            databaseHandler = new DatabaseHandler();
 
             String username = loginUsername.getText().trim();
             String password = loginPassword.getText().trim();
@@ -66,31 +66,55 @@ public class Login {
                 alert.showAndWait();
             } else {
                 User loginUser = new User(username, password);              //Create an user with the given credentials
-                ResultSet userRow = databaseHandler.getUser(loginUser);     //Catch the tables' row of the search result, given the users credentials
-                int counter = 0;
-                try {
-                    while (userRow.next()) {                                //check whether userRow has values
-                        counter++;
-                        loginUser.setUserid(userRow.getInt("userid"));  //write userid to User
-                    }
-                    if (counter == 1) {
-                        System.out.println("Login successful!");
-                        login(loginUser);                                   //start login method
-                    } else {
+                spin();
 
-                        Alert usernamealert = new Alert(Alert.AlertType.ERROR, "Wrong username/password", ButtonType.OK);
-                        usernamealert.showAndWait();
-                    }
+                Task<ResultSet> task = new Task<>() {
+                    @Override
+                    public ResultSet call() {
 
-                } catch (SQLException e) {
-                    Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+                        userRow = databaseHandler.getUser(loginUser);     //Catch the tables' row of the search result, given the users credentials
+
+                        return userRow;
+                    }
+                };
+
+                new Thread(task).start();
+
+                task.setOnSucceeded(e -> {
+                    ResultSet result = task.getValue();
+                    int counter = 0;
+                    try {
+                        while (result.next()) {                                //check whether userRow has values
+                            counter++;
+                            loginUser.setUserid(result.getInt("userid"));  //write userid to User
+                        }
+                        if (counter == 1) {
+                            System.out.println("Login successful!");
+                            overview(loginUser);                                   //start login method
+                        } else {
+                            noSpin();
+                            Alert usernamealert = new Alert(Alert.AlertType.ERROR, "Wrong username/password", ButtonType.OK);
+                            usernamealert.showAndWait();
+                        }
+
+                    } catch (SQLException sqlException) {
+                        noSpin();
+                        Alert connectionalert = new Alert(Alert.AlertType.ERROR, "The connection failed!", ButtonType.OK);
+                        connectionalert.showAndWait();
+                    }
+                });
+
+                task.setOnFailed(e->{
+                    noSpin();
+                    Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
                     connectionalert.showAndWait();
-                }
+                });
+
+
             }
         });
-
-
     }
+
 
     /**
      * Loads signup.xfml
@@ -112,10 +136,11 @@ public class Login {
     /**
      * Closes current window after successful user check from database.
      * Opens the overview and passes the logged in user.
+     *
      * @param user user to create task with
      */
 
-    private void login(User user) {
+    private void overview(User user) {
 
 
         loginLoginButton.getScene().getWindow().hide();                                   //Hide login screen
@@ -139,5 +164,15 @@ public class Login {
 
     }
 
-}
+    private void spin() {
+        loginUsername.setVisible(false);
+        loginPassword.setVisible(false);
+        loginSpinner.setVisible(true);
+    }
+    private void noSpin() {
+        loginUsername.setVisible(true);
+        loginPassword.setVisible(true);
+        loginSpinner.setVisible(false);
+    }
 
+}

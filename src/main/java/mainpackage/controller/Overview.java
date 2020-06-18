@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -108,6 +109,7 @@ public class Overview implements Runnable{
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("New Task");
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.showAndWait();
 
 

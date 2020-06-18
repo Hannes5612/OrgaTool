@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -54,5 +55,6 @@
       <Ellipse fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Ellipse fill="#c5cae9" layoutX="197.0" layoutY="739.0" radiusX="304.0" radiusY="146.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Ellipse fill="#31419e" layoutX="-25.0" layoutY="791.0" radiusX="467.0" radiusY="289.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXSpinner fx:id="loginSpinner" layoutX="516.0" layoutY="335.0" />
    </children>
 </AnchorPane>

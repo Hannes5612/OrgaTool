@@ -13,7 +13,7 @@ import java.net.URL;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
 
