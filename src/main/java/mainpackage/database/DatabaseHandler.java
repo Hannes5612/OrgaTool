@@ -29,7 +29,7 @@ public class DatabaseHandler extends Config {
         return dbConnection;
     }
 
-    public void signupUser(User user) {
+    public void signupUser(User user) throws SQLException {
 
         String insert = "INSERT INTO " + USER_TABLE + "("
                 + USER_USERNAME + "," + USER_PASSWORD + ") VALUES(?,?)";
@@ -40,17 +40,10 @@ public class DatabaseHandler extends Config {
 
             preparedStatement.executeUpdate();
 
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Username already in Database!", ButtonType.OK);
-            alert.showAndWait();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            alert.showAndWait();
-        }
-    }
+
+    }}
 
 
     public ResultSet getUser(User user) {

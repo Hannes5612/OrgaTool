@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
+import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.User;
 
@@ -20,7 +23,7 @@ import java.sql.SQLException;
  * Entry point of the application.
  * Handles the log in and sign up.
  */
-public class Login {
+public class Login{
 
     @FXML
     private AnchorPane rootPane;
@@ -34,6 +37,14 @@ public class Login {
     private Button loginSignupButton;
     @FXML
     private JFXSpinner loginSpinner;
+    @FXML
+    private Label loginMessage;
+    @FXML
+    private Ellipse loginBlueX;
+    @FXML
+    private Ellipse loginBlueY;
+    @FXML
+    private Ellipse loginBlueXY;
 
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     private ResultSet userRow;
@@ -46,64 +57,100 @@ public class Login {
      */
     @FXML
     void initialize() {
+
+        //Hide error messages
+        loginMessage.setVisible(false);
+        //Hide login loading spinner
         loginSpinner.setVisible(false);
 
+        //Trigger for sign up button
         loginSignupButton.setOnAction(event -> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setTitle("Signup");
+
             System.out.println("Signup clicked, changing screen");
             signup();
         });
 
-
+        //Trigger for login button
         loginLoginButton.setOnAction(event -> {
+
+            //hide error messages after retry
+            loginMessage.setVisible(false);
 
             System.out.println("Login clicked, checking credentials!");
 
+            //get user input
             String username = loginUsername.getText().trim();
             String password = loginPassword.getText().trim();
 
-            if (username.equals("") || password.equals("")) {               //Check for empty text fields
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter your credentials", ButtonType.OK);
-                alert.showAndWait();
+            //create shake animation object
+            Shake userNameShaker = new Shake(loginUsername);
+            Shake passwordShaker = new Shake(loginPassword);
+
+            //check for empty fields, if empty shake and display error
+            if (username.equals("") || password.equals("")) {
+                passwordShaker.shake();
+                userNameShaker.shake();
+
+                loginMessage.setVisible(true);
+                loginMessage.setText("Enter something!");
+
+                //if not empty create an user, show loading spinner and
             } else {
-                User loginUser = new User(username, password);              //Create an user with the given credentials
+                User loginUser = new User(username, password);
                 spin();
 
+                //new task for extra thread, databasehandler to fetch user
                 Task<ResultSet> task = new Task<>() {
                     @Override
                     public ResultSet call() {
 
-                        userRow = databaseHandler.getUser(loginUser);     //Catch the tables' row of the search result, given the users credentials
+                        //Catch the tables' row of the search result, given the users credentials
+                        userRow = databaseHandler.getUser(loginUser);
 
                         return userRow;
                     }
                 };
 
+                //run database handler task
                 new Thread(task).start();
 
+                //if task succeeded take resultset and check wether it has values
                 task.setOnSucceeded(e -> {
                     ResultSet result = task.getValue();
                     int counter = 0;
                     try {
-                        while (result.next()) {                                //check whether userRow has values
+                        while (result.next()) {
                             counter++;
-                            loginUser.setUserid(result.getInt("userid"));  //write userid to User
-                        }
-                        if (counter == 1) {
-                            System.out.println("Login successful!");
-                            overview(loginUser);                                   //start login method
-                        } else {
-                            noSpin();
-                            Alert usernamealert = new Alert(Alert.AlertType.ERROR, "Wrong username/password", ButtonType.OK);
-                            usernamealert.showAndWait();
+                            loginUser.setUserid(result.getInt("userid"));
                         }
 
+                        //if a row exists, fetch userid and pass the user to the overview method to load nest scene
+                        if (counter == 1) {
+                            System.out.println("Login successful!");
+                            overview(loginUser);
+
+                        //if no row exists stop spinner, shake again and display error message
+                        } else {
+                            noSpin();
+                            passwordShaker.shake();
+                            userNameShaker.shake();
+                            loginPassword.clear();
+
+                            loginMessage.setVisible(true);
+                            loginMessage.setText("Wrong username/password !");
+                        }
+
+                        //catch a SQLException in any case
                     } catch (SQLException sqlException) {
                         noSpin();
-                        Alert connectionalert = new Alert(Alert.AlertType.ERROR, "The connection failed!", ButtonType.OK);
+                        Alert connectionalert = new Alert(Alert.AlertType.ERROR, sqlException.getMessage(), ButtonType.OK);
                         connectionalert.showAndWait();
                     }
                 });
 
+                //if task failed display connection error message
                 task.setOnFailed(e->{
                     noSpin();
                     Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
@@ -143,6 +190,7 @@ public class Login {
     private void overview(User user) {
 
 
+
         loginLoginButton.getScene().getWindow().hide();                                   //Hide login screen
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/Overview.fxml"));
@@ -159,7 +207,7 @@ public class Login {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Overview");
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.showAndWait();
 
     }

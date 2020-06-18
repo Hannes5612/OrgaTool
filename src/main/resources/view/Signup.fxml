@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Signup">
@@ -18,17 +21,35 @@
             </Label>
          </children>
       </AnchorPane>
-      <TextField fx:id="signupUsername" layoutX="420.0" layoutY="285.0" prefHeight="26.0" prefWidth="240.0" promptText="Username" />
-      <PasswordField fx:id="signupPassword" layoutX="420.0" layoutY="333.0" prefHeight="26.0" prefWidth="240.0" promptText="Password" />
-      <Button fx:id="signupSignupButton" layoutX="595.0" layoutY="375.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #3F51B5;" text="Signup" textFill="WHITE">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd00" height="194.0" layoutX="386.0" layoutY="273.0" stroke="#303f9f" strokeType="INSIDE" width="329.0" />
+      <JFXTextField fx:id="signupUsername" focusColor="#303f9f" layoutX="430.0" layoutY="306.0" prefHeight="26.0" prefWidth="240.0" promptText="Username" unFocusColor="#c5cae9">
          <font>
-            <Font size="14.0" />
+            <Font name="Calibri" size="15.0" />
          </font>
-      </Button>
-      <Button fx:id="signupGobackButton" layoutX="950.0" layoutY="672.0" mnemonicParsing="false" style="-fx-background-color: #3F51B5;" text="Back to Login" textFill="WHITE">
+      </JFXTextField>
+      <JFXPasswordField fx:id="signupPassword" focusColor="#303f9f" layoutX="430.0" layoutY="356.0" prefHeight="26.0" prefWidth="240.0" promptText="Password" unFocusColor="#c5cae9">
          <font>
-            <Font name="Calibri" size="17.0" />
+            <Font name="Calibri" size="15.0" />
          </font>
-      </Button>
+      </JFXPasswordField>
+      <JFXButton fx:id="signupSignupButton" layoutX="598.0" layoutY="414.0" prefHeight="19.0" prefWidth="60.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXButton>
+      <Ellipse fx:id="loginBlueX" fill="#3f51b5" layoutX="-74.0" layoutY="744.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fx:id="loginBlueY" fill="#c5cae9" layoutX="207.0" layoutY="749.0" radiusX="304.0" radiusY="146.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fx:id="loginBlueXY" fill="#31419e" layoutX="-15.0" layoutY="801.0" radiusX="467.0" radiusY="289.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXSpinner fx:id="signupSpinner" layoutX="526.0" layoutY="345.0" />
+      <Label fx:id="signupMessage" layoutX="430.0" layoutY="390.0" prefHeight="16.0" prefWidth="240.0" text="Label" textFill="#d02525">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="signupGobackButton" layoutX="938.0" layoutY="681.0" prefHeight="18.0" prefWidth="129.0" style="-fx-background-color: #3F51B5;" text="Signup" textFill="WHITE">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

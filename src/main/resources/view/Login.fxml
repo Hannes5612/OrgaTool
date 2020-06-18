@@ -21,7 +21,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="880.0" layoutY="674.0" text="No account yet?">
+      <Label layoutX="850.0" layoutY="670.0" text="No account yet?">
          <font>
             <Font name="Calibri" size="17.0" />
          </font>
@@ -52,9 +52,13 @@
             <Font size="45.0" />
          </font>
       </Label>
-      <Ellipse fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <Ellipse fill="#c5cae9" layoutX="197.0" layoutY="739.0" radiusX="304.0" radiusY="146.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <Ellipse fill="#31419e" layoutX="-25.0" layoutY="791.0" radiusX="467.0" radiusY="289.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fx:id="loginBlueX" fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fx:id="loginBlueY" fill="#c5cae9" layoutX="197.0" layoutY="739.0" radiusX="304.0" radiusY="146.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Ellipse fx:id="loginBlueXY" fill="#31419e" layoutX="-25.0" layoutY="791.0" radiusX="467.0" radiusY="289.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <JFXSpinner fx:id="loginSpinner" layoutX="516.0" layoutY="335.0" />
+      <Label fx:id="loginMessage" layoutX="420.0" layoutY="380.0" prefHeight="16.0" prefWidth="240.0" text="Label" textFill="#d02525">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
    </children>
 </AnchorPane>
