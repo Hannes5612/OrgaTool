@@ -17,13 +17,16 @@ public class Task{
     private Date creationDate;
     private State state = State.ACTIVE;
 
-    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
+    public Task(int taskid, String name, String content, String priority, String color, Date dueDate, Date creationDate,int state) {
+        this.taskid= taskid;
         this.name = name;
         this.content = content;
         this.priority = priority;
         this.color = color;
         this.dueDate = dueDate;
         this.creationDate = creationDate;
+        if(state==1) this.state = State.FINISHED;
+        if(state==2) this.state = State.ARCHIVED;
     }
 
     public String getName() {
@@ -54,28 +57,9 @@ public class Task{
         return 0;
     }
 
-    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.name = name;
-        this.content = content;
-        this.priority = priority;
-        this.color = color;
-        this.dueDate = dueDate;
-        this.creationDate = creationDate;
+    public void setTaskid(int taskid) {
+        this.taskid = taskid;
     }
-    public Task(int taskid, String name, String content, String priority, String color, Date dueDate, Date creationDate,int state) {
-        this.taskid= taskid;
-        this.name = name;
-        this.content = content;
-        this.priority = priority;
-        this.color = color;
-        this.dueDate = dueDate;
-        this.creationDate = creationDate;
-        if(state==1) this.state = State.FINISHED;
-        if(state==2) this.state = State.ARCHIVED;
-    }
-
-    // Notiz: Überprüfen, ob Setter verwendet werden sollen oder ob in ToDoList ein neues Objekt erstellt werden soll, wenn es eine Änderung gibt.
-
     public void setName(String name) {
         this.name = name;
     }
@@ -91,7 +75,7 @@ public class Task{
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    public void setReminder(Date creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
     public void setState(State state) {
