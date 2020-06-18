@@ -28,8 +28,14 @@ public class Note {
         return date;
     }
 
-    public State getState() {
-        return state;
+    public int getState() {
+        switch (state) {
+            case ACTIVE:   return 0;
+            case FINISHED: return 1;
+            case ARCHIVED: return 2;
+            // default: return eigeneException?
+        }
+        return 0;
     }
 
     public void setState(State state) {

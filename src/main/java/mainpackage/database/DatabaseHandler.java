@@ -2,6 +2,7 @@ package mainpackage.database;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
 
@@ -118,4 +119,46 @@ public class DatabaseHandler extends Config {
         }
         return tasksResulSet;
     }
+
+    public void createNote(Note note, User user){
+
+        String insert = "INSERT INTO " + NOTE_TABLE + "("
+                + NOTE_USER + "," + NOTE_TITLE + "," + NOTE_CONTENT + "," + NOTE_DATE + "," +
+                NOTE_STATE + ") VALUES(?,?,?,?,?)";
+
+        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
+            preparedStatement.setInt(1, user.getUserid());
+            preparedStatement.setString(2, note.getTitle());
+            preparedStatement.setString(3, note.getContent());
+            preparedStatement.setString(4, note.getDate());
+            preparedStatement.setInt(5, note.getState());
+
+
+            preparedStatement.executeUpdate();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    public ResultSet getNotes(User user) {
+        ResultSet notesResultSet = null;
+
+        String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+            preparedStatement.setInt(1, user.getUserid());
+
+            notesResultSet = preparedStatement.executeQuery();
+
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return notesResultSet;
+    }
+
 }
