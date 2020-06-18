@@ -6,6 +6,7 @@ package mainpackage.database;
 public class Const {
     public static final String USER_TABLE = "users";
     public static final String TASK_TABLE = "tasks";
+    public static final String NOTE_TABLE = "notes";
 
     public static final String USER_ID = "userid";
     public static final String USER_USERNAME = "username";
@@ -21,4 +22,12 @@ public class Const {
     public static final String TASK_DUEDATE = "dueDate";
     public static final String TASK_CREATIONDATE = "creationDate";
     public static final String TASK_STATE = "state";
+
+    public static final String NOTE_ID = "notesid";
+    public static final String NOTE_USER = "userid";
+    public static final String NOTE_TITLE = "title";
+    public static final String NOTE_CONTENT = "content";
+    public static final String NOTE_DATE = "creationDate";
+    public static final String NOTE_STATE = "state";
+
 }

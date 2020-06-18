@@ -1,5 +1,7 @@
 package mainpackage.model;
 
+import com.jfoenix.controls.base.IFXLabelFloatControl;
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
@@ -9,11 +11,11 @@ public class Note {
     private String date;
     private State state = State.ACTIVE;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     @Override
     public String toString() {
-        return "Title: " + title + "\nContent: " + content + "\nDate: " + date;
+        return "Title: " + title + "\nContent: " + content + "\nDate: " + date + "\nState: " + state;
     }
 
     public Note(String title, String content) {
