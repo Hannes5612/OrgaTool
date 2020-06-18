@@ -205,9 +205,9 @@ public class Calendar {
                     });
 
                     day.getChildren().add(dayNumber);
-                }
+                }lblCount++;
             }
-            lblCount++;
+
         }
     }
 

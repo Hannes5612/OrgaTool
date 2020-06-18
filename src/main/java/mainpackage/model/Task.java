@@ -28,6 +28,15 @@ public class Task{
         if(state==1) this.state = State.FINISHED;
         if(state==2) this.state = State.ARCHIVED;
     }
+    public Task( String name, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.name = name;
+        this.content = content;
+        this.priority = priority;
+        this.color = color;
+        this.dueDate = dueDate;
+        this.creationDate = creationDate;
+    }
+
 
     public String getName() {
         return name;

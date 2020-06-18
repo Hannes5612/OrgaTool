@@ -14,6 +14,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
+
+
         URL fxmlFileUrl = getClass().getClassLoader().getResource("view/Login.fxml");
         Parent root = null;
         if (fxmlFileUrl != null) {
