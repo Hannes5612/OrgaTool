@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -36,12 +37,12 @@
       </Label>
       <Line endX="-85.29998779296875" endY="80.5" layoutX="334.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
       <Line endX="-85.29998779296875" endY="80.5" layoutX="1038.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
-      <ImageView fx:id="overviewCalendarImage" fitHeight="66.0" fitWidth="66.0" layoutX="585.0" layoutY="608.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="overviewCalendarImage" fitHeight="66.0" fitWidth="66.0" layoutX="672.0" layoutY="607.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/calendar-1414662232n8gk4.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="67.0" fitWidth="66.0" layoutX="723.0" layoutY="608.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="67.0" fitWidth="66.0" layoutX="759.0" layoutY="607.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/33-512.png" />
          </image>
@@ -51,8 +52,10 @@
             <Image url="@../icon/167903.png" />
          </image>
       </ImageView>
-      <Label layoutX="581.0" layoutY="684.0" text="Calendar view" />
-      <Label layoutX="726.0" layoutY="684.0" text="Notes View" />
+      <Label layoutX="668.0" layoutY="683.0" text="Calendar view" />
+      <Label layoutX="762.0" layoutY="683.0" text="Notes View" />
       <Label layoutX="854.0" layoutY="684.0" text="Tasks View" />
+      <Line endX="-85.29998779296875" endY="80.5" layoutX="714.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
+      <JFXButton layoutX="568.0" layoutY="680.0" onAction="#reload" text="Reload" />
    </children>
 </AnchorPane>

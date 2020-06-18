@@ -58,6 +58,8 @@ public class Create {
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.createTask(createdTask,user,"Task");
 
+            newTaskCreateButton.getScene().getWindow().hide();
+
         });
 
     }

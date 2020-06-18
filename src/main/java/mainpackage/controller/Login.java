@@ -134,7 +134,7 @@ public class Login {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Overview");
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.showAndWait();
 
     }
