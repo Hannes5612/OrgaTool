@@ -137,6 +137,7 @@ public class Overview implements Runnable{
                 int state = taskRow.getInt("state");
 
                 Task task = new Task(taskid,name,content,prio,color,due,creation,state);
+                System.out.println("Task created."); // Replace print by logger.
 
                 usersTasks.add(task);
             }

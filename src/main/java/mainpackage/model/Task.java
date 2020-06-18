@@ -1,12 +1,14 @@
 package mainpackage.model;
 
 
+import mainpackage.controller.Entry;
+
 import java.sql.Date;
 
 /**
  * The user can create as many tasks as he wants which will be displayed at the ToDoList.
  */
-public class Task{
+public class Task implements Entry {
 
     private int taskid;
     private String name;
@@ -17,7 +19,7 @@ public class Task{
     private Date creationDate;
     private State state = State.ACTIVE;
 
-    public Task(int taskid, String name, String content, String priority, String color, Date dueDate, Date creationDate,int state) {
+    public Task(int taskid, String name, String content, String priority, String color, Date dueDate, Date creationDate, int state) {
         this.taskid= taskid;
         this.name = name;
         this.content = content;
@@ -28,7 +30,7 @@ public class Task{
         if(state==1) this.state = State.FINISHED;
         if(state==2) this.state = State.ARCHIVED;
     }
-    public Task( String name, String content, String priority, String color, Date dueDate, Date creationDate) {
+    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
         this.name = name;
         this.content = content;
         this.priority = priority;

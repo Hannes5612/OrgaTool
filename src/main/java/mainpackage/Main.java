@@ -27,7 +27,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(true);
         primaryStage.show();
-        System.out.println("Application started!");
+        System.out.println("Application started successfully!");
     }
 
     public static void main(String[] args) {
