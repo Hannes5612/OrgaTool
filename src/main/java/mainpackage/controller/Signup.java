@@ -10,13 +10,17 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Ellipse;
 import mainpackage.animation.Shake;
@@ -54,8 +58,8 @@ public class Signup {
 
     @FXML
     /**
-      * Signup handler to create an account
-      */
+     * Signup handler to create an account
+     */
     void initialize() {
         //Hide error messages
         signupMessage.setVisible(false);
@@ -67,85 +71,14 @@ public class Signup {
             goback();
         });
 
-
-        signupSignupButton.setOnAction(event -> {
-            System.out.println("Signup clicked, creating user.");
-            //hide error messages after retry
-            signupMessage.setVisible(false);
-
-            System.out.println("Login clicked, checking credentials!");
-
-            //get user input
-            String username = signupUsername.getText().trim();
-            String password = signupPassword.getText().trim();
-
-            //create shake animation object
-            Shake userNameShaker = new Shake(signupUsername);
-            Shake passwordShaker = new Shake(signupPassword);
-
-            //check for empty fields, if empty shake and display error
-            if (username.equals("") || password.equals("")) {
-                passwordShaker.shake();
-                userNameShaker.shake();
-
-                signupMessage.setVisible(true);
-                signupMessage.setText("Enter something!");
-
-                //if not empty create an user, show loading spinner and
-            } else {
-                User signupUser = new User(username, password);
-                spin();
-
-                //new task for extra thread, databasehandler to fetch user
-                Task<Integer> task = new Task<>() {
-                    @Override
-                    public Integer call() {
-
-                        //Catch the tables' row of the search result, given the users credentials
-                        try {
-                            databaseHandler.signupUser(signupUser);
-                        } catch (SQLIntegrityConstraintViolationException integrity) {
-                            noSpin();
-                            this.done();
-                            return 0;
-                        } catch (SQLException sqlException) {
-                            this.done();
-                            return 1;
-                        }
-
-                        return null;
-                    }
-
-                };
-
-                //run database handler task
-                new Thread(task).start();
-
-                //if task succeeded take resultset and check wether it has values
-                task.setOnSucceeded(e -> {
-                    System.out.println(task.getValue());
-                    signupMessage.setText("Account created, go back");
-
-                    if (task.getValue() == 0) {
-                        signupMessage.setVisible(true);
-                        signupMessage.setText("Username is already taken");
-                        userNameShaker.shake();
-                        signupPassword.clear();
-                    }
-                    if (task.getValue() == 1) {
-                        Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
-                        connectionalert.showAndWait();
-                    }
-                });
-
-                //if task failed display connection error message
-                task.setOnFailed(e -> {
-
-                });
-
-
+        signupPassword.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                signup();
             }
         });
+
+
+        signupSignupButton.setOnAction(e -> signup());
     }
 
 
@@ -175,6 +108,87 @@ public class Signup {
         signupUsername.setVisible(true);
         signupPassword.setVisible(true);
         signupSpinner.setVisible(false);
+    }
+
+    private void signup() {
+        System.out.println("Signup clicked, creating user.");
+        //hide error messages after retry
+        signupMessage.setVisible(false);
+        signupMessage.setStyle("-fx-text-fill: red");
+
+        System.out.println("Login clicked, checking credentials!");
+
+        //get user input
+        String username = signupUsername.getText().trim();
+        String password = signupPassword.getText().trim();
+
+        //create shake animation object
+        Shake userNameShaker = new Shake(signupUsername);
+        Shake passwordShaker = new Shake(signupPassword);
+
+        //check for empty fields, if empty shake and display error
+        if (username.equals("") || password.equals("")) {
+            passwordShaker.shake();
+            userNameShaker.shake();
+
+            signupMessage.setVisible(true);
+            signupMessage.setText("Enter something!");
+
+            //if not empty create an user, show loading spinner and
+        } else {
+            User signupUser = new User(username, password);
+            spin();
+
+            //new task for extra thread, databasehandler to fetch user
+            Task<Integer> task = new Task<>() {
+                @Override
+                public Integer call() {
+
+                    //Catch the tables' row of the search result, given the users credentials
+                    try {
+                        databaseHandler.signupUser(signupUser);
+                    } catch (SQLIntegrityConstraintViolationException integrity) {
+                        noSpin();
+                        this.done();
+                        return 0;
+                    } catch (SQLException sqlException) {
+                        noSpin();
+                        this.done();
+                        return 1;
+                    }
+
+                    return 2;
+                }
+
+            };
+
+            //run database handler task
+            new Thread(task).start();
+
+            //if task succeeded take resultset and check wether it has values
+            task.setOnSucceeded(e -> {
+                System.out.println(task.getValue());
+                signupMessage.setText("Account created, go back");
+
+                if (task.getValue() == 0) {
+                    userNameShaker.shake();
+                    signupPassword.clear();
+                }
+                if (task.getValue() == 1) {
+                    Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
+                    connectionalert.showAndWait();
+                }
+                if (task.getValue() == 2) {
+                    noSpin();
+                    signupMessage.setStyle("-fx-text-fill: green");
+                    signupMessage.setVisible(true);
+                    signupMessage.setText("User created, go back now");
+
+                }
+            });
+
+
+        }
     }
 
     /*

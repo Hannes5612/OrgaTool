@@ -16,7 +16,7 @@ import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
 import mainpackage.model.User;
 
-public class Create {
+public class CreateTask {
 
     @FXML
     private ResourceBundle resources;

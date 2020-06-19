@@ -23,11 +23,13 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import mainpackage.model.Task;
 
 public class Calendar {
@@ -166,9 +168,9 @@ public class Calendar {
         int gridCount = 1;
         int lblCount = 1;
 
-        String style = "-fx-background-color: transparent";
-        String hoveredStyle = "-fx-background-color: #607D8B";
-        String noDay = "-fx-background-color: #e7e7e7";
+        String style = "-fx-background-color: #C5CAE9";
+        String hoveredStyle = "-fx-background-color: #95a1d2";
+        String noDay = "-fx-background-color: transparent";
 
         // Go through calendar grid
         for (Node node : calendarGrid.getChildren()) {
@@ -190,11 +192,26 @@ public class Calendar {
                     day.setOnMouseEntered(e -> day.setStyle(noDay));
                     day.setOnMouseExited(e -> day.setStyle(noDay));
                 } else {
-                    int today = LocalDate.now().getDayOfMonth();
+                    if (currentMonth.equals(monthCombo.getValue())&&currentYear==year&&lblCount==LocalDate.now().getDayOfMonth()){
+                        Label dayNumber = new Label(Integer.toString(lblCount));
+                        dayNumber.setPadding(new Insets(2));
+                        dayNumber.setStyle("-fx-text-fill:#3F51B5");
+                        day.setStyle(style + ";-fx-border-color: #3F51B5;-fx-border-width: 2px");
+                        day.setOnMouseEntered(e -> {
+                            day.setStyle(hoveredStyle + ";-fx-border-color: #3F51B5;-fx-border-width: 2px");
+                            dayNumber.setStyle("-fx-text-fill: white");
+                        });
+                        day.setOnMouseExited(e -> {
+                            day.setStyle(style + ";-fx-border-color: #3F51B5;-fx-border-width: 2px");
+                            dayNumber.setStyle("-fx-text-fill: #3F51B5");
+                        });
+                        day.getChildren().add(dayNumber);
+                    }else{
                     // Make a new day label
                     Label dayNumber = new Label(Integer.toString(lblCount));
-                    dayNumber.setPadding(new Insets(5));
+                    dayNumber.setPadding(new Insets(2));
                     dayNumber.setStyle("-fx-text-fill:#757575");
+                    day.setStyle(style);
                     day.setOnMouseEntered(e -> {
                         day.setStyle(hoveredStyle);
                         dayNumber.setStyle("-fx-text-fill: white");
@@ -203,8 +220,7 @@ public class Calendar {
                         day.setStyle(style);
                         dayNumber.setStyle("-fx-text-fill: #757575");
                     });
-
-                    day.getChildren().add(dayNumber);
+                    day.getChildren().add(dayNumber);}
                 }lblCount++;
             }
 
@@ -213,9 +229,6 @@ public class Calendar {
 
 
     public void showDate(int dayNumber, Task task) {
-        //Image img = new Image(getClass().getClassLoader().getResourceAsStream("academiccalendar/ui/icons/icon2.png"));
-        //ImageView imgView = new ImageView();
-        //imgView.setImage(img);
         for (Node node : calendarGrid.getChildren()) {
             // Get the current day
             VBox day = (VBox) node;
@@ -229,9 +242,8 @@ public class Calendar {
                 if (currentNumber == dayNumber) {
                     // Add an event label with the given description
                     Label descLbl = new Label(task.getName());    //(desc + time);
-                    //eventLbl.setGraphic(imgView);
                     descLbl.setText(task.getName());
-                    descLbl.setPadding(new Insets(5));
+                    descLbl.setPadding(new Insets(2));
                     // Add label to calendar
                     day.getChildren().add(descLbl);
                 }
@@ -248,7 +260,6 @@ public class Calendar {
 
     @FXML
     void initialize() {
-
         drawCalendarGrid();
         monthCombo.setItems(months);
         monthCombo.setValue(currentMonth);
