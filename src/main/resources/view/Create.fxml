@@ -14,7 +14,11 @@
    <children>
       <AnchorPane prefHeight="58.0" prefWidth="335.0" style="-fx-background-color: #3F51B5;">
          <children>
-            <JFXButton fx:id="newTaskOnlyNoteButton" layoutX="206.0" layoutY="21.0" style="-fx-background-color: #303F9F;" text="Create only note" textFill="WHITE" />
+            <Label layoutX="32.0" layoutY="14.0" text="NEW TASK" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="27.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <JFXTextField fx:id="newTaskTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
@@ -22,11 +26,6 @@
             <Font name="Calibri" size="17.0" />
          </font>
       </JFXTextField>
-      <Label layoutX="34.0" layoutY="13.0" text="New Task" textFill="WHITE">
-         <font>
-            <Font name="Calibri" size="27.0" />
-         </font>
-      </Label>
       <JFXTextArea fx:id="newTaskContent" focusColor="#3f51b5" layoutX="34.0" layoutY="127.0" prefHeight="141.0" prefWidth="263.0" promptText="Enter a detailed description here" unFocusColor="BLACK">
          <font>
             <Font name="Calibri" size="17.0" />

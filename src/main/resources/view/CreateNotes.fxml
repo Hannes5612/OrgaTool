@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="502.0" prefWidth="335.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.CreateNote">
+    <children>
+        <AnchorPane prefHeight="58.0" prefWidth="335.0" style="-fx-background-color: #3F51B5;">
+            <children>
+                <Label layoutX="32.0" layoutY="14.0" text="NEW NOTE" textFill="WHITE">
+                    <font>
+                        <Font name="Calibri" size="27.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <JFXTextField fx:id="newTaskTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
+            <font>
+                <Font name="Calibri" size="17.0" />
+            </font>
+        </JFXTextField>
+        <JFXTextField fx:id="newNoteTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
+            <font>
+                <Font name="Calibri" size="17.0" />
+            </font>
+        </JFXTextField>
+        <JFXTextArea fx:id="newNoteContent" focusColor="#3f51b5" layoutX="34.0" layoutY="127.0" prefHeight="285.0" prefWidth="263.0" promptText="Enter a detailed description here" unFocusColor="BLACK">
+            <font>
+                <Font name="Calibri" size="17.0" />
+            </font>
+        </JFXTextArea>
+        <JFXButton fx:id="newNoteCreateButton" layoutX="252.0" layoutY="460.0" style="-fx-background-color: #3F51B5;" text="Create" textFill="WHITE" />
+        <JFXButton fx:id="newNoteCreateButton1" alignment="CENTER" layoutX="34.0" layoutY="460.0" onAction="#close" prefHeight="16.0" prefWidth="56.0" style="-fx-background-color: #3F51B5;" text="Close" textFill="WHITE" />
+    </children>
+</AnchorPane>

@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -52,6 +53,9 @@ public class Overview implements Runnable{
     private Label timeLabel;
     @FXML
     private ImageView overviewAddItemImage;
+
+    @FXML
+    private ImageView overviewAddNoteImage;
 
     @FXML
     private ImageView overviewCalendarImage;
@@ -119,6 +123,28 @@ public class Overview implements Runnable{
             stage.showAndWait();
 
 
+
+        });
+
+        overviewAddNoteImage.setOnMouseClicked(mouseEvent ->{
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/CreateNotes.fxml"));
+
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            CreateNote controller = loader.getController();
+            controller.setUser(loggedInUser);
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("New Note");
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.showAndWait();
 
         });
 

@@ -19,9 +19,14 @@
             </Label>
          </children>
       </AnchorPane>
-      <ImageView fx:id="overviewAddItemImage" fitHeight="90.0" fitWidth="96.0" layoutX="976.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="overviewAddItemImage" fitHeight="77.0" fitWidth="74.0" layoutX="978.0" layoutY="610.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icon/add_note-512.png" />
+            <Image url="@../icon/Icon newTask.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="overviewAddNoteImage" fitHeight="77.0" fitWidth="74.0" layoutX="858.0" layoutY="610.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/Icon newNote.png" />
          </image>
       </ImageView>
       <Line endX="979.0" layoutX="100.0" layoutY="596.0" startX="-100.0" />
@@ -36,26 +41,16 @@
          </font>
       </Label>
       <Line endX="-85.29998779296875" endY="80.5" layoutX="334.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
-      <Line endX="-85.29998779296875" endY="80.5" layoutX="1038.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
-      <ImageView fx:id="overviewCalendarImage" fitHeight="66.0" fitWidth="66.0" layoutX="672.0" layoutY="607.0" pickOnBounds="true" preserveRatio="true">
+      <Line endX="-85.29998779296875" endY="80.5" layoutX="913.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
+      <ImageView fx:id="overviewCalendarImage" fitHeight="77.0" fitWidth="74.0" layoutX="715.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icon/calendar-1414662232n8gk4.png" />
+            <Image url="@../icon/Icon CalendarView.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="67.0" fitWidth="66.0" layoutX="759.0" layoutY="607.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icon/33-512.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="67.0" fitWidth="66.0" layoutX="850.0" layoutY="608.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icon/167903.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="668.0" layoutY="683.0" text="Calendar view" />
-      <Label layoutX="762.0" layoutY="683.0" text="Notes View" />
-      <Label layoutX="854.0" layoutY="684.0" text="Tasks View" />
-      <Line endX="-85.29998779296875" endY="80.5" layoutX="714.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
-      <JFXButton layoutX="568.0" layoutY="680.0" onAction="#reload" text="Reload" />
+      <Label layoutX="715.0" layoutY="689.0" text="Calendar view" />
+      <Line endX="-85.29998779296875" endY="80.5" layoutX="761.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
+      <JFXButton layoutX="615.0" layoutY="686.0" onAction="#reload" text="Reload" />
+      <Label layoutX="868.0" layoutY="689.0" text="New Note" />
+      <Label layoutX="990.0" layoutY="689.0" text="New Task" />
    </children>
 </AnchorPane>
