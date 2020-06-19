@@ -123,7 +123,7 @@ public class DatabaseHandler extends Config {
             preparedStatement.setInt(1, user.getUserid());
             preparedStatement.setString(2, note.getTitle());
             preparedStatement.setString(3, note.getContent());
-            preparedStatement.setString(4, note.getDate());
+            preparedStatement.setDate(4, note.getDate());
             preparedStatement.setInt(5, note.getState());
 
 

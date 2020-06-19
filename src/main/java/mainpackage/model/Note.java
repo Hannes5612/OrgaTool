@@ -2,6 +2,8 @@ package mainpackage.model;
 
 import com.jfoenix.controls.base.IFXLabelFloatControl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
@@ -9,8 +11,9 @@ public class Note {
     private int noteid;
     private String title;
     private String content;
-    private String date;
+    private Date date = new java.sql.Date(System.currentTimeMillis());
     private State state = State.ACTIVE;
+
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
@@ -22,10 +25,9 @@ public class Note {
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
-        this.date = java.time.LocalDateTime.now().format(formatter);
     }
 
-    public Note(int noteid, String title, String content, String date, int state) {
+    public Note(int noteid, String title, String content, Date date, int state) {
         this.noteid = noteid;
         this.title = title;
         this.content = content;
@@ -35,7 +37,7 @@ public class Note {
         if (state == 2) {this.state = State.ARCHIVED;}
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 

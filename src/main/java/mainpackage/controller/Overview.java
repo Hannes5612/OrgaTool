@@ -155,7 +155,7 @@ public class Overview implements Runnable{
                 int noteid = noteRow.getInt("taskid");
                 String title = noteRow.getString("title");
                 String content = noteRow.getString("content");
-                String creationDate = noteRow.getString("creationDate");
+                java.sql.Date creationDate = noteRow.getDate("creationDate");
                 int state = noteRow.getInt("state");
 
                 Note note = new Note(noteid, title, content, creationDate, state);
