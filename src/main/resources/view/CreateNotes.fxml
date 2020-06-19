@@ -18,11 +18,6 @@
                 </Label>
             </children>
         </AnchorPane>
-        <JFXTextField fx:id="newTaskTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
-            <font>
-                <Font name="Calibri" size="17.0" />
-            </font>
-        </JFXTextField>
         <JFXTextField fx:id="newNoteTitle" focusColor="#3f51b5" layoutX="34.0" layoutY="84.0" prefHeight="26.0" prefWidth="263.0" promptText="Title" unFocusColor="BLACK">
             <font>
                 <Font name="Calibri" size="17.0" />
