@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 public class Note {
+    private int noteid;
     private String title;
     private String content;
     private String date;
@@ -22,6 +23,16 @@ public class Note {
         this.title = title;
         this.content = content;
         this.date = java.time.LocalDateTime.now().format(formatter);
+    }
+
+    public Note(int noteid, String title, String content, String date, int state) {
+        this.noteid = noteid;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        if (state == 0) {this.state = State.ACTIVE;}
+        if (state == 1) {this.state = State.FINISHED;}
+        if (state == 2) {this.state = State.ARCHIVED;}
     }
 
     public String getDate() {

@@ -24,8 +24,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -64,6 +67,9 @@ public class Overview implements Runnable{
     private Calendar calendar;
     private DatabaseHandler databaseHandler = new DatabaseHandler();
     private ArrayList<Task> usersTasks = new ArrayList<>();
+    private ArrayList<Note> usersNotes = new ArrayList<>();
+
+    private static Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {
@@ -125,6 +131,8 @@ public class Overview implements Runnable{
         this.loggedInUser=user;
 
         ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
+        ResultSet noteRow = databaseHandler.getNotes(loggedInUser);
+
         try {
             while (taskRow.next()) {
                 int taskid = taskRow.getInt("taskid");
@@ -138,9 +146,22 @@ public class Overview implements Runnable{
 
                 // Change Task to Entry to avoid casting?
                 Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-                System.out.println("Task created."); // Replace print by logger.
+                log.info("Task created."); // Replace print by logger.
 
                 usersTasks.add(task);
+            }
+
+            while (noteRow.next()) {
+                int noteid = noteRow.getInt("taskid");
+                String title = noteRow.getString("title");
+                String content = noteRow.getString("content");
+                String creationDate = noteRow.getString("creationDate");
+                int state = noteRow.getInt("state");
+
+                Note note = new Note(noteid, title, content, creationDate, state);
+                log.info("Note created");
+
+                usersNotes.add(note);
             }
 
         } catch (SQLException e) {
