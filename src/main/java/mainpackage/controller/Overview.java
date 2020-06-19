@@ -136,7 +136,8 @@ public class Overview implements Runnable{
                 java.sql.Date creation = taskRow.getDate("creationDate");
                 int state = taskRow.getInt("state");
 
-                Task task = new Task(taskid,name,content,prio,color,due,creation,state);
+                // Change Task to Entry to avoid casting?
+                Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
                 System.out.println("Task created."); // Replace print by logger.
 
                 usersTasks.add(task);

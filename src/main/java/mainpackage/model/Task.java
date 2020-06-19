@@ -19,7 +19,7 @@ public class Task implements Entry {
     private Date creationDate;
     private State state = State.ACTIVE;
 
-    public Task(int taskid, String name, String content, String priority, String color, Date dueDate, Date creationDate, int state) {
+    public Task(int taskid, String name, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
         this.taskid= taskid;
         this.name = name;
         this.content = content;
@@ -38,7 +38,6 @@ public class Task implements Entry {
         this.dueDate = dueDate;
         this.creationDate = creationDate;
     }
-
 
     public String getName() {
         return name;

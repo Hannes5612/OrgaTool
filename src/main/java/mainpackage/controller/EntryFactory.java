@@ -5,11 +5,13 @@ import mainpackage.model.Note;
 
 public class EntryFactory {
 
-    public static Entry createEntry(Entry.EntryTypes entry, String name, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate) {
+    public static Entry createEntry(Entry.EntryTypes entry, int taskid, String name, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
         switch(entry) {
-            case TASK: return new Task(name, content, priority, color, dueDate, creationDate);
+            case TASK: return new Task(taskid, name, content, priority, color, dueDate, creationDate, state);
             // case NOTE: return new Note();
-            default: throw new IllegalArgumentException("Illegal EntryType!");
+            default:
+                // log.error("Illegal EntryType!");
+                throw new IllegalArgumentException("Illegal EntryType!");
         }
     }
 
