@@ -39,6 +39,7 @@ public class Task implements Entry {
         this.creationDate = creationDate;
     }
 
+    public int getTaskid(){return taskid;}
     public String getName() {
         return name;
     }

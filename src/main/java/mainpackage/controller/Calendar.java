@@ -2,24 +2,28 @@ package mainpackage.controller;
 
 import com.jfoenix.controls.JFXComboBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -30,6 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import mainpackage.model.Task;
 
 public class Calendar {
@@ -53,6 +58,7 @@ public class Calendar {
     // YearCombo
     private final int currentYear = Year.now().getValue();
     private final ObservableList<String> years = FXCollections.observableArrayList();
+    private final ObservableList<Task> clickedTasks = FXCollections.observableArrayList();
 
     // creates year list for year List View
     private ObservableList<String> yearList() {
@@ -90,11 +96,16 @@ public class Calendar {
             for (int j = 0; j < cols; j++) {
                 // Add VBox and style it
                 VBox vPane = new VBox();
-                vPane.getStyleClass().add("calendar_pane");
                 vPane.setMinWidth(50);
                 vPane.setSpacing(5);
                 vPane.setPadding(new Insets(0, 0, 0, 0));
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
+
+                vPane.setOnMouseClicked(e -> {
+
+                    clickedTasks.clear();
+                    showTasks(vPane.getChildren().get(0));
+                });
                 // Add it to the grid
                 calendarGrid.add(vPane, j, i);
             }
@@ -192,7 +203,7 @@ public class Calendar {
                     day.setOnMouseEntered(e -> day.setStyle(noDay));
                     day.setOnMouseExited(e -> day.setStyle(noDay));
                 } else {
-                    if (currentMonth.equals(monthCombo.getValue())&&currentYear==year&&lblCount==LocalDate.now().getDayOfMonth()){
+                    if (currentMonth.equals(monthCombo.getValue()) && currentYear == year && lblCount == LocalDate.now().getDayOfMonth()) {
                         Label dayNumber = new Label(Integer.toString(lblCount));
                         dayNumber.setPadding(new Insets(2));
                         dayNumber.setStyle("-fx-text-fill:#3F51B5");
@@ -206,22 +217,24 @@ public class Calendar {
                             dayNumber.setStyle("-fx-text-fill: #3F51B5");
                         });
                         day.getChildren().add(dayNumber);
-                    }else{
-                    // Make a new day label
-                    Label dayNumber = new Label(Integer.toString(lblCount));
-                    dayNumber.setPadding(new Insets(2));
-                    dayNumber.setStyle("-fx-text-fill:#757575");
-                    day.setStyle(style);
-                    day.setOnMouseEntered(e -> {
-                        day.setStyle(hoveredStyle);
-                        dayNumber.setStyle("-fx-text-fill: white");
-                    });
-                    day.setOnMouseExited(e -> {
+                    } else {
+                        // Make a new day label
+                        Label dayNumber = new Label(Integer.toString(lblCount));
+                        dayNumber.setPadding(new Insets(2));
+                        dayNumber.setStyle("-fx-text-fill:#757575");
                         day.setStyle(style);
-                        dayNumber.setStyle("-fx-text-fill: #757575");
-                    });
-                    day.getChildren().add(dayNumber);}
-                }lblCount++;
+                        day.setOnMouseEntered(e -> {
+                            day.setStyle(hoveredStyle);
+                            dayNumber.setStyle("-fx-text-fill: white");
+                        });
+                        day.setOnMouseExited(e -> {
+                            day.setStyle(style);
+                            dayNumber.setStyle("-fx-text-fill: #757575");
+                        });
+                        day.getChildren().add(dayNumber);
+                    }
+                }
+                lblCount++;
             }
 
         }
@@ -250,6 +263,86 @@ public class Calendar {
             }
         }
     }
+
+    private void showTasks(Node clickedDayNode) {
+        Label label = (Label)clickedDayNode;
+        int dayClicked = Integer.parseInt(label.getText());
+        String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
+        String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+
+        for (Task task : usersTasks) {
+            String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+            int monthInt = task.getDueDate().toLocalDate().getMonthValue();
+            String month = "";
+            switch (monthInt) {
+                case 1:
+                    month = "January";
+                    break;
+                case 2:
+                    month = "February";
+                    break;
+                case 3:
+                    month = "March";
+                    break;
+                case 4:
+                    month = "April";
+                    break;
+                case 5:
+                    month = "May";
+                    break;
+                case 6:
+                    month = "June";
+                    break;
+                case 7:
+                    month = "July";
+                    break;
+                case 8:
+                    month = "August";
+                    break;
+                case 9:
+                    month = "September";
+                    break;
+                case 10:
+                    month = "October";
+                    break;
+                case 11:
+                    month = "November";
+                    break;
+                case 12:
+                    month = "December";
+                    break;
+            }
+            int day = task.getDueDate().toLocalDate().getDayOfMonth();
+            if (year.equals(yearSelection) && month.equals(monthSelection)&&dayClicked==day) {
+                clickedTasks.add(task);
+            }
+        }
+        if (!clickedTasks.isEmpty()){
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/TaskViewCalendar.fxml"));
+
+            try {
+                loader.load();
+            } catch (IOException e) {                                                         //Load overview screen
+                e.printStackTrace();
+            }
+
+            TaskViewCalendar controller = loader.getController();
+            controller.setTasks(clickedTasks);
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection +" " +yearSelection);
+            stage.setResizable(true);
+            stage.showAndWait();
+            clickedTasks.clear();
+        }
+
+
+
+    }
+
 
 
     @FXML
