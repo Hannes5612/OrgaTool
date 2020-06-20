@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,12 +20,34 @@
             </Label>
          </children>
       </AnchorPane>
-      <ImageView fx:id="overviewAddItemImage" fitHeight="77.0" fitWidth="74.0" layoutX="978.0" layoutY="610.0" pickOnBounds="true" preserveRatio="true">
+      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="95.0" text="TO-DO" textFill="#3f51b5">
+                     <font>
+                        <Font name="Calibri Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="95.0" text="NOTES" textFill="#3f51b5">
+                     <font>
+                        <Font name="Calibri Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <ImageView fx:id="overviewAddItemImage" fitHeight="77.0" fitWidth="74.0" layoutX="978.0" layoutY="612.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/Icon newTask.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="overviewAddNoteImage" fitHeight="77.0" fitWidth="74.0" layoutX="858.0" layoutY="610.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="overviewAddNoteImage" fitHeight="77.0" fitWidth="74.0" layoutX="858.0" layoutY="612.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/Icon newNote.png" />
          </image>
@@ -42,15 +65,15 @@
       </Label>
       <Line endX="-85.29998779296875" endY="80.5" layoutX="334.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
       <Line endX="-85.29998779296875" endY="80.5" layoutX="913.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
-      <ImageView fx:id="overviewCalendarImage" fitHeight="77.0" fitWidth="74.0" layoutX="715.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="overviewCalendarImage" fitHeight="77.0" fitWidth="74.0" layoutX="715.0" layoutY="618.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/Icon CalendarView.png" />
          </image>
       </ImageView>
-      <Label layoutX="715.0" layoutY="689.0" text="Calendar view" />
+      <Label layoutX="715.0" layoutY="691.0" text="Calendar view" />
       <Line endX="-85.29998779296875" endY="80.5" layoutX="761.0" layoutY="518.0" startX="-85.29998779296875" startY="205.0" />
       <JFXButton layoutX="615.0" layoutY="686.0" onAction="#reload" text="Reload" />
-      <Label layoutX="868.0" layoutY="689.0" text="New Note" />
-      <Label layoutX="990.0" layoutY="689.0" text="New Task" />
+      <Label layoutX="868.0" layoutY="691.0" text="New Note" />
+      <Label layoutX="990.0" layoutY="692.0" text="New Task" />
    </children>
 </AnchorPane>
