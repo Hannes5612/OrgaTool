@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -47,10 +48,11 @@
       <Label layoutX="924.0" layoutY="109.0" prefHeight="18.0" prefWidth="150.0" text="Sunday" />
       <JFXComboBox fx:id="monthCombo" layoutX="16.0" layoutY="46.0" onAction="#updateView" prefHeight="38.0" prefWidth="160.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="46.0" />
       <JFXComboBox fx:id="yearCombo" layoutX="205.0" layoutY="46.0" onAction="#updateView" prefHeight="38.0" prefWidth="132.0" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="46.0" />
-      <Label layoutX="832.0" layoutY="52.0" text="Calendarical View" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="52.0">
+      <Label alignment="CENTER" layoutX="832.0" layoutY="52.0" text="Calendarical View" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
          <font>
             <Font name="Calibri" size="32.0" />
          </font>
       </Label>
+      <JFXButton fx:id="calendarBackButton" layoutX="961.0" layoutY="58.0" style="-fx-background-color: yellow;" text="Back to overview" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="58.0" />
    </children>
 </AnchorPane>

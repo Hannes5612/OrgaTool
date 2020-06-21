@@ -37,6 +37,7 @@ public class CreateTask {
     @FXML
     private JFXButton newTaskCreateButton;
 
+    private Overview overviewController;
     private User user;
     private Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
@@ -59,6 +60,8 @@ public class CreateTask {
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.createTask(createdTask,user);
 
+            overviewController.setUser(user);
+
             newTaskCreateButton.getScene().getWindow().hide();
 
         });
@@ -72,5 +75,10 @@ public class CreateTask {
 
     void setUser(User user){
         this.user = user;
+    }
+
+    public void setOverviewController(Overview ownController) {
+        this.overviewController = ownController;
+
     }
 }

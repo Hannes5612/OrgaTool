@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXBadge;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,6 +51,8 @@ public class Overview implements Runnable{
 
     @FXML
     private Label timeLabel;
+
+
     @FXML
     private ImageView overviewAddItemImage;
 
@@ -61,7 +64,7 @@ public class Overview implements Runnable{
 
 
     //Initializing variables
-
+    private Overview ownController;
     private User loggedInUser;
     private Thread thread = null;
     private String time = "", month = "", day = "";
@@ -81,6 +84,27 @@ public class Overview implements Runnable{
             usersTasks.clear();
             setUser(loggedInUser);
 
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setTitle("Calendar");
+
+            System.out.println("Signup clicked, changing screen");
+            AnchorPane signup = null;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
+            try {
+                signup = loader.load(); //Load signup page
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mainpackage.controller.Calendar controller = loader.getController();
+            controller.setTasks(loggedInUser);
+            controller.setOwnController(controller);
+            controller.setOverviewController(ownController);
+            rootPane.getChildren().setAll(signup);
+
+            //Old method to open a new window.
+
+            /*
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
 
@@ -90,14 +114,16 @@ public class Overview implements Runnable{
                 e.printStackTrace();
             }
             mainpackage.controller.Calendar controller = loader.getController();
-            controller.setTasks(usersTasks);
+            controller.setTasks(loggedInUser);
+            controller.setOwnController(controller);
+            controller.setOverviewController(ownController);
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Calendar");
             stage.setResizable(true);
             stage.showAndWait();
-
+*/
 
         });
 
@@ -114,6 +140,7 @@ public class Overview implements Runnable{
 
             CreateTask controller = loader.getController();
             controller.setUser(loggedInUser);
+            controller.setOverviewController(ownController);
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -152,7 +179,9 @@ public class Overview implements Runnable{
         thread.start();
 
     }
+
     void setUser(User user){
+        usersTasks.clear();
         this.loggedInUser=user;
 
         ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
@@ -197,8 +226,11 @@ public class Overview implements Runnable{
 
     @FXML
     void reload(ActionEvent event) {
-        usersTasks.clear();
-        setUser(loggedInUser);
+        for (int i = 0; i < usersTasks.size(); i++) {
+            System.out.println(usersTasks.get(i));
+        }
+        //usersTasks.clear();
+        //setUser(loggedInUser);
     }
 
     @Override
@@ -236,4 +268,11 @@ public class Overview implements Runnable{
 
     }
 
+    public void setUsersTasks(ArrayList usersTasks){
+        this.usersTasks=usersTasks;
+    }
+
+    public void setOwnController(Overview controller){
+        this.ownController = controller;
+    }
 }

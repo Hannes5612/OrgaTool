@@ -9,8 +9,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Application {
+    private static Map controllers = new HashMap();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -23,6 +26,7 @@ public class Main extends Application {
         if (fxmlFileUrl != null) {
             root = FXMLLoader.load(fxmlFileUrl);
         }
+
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(true);

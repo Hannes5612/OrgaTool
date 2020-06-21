@@ -113,6 +113,23 @@ public class DatabaseHandler extends Config {
         return tasksResulSet;
     }
 
+    public void deleteTask(Task task){
+        String insert = "DELETE FROM " + TASK_TABLE +" WHERE " + TASK_ID + "=?";
+
+        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
+            preparedStatement.setInt(1, task.getTaskid());
+
+            preparedStatement.executeUpdate();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
     public void createNote(Note note, User user){
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("

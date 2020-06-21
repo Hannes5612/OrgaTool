@@ -1,41 +1,33 @@
 package mainpackage.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Separator;
-import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
+import mainpackage.model.User;
 
 public class Calendar {
 
@@ -51,9 +43,15 @@ public class Calendar {
     private JFXComboBox<String> monthCombo;
     @FXML
     private JFXComboBox<String> yearCombo;
+    @FXML
+    private JFXButton calendarBackButton;
 
-
+    private Calendar ownController;
+    private Overview overviewController;
+    private User user;
     private ArrayList<Task> usersTasks = new ArrayList<>();
+    private TaskViewCalendar taskViewController;
+    private boolean isListOpen = false;
 
     // YearCombo
     private final int currentYear = Year.now().getValue();
@@ -103,8 +101,16 @@ public class Calendar {
 
                 vPane.setOnMouseClicked(e -> {
 
+                    if (isListOpen){
+
+                        Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first", ButtonType.OK);
+                        openAlert.showAndWait();
+
+                    }else{
                     clickedTasks.clear();
-                    showTasks(vPane.getChildren().get(0));
+
+                    showTasks(vPane.getChildren().get(0));}
+
                 });
                 // Add it to the grid
                 calendarGrid.add(vPane, j, i);
@@ -112,8 +118,37 @@ public class Calendar {
         }
     }
 
-    public void setTasks(ArrayList<Task> usersTasks) {
-        this.usersTasks = usersTasks;
+    public void setTasks(User user) {
+        usersTasks.clear();
+        this.user = user;
+
+
+        DatabaseHandler databaseHandler = new DatabaseHandler();
+        ResultSet taskRow = databaseHandler.getTasks(user);
+
+        try {
+            while (taskRow.next()) {
+                int taskid = taskRow.getInt("taskid");
+                String name = taskRow.getString("title");
+                String content = taskRow.getString("content");
+                String prio = taskRow.getString("prio");
+                String color = taskRow.getString("color");
+                java.sql.Date due = taskRow.getDate("dueDate");
+                java.sql.Date creation = taskRow.getDate("creationDate");
+                int state = taskRow.getInt("state");
+
+                // Change Task to Entry to avoid casting?
+                Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
+
+                usersTasks.add(task);
+            }
+
+        } catch (SQLException e) {
+            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+            connectionalert.showAndWait();
+        }
+
+
         try {
             for (Task task : usersTasks) {
                 String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
@@ -258,14 +293,14 @@ public class Calendar {
                     descLbl.setText(task.getName());
                     descLbl.setPadding(new Insets(2));
                     // Add label to calendar
-                    day.getChildren().add(descLbl);
+                    day.getChildren().add(descLbl); //IMPLEMENT max 2 LABEL TODO
                 }
             }
         }
     }
 
     private void showTasks(Node clickedDayNode) {
-        Label label = (Label)clickedDayNode;
+        Label label = (Label) clickedDayNode;
         int dayClicked = Integer.parseInt(label.getText());
         String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
         String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
@@ -313,12 +348,12 @@ public class Calendar {
                     break;
             }
             int day = task.getDueDate().toLocalDate().getDayOfMonth();
-            if (year.equals(yearSelection) && month.equals(monthSelection)&&dayClicked==day) {
+            if (year.equals(yearSelection) && month.equals(monthSelection) && dayClicked == day) {
                 clickedTasks.add(task);
             }
         }
-        if (!clickedTasks.isEmpty()){
-
+        if (!clickedTasks.isEmpty()) {
+            isListOpen = true;
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/TaskViewCalendar.fxml"));
 
@@ -329,26 +364,32 @@ public class Calendar {
             }
 
             TaskViewCalendar controller = loader.getController();
+            taskViewController = controller;
             controller.setTasks(clickedTasks);
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection +" " +yearSelection);
+            stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
             stage.setResizable(true);
             stage.showAndWait();
             clickedTasks.clear();
+            loadSelectedMonth();
+            setTasks(user);
+            updateOverview(usersTasks);
+            isListOpen = false;
         }
-
 
 
     }
 
-
-
     @FXML
     void updateView(ActionEvent event) {
         loadSelectedMonth();
-        setTasks(usersTasks);
+        setTasks(user);
+    }
+
+    void updateOverview(ArrayList arrayList) {
+        overviewController.setUsersTasks(arrayList);
     }
 
     @FXML
@@ -360,5 +401,33 @@ public class Calendar {
         yearCombo.setValue(String.valueOf(currentYear));
         loadSelectedMonth();
 
+        calendarBackButton.setOnAction(e->{
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setTitle("Overview");
+
+            System.out.println("Back to overview");
+            AnchorPane signup = null;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/Overview.fxml"));
+            try {
+                signup = loader.load(); //Load signup page
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Overview controller = loader.getController();
+            controller.setOwnController(controller);
+            controller.setUser(user);
+            rootPane.getChildren().setAll(signup);
+        });
+
+    }
+
+    public void setOwnController(Calendar controller) {
+        this.ownController = controller;
+    }
+
+
+    public void setOverviewController(Overview controller) {
+        this.overviewController = controller;
     }
 }

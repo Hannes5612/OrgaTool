@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 import mainpackage.model.Task;
 
 public class TaskViewCalendar {
@@ -34,5 +35,10 @@ public class TaskViewCalendar {
         this.clickedTasks = clickedTasks;
         taskViewCalendarList.setCellFactory(Cell -> new Cell());
         taskViewCalendarList.setItems(clickedTasks);
+    }
+
+    public void close(){
+        Stage stage = (Stage) taskViewCalendarList.getScene().getWindow();
+        stage.close();
     }
 }
