@@ -37,18 +37,8 @@ public class Note {
         if (state == 2) {this.state = State.ARCHIVED;}
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public int getState() {
-        switch (state) {
-            case ACTIVE:   return 0;
-            case FINISHED: return 1;
-            case ARCHIVED: return 2;
-            // default: return eigeneException?
-        }
-        return 0;
+    public int getNoteid() {
+        return noteid;
     }
 
     public void setState(State state) {
@@ -69,6 +59,20 @@ public class Note {
 
     public String getContent() {
         return content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public int getState() {
+        switch (state) {
+            case ACTIVE:   return 0;
+            case FINISHED: return 1;
+            case ARCHIVED: return 2;
+            // default: return eigeneException?
+        }
+        return 0;
     }
 
     public void createNote() {
