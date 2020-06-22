@@ -51,12 +51,7 @@ public class Overview implements Runnable {
     private JFXSpinner overviewSpinner;
 
 
-    //Initializing clock variables
-    private Thread clock = null;
     private String time = "", month = "", day = "";
-    private SimpleDateFormat format;
-    private Date date;
-    private Calendar calendar;
 
     private Overview ownController;
     private EntryLists entryLists = new EntryLists();
@@ -74,7 +69,8 @@ public class Overview implements Runnable {
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
 
-        clock = new Thread(this);
+        //Initializing clock variables
+        Thread clock = new Thread(this);
         clock.setDaemon(true);
         clock.start();
 
@@ -119,6 +115,7 @@ public class Overview implements Runnable {
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
         overviewAddItemImage.setDisable(false);
+        setLists();
 
 
     }
@@ -188,10 +185,10 @@ public class Overview implements Runnable {
 
                 //Setting date format and variables:
 
-                calendar = Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
 
-                format = new SimpleDateFormat("HH:mm:ss");
-                date = calendar.getTime();
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                Date date = calendar.getTime();
                 time = format.format(date);
 
                 format = new SimpleDateFormat("EEE, MMMM dd yyyy");

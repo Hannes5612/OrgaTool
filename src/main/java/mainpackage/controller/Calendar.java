@@ -277,9 +277,11 @@ public class Calendar {
                     // Add an event label with the given description
                     Label descLbl = new Label(task.getName());    //(desc + time);
                     descLbl.setText(task.getName());
-                    descLbl.setPadding(new Insets(2));
+                    descLbl.setPadding(new Insets(0));
                     // Add label to calendar
-                    day.getChildren().add(descLbl); //IMPLEMENT max 2 LABEL TODO
+                    if(day.getChildren().size()<=2) day.getChildren().add(descLbl);
+                    else if(day.getChildren().size()==3) day.getChildren().add(new Label("Click to view more"));
+                     //IMPLEMENT max 2 LABEL TODO
                 }
             }
         }
@@ -401,7 +403,6 @@ public class Calendar {
             }
             Overview controller = loader.getController();
             controller.setOwnController(controller);
-            controller.setLists();
             rootPane.getChildren().setAll(signup);
         });
 

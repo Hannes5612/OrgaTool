@@ -10,10 +10,14 @@ import java.util.stream.Stream;
 
 public class EntryLists {
     private static User user = new User();
-    private List<Task> taskList = new ArrayList<>();
-    private List<Note> noteList = new ArrayList<>();
+    private final List<Task> taskList = new ArrayList<>();
+    private final List<Note> noteList = new ArrayList<>();
 
     public EntryLists() {
+    }
+
+    public static int getUserId() {
+        return user.getUserid();
     }
 
     public void update() throws SQLException {

@@ -2,6 +2,7 @@ package mainpackage.database;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import mainpackage.model.EntryLists;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -67,14 +68,14 @@ public class DatabaseHandler extends Config {
         return resultSet;
     }
 
-    public void createTask(Task task, User user){
+    public void createTask(Task task){
 
         String insert = "INSERT INTO " + TASK_TABLE + "("
                 + TASK_USER + "," + TASK_TYPE + "," + TASK_TITLE + "," + TASK_CONTENT + "," + TASK_PRIO + "," +
                 TASK_COLOR + "," + TASK_DUEDATE + "," + TASK_CREATIONDATE + "," + TASK_STATE + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, user.getUserid());
+            preparedStatement.setInt(1, EntryLists.getUserId());
             preparedStatement.setString(2, "Task");
             preparedStatement.setString(3, task.getName());
             preparedStatement.setString(4, task.getContent());
