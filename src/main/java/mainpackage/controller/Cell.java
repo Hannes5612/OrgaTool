@@ -110,8 +110,6 @@ public class Cell  extends JFXListCell<Task> {
                         setText(null);
                         setGraphic(rootAnchorPane);
                 }
-
-
         }
     }
 

@@ -93,6 +93,7 @@ public class Overview implements Runnable {
         stage.setTitle("New Note");
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.showAndWait();
+        setLists();
 
     }
 

@@ -23,7 +23,7 @@ public class DatabaseHandler extends Config {
 
         try {
             dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return dbConnection;
@@ -43,7 +43,8 @@ public class DatabaseHandler extends Config {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
 
-    }}
+        }
+    }
 
 
     public ResultSet getUser(User user) {
@@ -62,13 +63,13 @@ public class DatabaseHandler extends Config {
             resultSet = preparedStatement.executeQuery();
 
         } catch (SQLException | ClassNotFoundException throwables) {
-         throwables.printStackTrace();
+            throwables.printStackTrace();
         }
 
         return resultSet;
     }
 
-    public void createTask(Task task){
+    public void createTask(Task task) {
 
         String insert = "INSERT INTO " + TASK_TABLE + "("
                 + TASK_USER + "," + TASK_TYPE + "," + TASK_TITLE + "," + TASK_CONTENT + "," + TASK_PRIO + "," +
@@ -113,8 +114,8 @@ public class DatabaseHandler extends Config {
         return tasksResulSet;
     }
 
-    public void deleteTask(Task task){
-        String insert = "DELETE FROM " + TASK_TABLE +" WHERE " + TASK_ID + "=?";
+    public void deleteTask(Task task) {
+        String insert = "DELETE FROM " + TASK_TABLE + " WHERE " + TASK_ID + "=?";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, task.getTaskid());
@@ -130,7 +131,7 @@ public class DatabaseHandler extends Config {
         }
     }
 
-    public void createNote(Note note){
+    public void createNote(Note note) {
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("
                 + NOTE_USER + "," + NOTE_TITLE + "," + NOTE_CONTENT + "," + NOTE_DATE + "," +

@@ -25,7 +25,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import mainpackage.model.EntryLists;
 import mainpackage.model.Task;
-import mainpackage.model.User;
 
 public class Calendar {
 
@@ -60,7 +59,7 @@ public class Calendar {
 
     // creates year list for year List View
     private ObservableList<String> yearList() {
-        for (int x = Year.now().getValue(); x >= 1980; x--) {
+        for (int x = Year.now().getValue()+10; x >= 1980; x--) {
             years.add(String.valueOf(x));
         }
         return (years);
@@ -124,14 +123,30 @@ public class Calendar {
 
 
     //Fills the calendar with Tasks
-    public void setTasks() throws SQLException {
+    public void setTaskList() throws SQLException {
 
         calendarSpinner.setVisible(true);
-        usersTasks.clear();
 
-        entryLists.updateTasks();
-        entryLists.getTaskList().forEach(task -> usersTasks.add(task));
+        javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
+            @Override
+            public Void call() throws SQLException {
+                entryLists.update();
+                return null;
+            }
+        };
 
+        new Thread(thread).start();
+
+        thread.setOnSucceeded(e -> {
+
+            usersTasks.clear();
+            entryLists.getTaskList().forEach(task -> usersTasks.add(task));
+            setTasks();
+            calendarSpinner.setVisible(false);
+        });
+    }
+
+    private void setTasks() {
         try {
             for (Task tasks : usersTasks) {
                 String year = String.valueOf(tasks.getDueDate().toLocalDate().getYear());
@@ -185,8 +200,6 @@ public class Calendar {
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
-
-        calendarSpinner.setVisible(false);
     }
 
     //loads the day labels
@@ -211,6 +224,7 @@ public class Calendar {
             day.setStyle("-fx-backgroud-color: white");
             // Start placing labels on the first day for the month
             if (gridCount < offset) {
+                day.setOnMouseClicked(e-> System.out.println("Nothing to click"));
                 gridCount++;
                 // Darken color of the offset days
                 day.setStyle(noDay);
@@ -219,6 +233,8 @@ public class Calendar {
             } else {
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
+
+                    day.setOnMouseClicked(e-> System.out.println("Nothing to click"));
                     // Instead, darken day color
                     day.setStyle(noDay);
                     day.setOnMouseEntered(e -> day.setStyle(noDay));
@@ -276,16 +292,22 @@ public class Calendar {
                 if (currentNumber == dayNumber) {
                     // Add an event label with the given description
                     Label descLbl = new Label(task.getName());    //(desc + time);
-                    descLbl.setText(task.getName());
-                    descLbl.setPadding(new Insets(0));
+                    descLbl.setText("- "+task.getName());
+                    descLbl.setPadding(new Insets(-4,0,0,2));
                     // Add label to calendar
                     if(day.getChildren().size()<=2) day.getChildren().add(descLbl);
-                    else if(day.getChildren().size()==3) day.getChildren().add(new Label("Click to view more"));
-                     //IMPLEMENT max 2 LABEL TODO
+                    else if(day.getChildren().size()==3) {
+                        Label info = new Label();
+                        info.setText("Click to show more");
+                        info.setPadding(new Insets(-1,0,0,2));
+                        info.setStyle("-fx-text-fill: #3F51B5 ");
+                        day.getChildren().add(info);
+                    }
+                    }
                 }
             }
         }
-    }
+
 
     private void showTasks(Node clickedDayNode) throws SQLException {
         Label label = (Label) clickedDayNode;
@@ -361,7 +383,7 @@ public class Calendar {
             stage.showAndWait();
             clickedTasks.clear();
             loadSelectedMonth();
-            setTasks();
+            setTaskList();
             isListOpen = false;
         }
 
@@ -371,7 +393,7 @@ public class Calendar {
     @FXML
     void updateView(ActionEvent event) throws SQLException {
         loadSelectedMonth();
-        setTasks();
+        setTaskList();
     }
 
     @FXML
@@ -382,29 +404,30 @@ public class Calendar {
         monthCombo.setItems(months);
         monthCombo.setValue(currentMonth);
         loadSelectedMonth();
-        setTasks();
+        setTaskList();
 
         //Due to a jfx bug, this is neccessary to display the combobox list, otherwise it is "confused" whether the list s showing or not
         hPane.requestFocus();
 
+        calendarBackButton.setOnAction(this::backToOverview);
 
-        calendarBackButton.setOnAction(e -> {
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setTitle("Overview");
+    }
 
-            System.out.println("Back to overview");
-            AnchorPane signup = null;
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/Overview.fxml"));
-            try {
-                signup = loader.load(); //Load signup page
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            Overview controller = loader.getController();
-            controller.setOwnController(controller);
-            rootPane.getChildren().setAll(signup);
-        });
+    private void backToOverview(ActionEvent e) {
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Overview");
 
+        System.out.println("Back to overview");
+        AnchorPane overview = null;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/Overview.fxml"));
+        try {
+            overview = loader.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Overview controller = loader.getController();
+        controller.setOwnController(controller);
+        rootPane.getChildren().setAll(overview);
     }
 }
