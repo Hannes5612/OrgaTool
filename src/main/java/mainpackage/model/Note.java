@@ -14,14 +14,6 @@ public class Note {
     private Date date = new java.sql.Date(System.currentTimeMillis());
     private State state = State.ACTIVE;
 
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-
-    @Override
-    public String toString() {
-        return "Title: " + title + "\nContent: " + content + "\nDate: " + date + "\nState: " + state;
-    }
-
     public Note() {}
 
     public Note(String title, String content) {
@@ -93,4 +85,9 @@ public class Note {
         note.setState(State.ARCHIVED);
     }
 
+
+    @Override
+    public String toString() {
+        return "\nTitle: " + title + "\nContent: " + content + "\nDate: " + date + "\nState: " + state + "\n";
+    }
 }

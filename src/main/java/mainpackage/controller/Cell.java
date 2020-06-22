@@ -20,7 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class Cell  extends JFXListCell<Task> {
+public class Cell extends JFXListCell<Task> {
 
         @FXML
         private ResourceBundle resources;

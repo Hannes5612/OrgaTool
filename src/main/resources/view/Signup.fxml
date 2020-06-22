@@ -32,7 +32,7 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton fx:id="signupSignupButton" layoutX="598.0" layoutY="414.0" prefHeight="19.0" prefWidth="60.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
+      <JFXButton fx:id="signupSignupButton" layoutX="601.0" layoutY="414.0" prefHeight="28.0" prefWidth="69.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>

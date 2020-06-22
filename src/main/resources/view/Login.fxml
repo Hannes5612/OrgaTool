@@ -21,7 +21,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="850.0" layoutY="670.0" text="No account yet?">
+      <Label layoutX="873.0" layoutY="675.0" text="No account yet?">
          <font>
             <Font name="Calibri" size="17.0" />
          </font>
@@ -37,12 +37,12 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton fx:id="loginLoginButton" layoutX="607.0" layoutY="404.0" style="-fx-background-color: #3F51B5;" text="Login" textFill="WHITE">
+      <JFXButton fx:id="loginLoginButton" layoutX="607.0" layoutY="404.0" style="-fx-background-color: #3F51B5;" text="Log in" textFill="WHITE">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="loginSignupButton" layoutX="1005.0" layoutY="671.0" style="-fx-background-color: #3F51B5;" text="Signup" textFill="WHITE">
+      <JFXButton fx:id="loginSignupButton" layoutX="1001.0" layoutY="672.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>

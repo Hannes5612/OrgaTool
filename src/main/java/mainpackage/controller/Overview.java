@@ -174,6 +174,10 @@ public class Overview implements Runnable {
             System.out.println(usersTask);
         }
         System.out.println("_____________________");
+        for (Note usersNote : usersNotes) {
+            System.out.println(usersNotes);
+        }
+        System.out.println("_____________________");
 
 
         for (Note userNote : usersNotes) {
