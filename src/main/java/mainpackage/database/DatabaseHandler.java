@@ -130,14 +130,14 @@ public class DatabaseHandler extends Config {
         }
     }
 
-    public void createNote(Note note, User user){
+    public void createNote(Note note){
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("
                 + NOTE_USER + "," + NOTE_TITLE + "," + NOTE_CONTENT + "," + NOTE_DATE + "," +
                 NOTE_STATE + ") VALUES(?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, user.getUserid());
+            preparedStatement.setInt(1, EntryLists.getUserId());
             preparedStatement.setString(2, note.getTitle());
             preparedStatement.setString(3, note.getContent());
             preparedStatement.setDate(4, note.getDate());
@@ -155,13 +155,13 @@ public class DatabaseHandler extends Config {
         }
     }
 
-    public ResultSet getNotes(User user) {
+    public ResultSet getNotes() {
         ResultSet notesResultSet = null;
 
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
-            preparedStatement.setInt(1, user.getUserid());
+            preparedStatement.setInt(1, EntryLists.getUserId());
 
             notesResultSet = preparedStatement.executeQuery();
 

@@ -28,10 +28,10 @@ public class EntryLists {
     public void updateNotes() throws SQLException {
         noteList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
-        ResultSet noteRow = databaseHandler.getNotes(user);
+        ResultSet noteRow = databaseHandler.getNotes();
 
         while (noteRow.next()) {
-            int noteid = noteRow.getInt("taskid");
+            int noteid = noteRow.getInt("notesid");
             String title = noteRow.getString("title");
             String content = noteRow.getString("content");
             java.sql.Date creationDate = noteRow.getDate("creationDate");
