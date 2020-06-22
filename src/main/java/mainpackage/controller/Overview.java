@@ -11,10 +11,12 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXBadge;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,11 +33,12 @@ import mainpackage.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+
 /**
  * Main view after log in. Shows three different views of the created tasks.
  */
 
-public class Overview implements Runnable{
+public class Overview implements Runnable {
 
     @FXML
     private ResourceBundle resources;
@@ -62,6 +65,9 @@ public class Overview implements Runnable{
     @FXML
     private ImageView overviewCalendarImage;
 
+    @FXML
+    private JFXSpinner overviewSpinner;
+
 
     //Initializing variables
     private Overview ownController;
@@ -81,18 +87,22 @@ public class Overview implements Runnable{
     void initialize() {
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> {
+
+            overviewSpinner.setVisible(true);
+
             usersTasks.clear();
             setUser(loggedInUser);
+
 
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.setTitle("Calendar");
 
             System.out.println("Signup clicked, changing screen");
-            AnchorPane signup = null;
+            AnchorPane calendar = null;
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
             try {
-                signup = loader.load(); //Load signup page
+                calendar = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -100,7 +110,8 @@ public class Overview implements Runnable{
             controller.setTasks(loggedInUser);
             controller.setOwnController(controller);
             controller.setOverviewController(ownController);
-            rootPane.getChildren().setAll(signup);
+            rootPane.getChildren().clear();
+            rootPane.getChildren().setAll(calendar);
 
             //Old method to open a new window.
 
@@ -127,7 +138,7 @@ public class Overview implements Runnable{
 
         });
 
-        overviewAddItemImage.setOnMouseClicked(mouseEvent ->{
+        overviewAddItemImage.setOnMouseClicked(mouseEvent -> {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
@@ -149,10 +160,9 @@ public class Overview implements Runnable{
             stage.showAndWait();
 
 
-
         });
 
-        overviewAddNoteImage.setOnMouseClicked(mouseEvent ->{
+        overviewAddNoteImage.setOnMouseClicked(mouseEvent -> {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/CreateNotes.fxml"));
@@ -180,49 +190,89 @@ public class Overview implements Runnable{
 
     }
 
-    void setUser(User user){
+    void setUser(User user) { //TODO move dbhandler in new task
+
+        overviewSpinner.setVisible(true);
         usersTasks.clear();
-        this.loggedInUser=user;
+        this.loggedInUser = user;
 
-        ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
-        ResultSet noteRow = databaseHandler.getNotes(loggedInUser);
 
-        try {
-            while (taskRow.next()) {
-                int taskid = taskRow.getInt("taskid");
-                String name = taskRow.getString("title");
-                String content = taskRow.getString("content");
-                String prio = taskRow.getString("prio");
-                String color = taskRow.getString("color");
-                java.sql.Date due = taskRow.getDate("dueDate");
-                java.sql.Date creation = taskRow.getDate("creationDate");
-                int state = taskRow.getInt("state");
-
-                // Change Task to Entry to avoid casting?
-                Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-                log.info("Task created."); // Replace print by logger.
-
-                usersTasks.add(task);
+        javafx.concurrent.Task<ResultSet> taskDB = new javafx.concurrent.Task<>() {
+            @Override
+            public ResultSet call() {
+                //Catch the tables' row of the search result, given the users credentials
+                ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
+                return taskRow;
             }
+        };
 
-            while (noteRow.next()) {
-                int noteid = noteRow.getInt("taskid");
-                String title = noteRow.getString("title");
-                String content = noteRow.getString("content");
-                java.sql.Date creationDate = noteRow.getDate("creationDate");
-                int state = noteRow.getInt("state");
-
-                Note note = new Note(noteid, title, content, creationDate, state);
-                log.info("Note created");
-
-                usersNotes.add(note);
+        javafx.concurrent.Task<ResultSet> noteDB = new javafx.concurrent.Task<>() {
+            @Override
+            public ResultSet call() {
+                //Catch the tables' row of the search result, given the users credentials
+                ResultSet noteRow = databaseHandler.getNotes(loggedInUser);
+                return noteRow;
             }
+        };
 
-        } catch (SQLException e) {
-            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            connectionalert.showAndWait();
-        }
+        //run database handler tasks
+        new Thread(taskDB).start();
+        new Thread(noteDB).start();
+
+
+
+        taskDB.setOnSucceeded(e -> {
+            ResultSet taskRow = taskDB.getValue();
+            try {
+                while (taskRow.next()) {
+                    int taskid = taskRow.getInt("taskid");
+                    String name = taskRow.getString("title");
+                    String content = taskRow.getString("content");
+                    String prio = taskRow.getString("prio");
+                    String color = taskRow.getString("color");
+                    java.sql.Date due = taskRow.getDate("dueDate");
+                    java.sql.Date creation = taskRow.getDate("creationDate");
+                    int state = taskRow.getInt("state");
+
+                    // Change Task to Entry to avoid casting?
+                    Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
+                    log.info("Task created."); // Replace print by logger.
+
+                    usersTasks.add(task);
+                    overviewSpinner.setVisible(false);
+                }
+            } catch (SQLException ex) {
+                Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+                connectionalert.showAndWait();
+
+            }
+        });
+
+        noteDB.setOnSucceeded(e -> {
+
+            ResultSet noteRow = noteDB.getValue();
+            try {
+                while (noteRow.next()) {
+                    int noteid = noteRow.getInt("taskid");
+                    String title = noteRow.getString("title");
+                    String content = noteRow.getString("content");
+                    java.sql.Date creationDate = noteRow.getDate("creationDate");
+                    int state = noteRow.getInt("state");
+
+                    Note note = new Note(noteid, title, content, creationDate, state);
+                    log.info("Note created");
+
+                    usersNotes.add(note);
+                    overviewSpinner.setVisible(false);
+                }
+
+            } catch (SQLException ex) {
+                Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
+                connectionalert.showAndWait();
+            }
+        });
     }
+
 
     @FXML
     void reload(ActionEvent event) {
@@ -268,11 +318,11 @@ public class Overview implements Runnable{
 
     }
 
-    public void setUsersTasks(ArrayList usersTasks){
-        this.usersTasks=usersTasks;
+    public void setUsersTasks(ArrayList usersTasks) {
+        this.usersTasks = usersTasks;
     }
 
-    public void setOwnController(Overview controller){
+    public void setOwnController(Overview controller) {
         this.ownController = controller;
     }
 }

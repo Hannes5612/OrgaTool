@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
@@ -75,5 +76,6 @@
       <JFXButton layoutX="615.0" layoutY="686.0" onAction="#reload" text="Reload" />
       <Label layoutX="868.0" layoutY="691.0" text="New Note" />
       <Label layoutX="990.0" layoutY="692.0" text="New Task" />
+      <JFXSpinner fx:id="overviewSpinner" layoutX="474.0" layoutY="276.0" prefHeight="114.0" prefWidth="129.0" />
    </children>
 </AnchorPane>

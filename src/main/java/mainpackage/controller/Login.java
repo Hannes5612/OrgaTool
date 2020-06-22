@@ -182,15 +182,19 @@ public class Login {
             //if task succeeded take resultset and check wether it has values
             task.setOnSucceeded(e -> {
                 ResultSet result = task.getValue();
+                String resUName = "";
+                String resPwd = "";
                 int counter = 0;
                 try {
                     while (result.next()) {
                         counter++;
                         loginUser.setUserid(result.getInt("userid"));
+                        resUName = result.getString("username");
+                        resPwd = result.getString("password");
                     }
 
                     //if a row exists, fetch userid and pass the user to the overview method to load nest scene
-                    if (counter == 1) {
+                    if (counter == 1&& loginUser.getUserName().equals(resUName)&&loginUser.getPassword().equals(resPwd)) {
                         System.out.println("Login successful!");
                         overview(loginUser);
 

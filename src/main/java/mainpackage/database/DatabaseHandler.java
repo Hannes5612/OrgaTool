@@ -7,7 +7,6 @@ import mainpackage.model.Task;
 import mainpackage.model.User;
 
 import java.sql.*;
-import java.util.concurrent.Executors;
 
 /**
  * Database Handler class to process database requests
@@ -170,5 +169,4 @@ public class DatabaseHandler extends Config {
         }
         return notesResultSet;
     }
-
 }

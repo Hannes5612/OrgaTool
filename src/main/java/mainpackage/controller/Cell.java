@@ -81,8 +81,9 @@ public class Cell  extends JFXListCell<Task> {
 
         @Override
         protected void updateItem(Task task, boolean empty) {
-                super.updateItem(task, empty);
 
+                super.updateItem(task, empty);
+                this.setStyle("-fx-padding: 0px;");
                 if (empty || task == null) {
                         setText(null);
                         setGraphic(null);

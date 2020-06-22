@@ -37,8 +37,5 @@ public class TaskViewCalendar {
         taskViewCalendarList.setItems(clickedTasks);
     }
 
-    public void close(){
-        Stage stage = (Stage) taskViewCalendarList.getScene().getWindow();
-        stage.close();
-    }
+
 }
