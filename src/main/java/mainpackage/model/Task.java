@@ -17,6 +17,17 @@ public class Task implements Entry {
     private Date creationDate;
     private State state = State.ACTIVE;
 
+    public Task() {}
+
+    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.name = name;
+        this.content = content;
+        this.priority = priority;
+        this.color = color;
+        this.dueDate = dueDate;
+        this.creationDate = creationDate;
+    }
+
     public Task(int taskid, String name, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
         this.taskid= taskid;
         this.name = name;
@@ -27,14 +38,6 @@ public class Task implements Entry {
         this.creationDate = creationDate;
         if(state==1) this.state = State.FINISHED;
         if(state==2) this.state = State.ARCHIVED;
-    }
-    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.name = name;
-        this.content = content;
-        this.priority = priority;
-        this.color = color;
-        this.dueDate = dueDate;
-        this.creationDate = creationDate;
     }
 
     public int getTaskid(){return taskid;}

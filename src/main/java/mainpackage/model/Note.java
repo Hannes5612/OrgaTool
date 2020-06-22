@@ -22,6 +22,8 @@ public class Note {
         return "Title: " + title + "\nContent: " + content + "\nDate: " + date + "\nState: " + state;
     }
 
+    public Note() {}
+
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
