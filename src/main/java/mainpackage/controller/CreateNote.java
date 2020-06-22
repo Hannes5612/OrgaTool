@@ -38,7 +38,7 @@ public class CreateNote {
             Note createdNote = new Note(title, content);
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
-            databaseHandler.createNote(createdNote, user);
+            databaseHandler.createNote(createdNote);
 
             newNoteCreateButton.getScene().getWindow().hide();
 
