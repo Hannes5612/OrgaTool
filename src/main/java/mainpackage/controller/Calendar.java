@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
@@ -23,7 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import mainpackage.database.DatabaseHandler;
+import mainpackage.model.EntryLists;
 import mainpackage.model.Task;
 import mainpackage.model.User;
 
@@ -49,12 +49,9 @@ public class Calendar {
     private JFXSpinner calendarSpinner;
 
 
-    private Calendar ownController;
-    private Overview overviewController;
-    private User user;
     private ArrayList<Task> usersTasks = new ArrayList<>();
-    private TaskViewCalendar taskViewController;
     private boolean isListOpen = false;
+    private EntryLists entryLists = new EntryLists();
 
     // YearCombo
     private final int currentYear = Year.now().getValue();
@@ -103,15 +100,20 @@ public class Calendar {
 
                 vPane.setOnMouseClicked(e -> {
 
-                    if (isListOpen){
+                    if (isListOpen) {
 
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first", ButtonType.OK);
                         openAlert.showAndWait();
 
-                    }else{
-                    clickedTasks.clear();
+                    } else {
+                        clickedTasks.clear();
 
-                    showTasks(vPane.getChildren().get(0));}
+                        try {
+                            showTasks(vPane.getChildren().get(0));
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
 
                 });
                 // Add it to the grid
@@ -120,52 +122,17 @@ public class Calendar {
         }
     }
 
-    public void setTasks(User user) {
+
+    //Fills the calendar with Tasks
+    public void setTasks() throws SQLException {
+
         calendarSpinner.setVisible(true);
         usersTasks.clear();
-        this.user = user;
 
-        DatabaseHandler databaseHandler = new DatabaseHandler();
+        entryLists.updateTasks();
+        entryLists.getTaskList().forEach(task -> usersTasks.add(task));
 
-        javafx.concurrent.Task<ResultSet> task = new javafx.concurrent.Task<>() {
-            @Override
-            public ResultSet call() {
-
-                //Catch the tables' row of the search result, given the users credentials
-                ResultSet taskRow = databaseHandler.getTasks(user);
-
-                return taskRow;
-            }
-        };
-
-        //run database handler task
-        new Thread(task).start();
-
-        task.setOnSucceeded(e -> {        try {
-
-            ResultSet taskRow = task.getValue();
-
-            while (taskRow.next()) {
-                int taskid = taskRow.getInt("taskid");
-                String name = taskRow.getString("title");
-                String content = taskRow.getString("content");
-                String prio = taskRow.getString("prio");
-                String color = taskRow.getString("color");
-                java.sql.Date due = taskRow.getDate("dueDate");
-                java.sql.Date creation = taskRow.getDate("creationDate");
-                int state = taskRow.getInt("state");
-
-                // Change Task to Entry to avoid casting?
-                Task userTask = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-
-
-                usersTasks.add(userTask);
-            }
-
-        } catch (SQLException ex) {
-            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            connectionalert.showAndWait();
-        }try {
+        try {
             for (Task tasks : usersTasks) {
                 String year = String.valueOf(tasks.getDueDate().toLocalDate().getYear());
                 int monthInt = tasks.getDueDate().toLocalDate().getMonthValue();
@@ -219,96 +186,10 @@ public class Calendar {
             ex.printStackTrace();
         }
 
-            calendarSpinner.setVisible(false);
-        });
-
-        //if task failed display connection error message
-        task.setOnFailed(e -> {
-            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
-            connectionalert.showAndWait();
-        });
-/*
-        DatabaseHandler databaseHandler = new DatabaseHandler();
-        ResultSet taskRow = databaseHandler.getTasks(user);
-
-        try {
-            while (taskRow.next()) {
-                int taskid = taskRow.getInt("taskid");
-                String name = taskRow.getString("title");
-                String content = taskRow.getString("content");
-                String prio = taskRow.getString("prio");
-                String color = taskRow.getString("color");
-                java.sql.Date due = taskRow.getDate("dueDate");
-                java.sql.Date creation = taskRow.getDate("creationDate");
-                int state = taskRow.getInt("state");
-
-                // Change Task to Entry to avoid casting?
-                Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-
-                usersTasks.add(task);
-            }
-
-        } catch (SQLException e) {
-            Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            connectionalert.showAndWait();
-        }
-
-
-        try {
-            for (Task task : usersTasks) {
-                String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
-                int monthInt = task.getDueDate().toLocalDate().getMonthValue();
-                String month = "";
-                switch (monthInt) {
-                    case 1:
-                        month = "January";
-                        break;
-                    case 2:
-                        month = "February";
-                        break;
-                    case 3:
-                        month = "March";
-                        break;
-                    case 4:
-                        month = "April";
-                        break;
-                    case 5:
-                        month = "May";
-                        break;
-                    case 6:
-                        month = "June";
-                        break;
-                    case 7:
-                        month = "July";
-                        break;
-                    case 8:
-                        month = "August";
-                        break;
-                    case 9:
-                        month = "September";
-                        break;
-                    case 10:
-                        month = "October";
-                        break;
-                    case 11:
-                        month = "November";
-                        break;
-                    case 12:
-                        month = "December";
-                        break;
-                }
-                String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
-                String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
-                if (year.equals(yearSelection) && month.equals(monthSelection)) {
-                    int day = task.getDueDate().toLocalDate().getDayOfMonth();
-                    showDate(day, task);
-                }
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }*/
+        calendarSpinner.setVisible(false);
     }
 
+    //loads the day labels
     private void loadSelectedMonth() {
         int year = Integer.parseInt(yearCombo.getSelectionModel().getSelectedItem());
         int month = monthCombo.getSelectionModel().getSelectedIndex();
@@ -404,7 +285,7 @@ public class Calendar {
         }
     }
 
-    private void showTasks(Node clickedDayNode) {
+    private void showTasks(Node clickedDayNode) throws SQLException {
         Label label = (Label) clickedDayNode;
         int dayClicked = Integer.parseInt(label.getText());
         String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
@@ -469,7 +350,6 @@ public class Calendar {
             }
 
             TaskViewCalendar controller = loader.getController();
-            taskViewController = controller;
             controller.setTasks(clickedTasks);
             Parent root = loader.getRoot();
             Stage stage = new Stage();
@@ -479,8 +359,7 @@ public class Calendar {
             stage.showAndWait();
             clickedTasks.clear();
             loadSelectedMonth();
-            setTasks(user);
-            updateOverview(usersTasks);
+            setTasks();
             isListOpen = false;
         }
 
@@ -488,31 +367,26 @@ public class Calendar {
     }
 
     @FXML
-    void updateView(ActionEvent event) {
+    void updateView(ActionEvent event) throws SQLException {
         loadSelectedMonth();
-        setTasks(user);
-    }
-
-    void updateOverview(ArrayList arrayList) {
-        overviewController.setUsersTasks(arrayList);
+        setTasks();
     }
 
     @FXML
-    void initialize() {
+    void initialize() throws SQLException {
         drawCalendarGrid();
         yearCombo.setItems(yearList());
         yearCombo.setValue(String.valueOf(currentYear));
         monthCombo.setItems(months);
         monthCombo.setValue(currentMonth);
         loadSelectedMonth();
+        setTasks();
 
         //Due to a jfx bug, this is neccessary to display the combobox list, otherwise it is "confused" whether the list s showing or not
         hPane.requestFocus();
 
 
-
-
-        calendarBackButton.setOnAction(e->{
+        calendarBackButton.setOnAction(e -> {
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.setTitle("Overview");
 
@@ -527,18 +401,9 @@ public class Calendar {
             }
             Overview controller = loader.getController();
             controller.setOwnController(controller);
-            controller.setUser(user);
+            controller.setLists();
             rootPane.getChildren().setAll(signup);
         });
 
-    }
-
-    public void setOwnController(Calendar controller) {
-        this.ownController = controller;
-    }
-
-
-    public void setOverviewController(Overview controller) {
-        this.overviewController = controller;
     }
 }

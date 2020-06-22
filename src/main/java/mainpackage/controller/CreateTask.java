@@ -60,7 +60,7 @@ public class CreateTask {
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.createTask(createdTask,user);
 
-            overviewController.setUser(user);
+            overviewController.setLists();
 
             newTaskCreateButton.getScene().getWindow().hide();
 

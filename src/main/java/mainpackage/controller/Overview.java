@@ -5,31 +5,22 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.ResourceBundle;
 
-import com.jfoenix.controls.JFXBadge;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mainpackage.database.DatabaseHandler;
-import mainpackage.model.Note;
-import mainpackage.model.Task;
-import mainpackage.model.User;
+import mainpackage.model.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -42,243 +33,150 @@ public class Overview implements Runnable {
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private AnchorPane rootPane;
-
     @FXML
     private Label dateLabel;
-
     @FXML
     private Label timeLabel;
-
-
     @FXML
     private ImageView overviewAddItemImage;
-
     @FXML
     private ImageView overviewAddNoteImage;
-
     @FXML
     private ImageView overviewCalendarImage;
-
     @FXML
     private JFXSpinner overviewSpinner;
 
 
-    //Initializing variables
-    private Overview ownController;
-    private User loggedInUser;
-    private Thread thread = null;
+    //Initializing clock variables
+    private Thread clock = null;
     private String time = "", month = "", day = "";
     private SimpleDateFormat format;
     private Date date;
     private Calendar calendar;
-    private DatabaseHandler databaseHandler = new DatabaseHandler();
-    private ArrayList<Task> usersTasks = new ArrayList<>();
-    private ArrayList<Note> usersNotes = new ArrayList<>();
+
+    private Overview ownController;
+    private EntryLists entryLists = new EntryLists();
+    private List<Task> usersTasks = new ArrayList<>();
+    private List<Note> usersNotes = new ArrayList<>();
 
     private static Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {
 
-        overviewCalendarImage.setOnMouseClicked(mouseEvent -> {
+        setLists();
 
-            overviewSpinner.setVisible(true);
+        overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
+        overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
+        overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
 
-            usersTasks.clear();
-            setUser(loggedInUser);
-
-
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setTitle("Calendar");
-
-            System.out.println("Signup clicked, changing screen");
-            AnchorPane calendar = null;
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
-            try {
-                calendar = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mainpackage.controller.Calendar controller = loader.getController();
-            controller.setTasks(loggedInUser);
-            controller.setOwnController(controller);
-            controller.setOverviewController(ownController);
-            rootPane.getChildren().clear();
-            rootPane.getChildren().setAll(calendar);
-
-            //Old method to open a new window.
-
-            /*
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {                                                         //Load overview screen
-                e.printStackTrace();
-            }
-            mainpackage.controller.Calendar controller = loader.getController();
-            controller.setTasks(loggedInUser);
-            controller.setOwnController(controller);
-            controller.setOverviewController(ownController);
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Calendar");
-            stage.setResizable(true);
-            stage.showAndWait();
-*/
-
-        });
-
-        overviewAddItemImage.setOnMouseClicked(mouseEvent -> {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            CreateTask controller = loader.getController();
-            controller.setUser(loggedInUser);
-            controller.setOverviewController(ownController);
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("New Task");
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.showAndWait();
-
-
-        });
-
-        overviewAddNoteImage.setOnMouseClicked(mouseEvent -> {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/CreateNotes.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            CreateNote controller = loader.getController();
-            controller.setUser(loggedInUser);
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("New Note");
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.showAndWait();
-
-        });
-
-        thread = new Thread(this);
-        thread.setDaemon(true);
-        thread.start();
+        clock = new Thread(this);
+        clock.setDaemon(true);
+        clock.start();
 
     }
 
-    void setUser(User user) { //TODO move dbhandler in new task
+    private void loadAddNote() {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/CreateNotes.fxml"));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("New Note");
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.showAndWait();
+
+    }
+
+    private void loadAddTask() {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("New Task");
+        stage.initStyle(StageStyle.TRANSPARENT);
+        overviewAddItemImage.setDisable(true);
+        stage.showAndWait();
+        overviewAddItemImage.setDisable(false);
+
+
+    }
+
+    private void loadCalendar() {
+
+        overviewSpinner.setVisible(true);
+
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Calendar");
+
+        System.out.println("Signup clicked, changing screen");
+        AnchorPane calendar = null;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/Calendar.fxml"));
+        try {
+            calendar = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().clear();
+        rootPane.getChildren().setAll(calendar);
+    }
+
+    void setLists() {
 
         overviewSpinner.setVisible(true);
         usersTasks.clear();
-        this.loggedInUser = user;
+        usersNotes.clear();
 
-
-        javafx.concurrent.Task<ResultSet> taskDB = new javafx.concurrent.Task<>() {
+        javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
             @Override
-            public ResultSet call() {
-                //Catch the tables' row of the search result, given the users credentials
-                ResultSet taskRow = databaseHandler.getTasks(loggedInUser);
-                return taskRow;
+            public Void call() throws SQLException {
+                entryLists.update();
+                return null;
             }
         };
 
-        javafx.concurrent.Task<ResultSet> noteDB = new javafx.concurrent.Task<>() {
-            @Override
-            public ResultSet call() {
-                //Catch the tables' row of the search result, given the users credentials
-                ResultSet noteRow = databaseHandler.getNotes(loggedInUser);
-                return noteRow;
-            }
-        };
+        new Thread(thread).start();
 
-        //run database handler tasks
-        new Thread(taskDB).start();
-        new Thread(noteDB).start();
+        thread.setOnSucceeded(e -> {
+
+            entryLists.getNoteList().forEach(note -> usersNotes.add(note));
+            entryLists.getTaskList().forEach(task -> usersTasks.add(task));
 
 
-
-        taskDB.setOnSucceeded(e -> {
-            ResultSet taskRow = taskDB.getValue();
-            try {
-                while (taskRow.next()) {
-                    int taskid = taskRow.getInt("taskid");
-                    String name = taskRow.getString("title");
-                    String content = taskRow.getString("content");
-                    String prio = taskRow.getString("prio");
-                    String color = taskRow.getString("color");
-                    java.sql.Date due = taskRow.getDate("dueDate");
-                    java.sql.Date creation = taskRow.getDate("creationDate");
-                    int state = taskRow.getInt("state");
-
-                    // Change Task to Entry to avoid casting?
-                    Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-                    log.info("Task created."); // Replace print by logger.
-
-                    usersTasks.add(task);
-                    overviewSpinner.setVisible(false);
-                }
-            } catch (SQLException ex) {
-                Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-                connectionalert.showAndWait();
-
-            }
-        });
-
-        noteDB.setOnSucceeded(e -> {
-
-            ResultSet noteRow = noteDB.getValue();
-            try {
-                while (noteRow.next()) {
-                    int noteid = noteRow.getInt("taskid");
-                    String title = noteRow.getString("title");
-                    String content = noteRow.getString("content");
-                    java.sql.Date creationDate = noteRow.getDate("creationDate");
-                    int state = noteRow.getInt("state");
-
-                    Note note = new Note(noteid, title, content, creationDate, state);
-                    log.info("Note created");
-
-                    usersNotes.add(note);
-                    overviewSpinner.setVisible(false);
-                }
-
-            } catch (SQLException ex) {
-                Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-                connectionalert.showAndWait();
-            }
+            overviewSpinner.setVisible(false);
         });
     }
 
 
     @FXML
     void reload(ActionEvent event) {
-        for (int i = 0; i < usersTasks.size(); i++) {
-            System.out.println(usersTasks.get(i));
+        for (Task usersTask : usersTasks) {
+            System.out.println(usersTask);
         }
+        System.out.println("_____________________");
+        setLists();
         //usersTasks.clear();
         //setUser(loggedInUser);
     }
@@ -316,10 +214,6 @@ public class Overview implements Runnable {
         }
 
 
-    }
-
-    public void setUsersTasks(ArrayList usersTasks) {
-        this.usersTasks = usersTasks;
     }
 
     public void setOwnController(Overview controller) {

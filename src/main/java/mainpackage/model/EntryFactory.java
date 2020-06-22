@@ -1,7 +1,4 @@
-package mainpackage.controller;
-
-import mainpackage.model.Task;
-import mainpackage.model.Note;
+package mainpackage.model;
 
 public class EntryFactory {
 

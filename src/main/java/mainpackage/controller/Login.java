@@ -14,6 +14,7 @@ import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.model.EntryLists;
 import mainpackage.model.User;
 
 import java.io.IOException;
@@ -65,13 +66,7 @@ public class Login {
         loginSpinner.setVisible(false);
 
         //Trigger for sign up button
-        loginSignupButton.setOnAction(event -> {
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setTitle("Signup");
-
-            System.out.println("Signup clicked, changing screen");
-            signup();
-        });
+        loginSignupButton.setOnAction(event -> signup());
 
         //start login() on enter pressed in password field
         loginPassword.setOnKeyPressed((event) -> {
@@ -90,6 +85,9 @@ public class Login {
      */
 
     private void signup() {
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Signup");
+
         System.out.println("Sign up clicked!");
 
         AnchorPane signup = null;
@@ -105,11 +103,9 @@ public class Login {
     /**
      * Closes current window after successful user check from database.
      * Opens the overview and passes the logged in user.
-     *
-     * @param user user to create task with
      */
 
-    private void overview(User user) {
+    private void overview() {
 
 
         loginLoginButton.getScene().getWindow().hide();                                   //Hide login screen
@@ -123,7 +119,6 @@ public class Login {
         }
 
         Overview controller = loader.getController();
-        controller.setUser(user);
         controller.setOwnController(controller);
         Parent root = loader.getRoot();
         Stage stage = new Stage();
@@ -134,13 +129,9 @@ public class Login {
 
     }
 
-    private void login(){
-
-
-
+    private void login() {
         //hide error messages after retry
         loginMessage.setVisible(false);
-
         System.out.println("Login clicked, checking credentials!");
 
         //get user input
@@ -194,9 +185,10 @@ public class Login {
                     }
 
                     //if a row exists, fetch userid and pass the user to the overview method to load nest scene
-                    if (counter == 1&& loginUser.getUserName().equals(resUName)&&loginUser.getPassword().equals(resPwd)) {
+                    if (counter == 1 && loginUser.getUserName().equals(resUName) && loginUser.getPassword().equals(resPwd)) {
                         System.out.println("Login successful!");
-                        overview(loginUser);
+                        EntryLists.setUser(loginUser);
+                        overview();
 
                         //if no row exists stop spinner, shake again and display error message
                     } else {
@@ -226,7 +218,6 @@ public class Login {
 
 
         }
-
 
 
     }

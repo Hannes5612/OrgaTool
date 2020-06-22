@@ -1,8 +1,6 @@
 package mainpackage.model;
 
 
-import mainpackage.controller.Entry;
-
 import java.sql.Date;
 
 /**

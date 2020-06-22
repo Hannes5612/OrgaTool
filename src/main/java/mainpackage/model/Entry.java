@@ -1,4 +1,4 @@
-package mainpackage.controller;
+package mainpackage.model;
 
 public interface Entry {
 
