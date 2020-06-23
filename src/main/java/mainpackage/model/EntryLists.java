@@ -56,16 +56,14 @@ public class EntryLists {
             java.sql.Date creation = taskRow.getDate("creationDate");
             int state = taskRow.getInt("state");
 
-            // Change Task to Entry to avoid casting?
-            Task userTask = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
-            taskList.add(userTask);
+            Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
+            taskList.add(task);
         }
     }
 
     public static void setUser(User user) {
         EntryLists.user = user;
     }
-
 
     public void addTask(Task task) {
         taskList.add(task);
