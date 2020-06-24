@@ -1,7 +1,8 @@
 package mainpackage.model;
 
 import mainpackage.database.DatabaseHandler;
-
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +10,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class EntryLists {
+
+    private static Logger log = LogManager.getLogger(EntryLists.class);
+
     private static User user = new User();
     private final List<Task> taskList = new ArrayList<>();
     private final List<Note> noteList = new ArrayList<>();
@@ -47,16 +51,18 @@ public class EntryLists {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet taskRow = databaseHandler.getTasks(user);
         while (taskRow.next()) {
-            int taskid = taskRow.getInt("taskid");
-            String name = taskRow.getString("title");
+            int id = taskRow.getInt("taskid");
+            String title = taskRow.getString("title");
             String content = taskRow.getString("content");
-            String prio = taskRow.getString("prio");
+            String priority = taskRow.getString("prio");
             String color = taskRow.getString("color");
-            java.sql.Date due = taskRow.getDate("dueDate");
-            java.sql.Date creation = taskRow.getDate("creationDate");
+            java.sql.Date dueDate = taskRow.getDate("dueDate");
+            java.sql.Date creationDate = taskRow.getDate("creationDate");
             int state = taskRow.getInt("state");
 
-            Task task = (Task) EntryFactory.createEntry(Entry.EntryTypes.TASK, taskid, name, content, prio, color, due, creation, state);
+            Task task = new Task(id, title, content, priority, color, dueDate, creationDate, state);
+            log.info("Task created: " + task.toString());
+            System.out.println("Task created: " + task.toString());
             taskList.add(task);
         }
     }

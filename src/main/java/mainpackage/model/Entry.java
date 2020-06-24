@@ -1,10 +1,62 @@
 package mainpackage.model;
 
-public interface Entry {
+import java.sql.Date;
 
-    enum EntryTypes {
-        TASK,
-        NOTE
+/**
+ * ToDo: Description
+ */
+public abstract class Entry {
+
+    /** ToDo:
+     * id -
+     * title -
+     * content -
+     * creationDate -
+     * state -
+     */
+    protected int id;
+    protected String title;
+    protected String content;
+    protected Date creationDate = new java.sql.Date(System.currentTimeMillis());
+    protected State state = State.ACTIVE;
+
+    /**
+     * Method changes the state of the entry to FINISHED.
+     */
+    public void finish() {
+        state = State.FINISHED;
+    }
+
+    /**
+     * Method changes the state of the entry to ARCHIVED.
+     */
+    public void archive() {
+        state = State.ARCHIVED;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public int getState() {
+        switch(state) {
+            case ACTIVE:   return 0;
+            case FINISHED: return 1;
+            case ARCHIVED: return 2;
+            default: throw new RuntimeException("Illegal type State!");
+        }
     }
 
 }

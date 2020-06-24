@@ -78,7 +78,7 @@ public class DatabaseHandler extends Config {
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, EntryLists.getUserId());
             preparedStatement.setString(2, "Task");
-            preparedStatement.setString(3, task.getName());
+            preparedStatement.setString(3, task.getTitle());
             preparedStatement.setString(4, task.getContent());
             preparedStatement.setString(5, task.getPriority());
             preparedStatement.setString(6, task.getColor());
@@ -118,7 +118,7 @@ public class DatabaseHandler extends Config {
         String insert = "DELETE FROM " + TASK_TABLE + " WHERE " + TASK_ID + "=?";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, task.getTaskid());
+            preparedStatement.setInt(1, task.getId());
 
             preparedStatement.executeUpdate();
 
@@ -141,7 +141,7 @@ public class DatabaseHandler extends Config {
             preparedStatement.setInt(1, EntryLists.getUserId());
             preparedStatement.setString(2, note.getTitle());
             preparedStatement.setString(3, note.getContent());
-            preparedStatement.setDate(4, note.getDate());
+            preparedStatement.setDate(4, note.getCreationDate());
             preparedStatement.setInt(5, note.getState());
 
 

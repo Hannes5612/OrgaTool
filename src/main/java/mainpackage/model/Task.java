@@ -1,109 +1,74 @@
 package mainpackage.model;
 
-
 import java.sql.Date;
 
 /**
- * The user can create as many tasks as he wants which will be displayed at the ToDoList.
+ * The Task object contains variables with user input
+ * which will be displayed at the ToDoList and can also be accessed through the calendar.
+ * The user can create as many tasks as he wants.
+ * The task data will be stored in the database.
  */
-public class Task implements Entry {
+public class Task extends Entry {
 
-    private int taskid;
-    private String name;
-    private String content;
+    /** ToDo:
+     * priority -
+     * color -
+     * dueDate -
+     */
     private String priority;
     private String color;
     private Date dueDate;
-    private Date creationDate;
-    private State state = State.ACTIVE;
 
-    public Task() {}
-
-    public Task(String name, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.name = name;
+    /**
+     * ToDo: Description
+     */
+    public Task(String title, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.title = title;
         this.content = content;
         this.priority = priority;
         this.color = color;
-        this.dueDate = dueDate;
         this.creationDate = creationDate;
+        this.dueDate = dueDate;
     }
 
-    public Task(int taskid, String name, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
-        this.taskid= taskid;
-        this.name = name;
+    /**
+     * ToDo: Description
+     */
+    public Task(int id, String title, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
+        this.id = id;
+        this.title = title;
         this.content = content;
         this.priority = priority;
         this.color = color;
-        this.dueDate = dueDate;
         this.creationDate = creationDate;
-        if(state==1) this.state = State.FINISHED;
-        if(state==2) this.state = State.ARCHIVED;
+        this.dueDate = dueDate;
+        if (state == 0) { this.state = State.ACTIVE;   }
+        if (state == 1) { this.state = State.FINISHED; }
+        if (state == 2) { this.state = State.ARCHIVED; }
     }
 
-    public int getTaskid(){return taskid;}
-    public String getName() {
-        return name;
-    }
-    public String getContent() {
-        return content;
-    }
     public String getPriority() {
         return priority;
     }
+
     public String getColor() {
         return color;
     }
+
     public Date getDueDate() {
         return dueDate;
-    }
-    public Date getCreationDate() {
-        return creationDate;
-    }
-    public int getState() {
-        switch (state) {
-            case ACTIVE:   return 0;
-            case FINISHED: return 1;
-            case ARCHIVED: return 2;
-            // default: return eigeneException?
-        }
-        return 0;
-    }
-
-    public void setTaskid(int taskid) {
-        this.taskid = taskid;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-    public void setColor(String color) {
-        this.color = color;
-    }
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-    public void setState(State state) {
-        this.state = state;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", priority='" + priority + '\'' +
-                ", color='" + color + '\'' +
-                ", dueDate=" + dueDate +
-                ", creationDate=" + creationDate +
-                ", state=" + state +
-                '}';
+        return "Task {" +
+                " title='"         + title        + '\'' +
+                ", content='"      + content      + '\'' +
+                ", priority='"     + priority     + '\'' +
+                ", color='"        + color        + '\'' +
+                ", dueDate='"      + dueDate      + '\'' +
+                ", creationDate='" + creationDate + '\'' +
+                ", state='"        + state        + '\'' +
+                " }";
     }
 }

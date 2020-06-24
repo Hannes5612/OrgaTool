@@ -54,7 +54,7 @@ public class Cell extends JFXListCell<Task> {
                         final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
                         final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
 
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + task.getName() + " ?", ButtonType.YES,  ButtonType.CANCEL);
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + task.getTitle() + " ?", ButtonType.YES,  ButtonType.CANCEL);
                         alert.setTitle("Confirmation");
                         alert.setHeaderText("You are about to delete a task!");
                         //Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -100,7 +100,7 @@ public class Cell extends JFXListCell<Task> {
 
                         String color = task.getColor().substring(2,8);
                         cellColor.setStyle("-fx-background-color: #"+ color);
-                        cellTaskLabel.setText(task.getName());
+                        cellTaskLabel.setText(task.getTitle());
                         cellTaskDescription.setText(task.getContent());
                         cellPrioLabel.setText(task.getPriority());
                         cellDateLabel.setText(String.valueOf(task.getDueDate()));

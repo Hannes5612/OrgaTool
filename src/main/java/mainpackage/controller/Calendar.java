@@ -291,8 +291,8 @@ public class Calendar {
                 // Did we find a match?
                 if (currentNumber == dayNumber) {
                     // Add an event label with the given description
-                    Label descLbl = new Label(task.getName());    //(desc + time);
-                    descLbl.setText("- "+task.getName());
+                    Label descLbl = new Label(task.getTitle());    //(desc + time);
+                    descLbl.setText("- "+task.getTitle());
                     descLbl.setPadding(new Insets(-4,0,0,2));
                     // Add label to calendar
                     if(day.getChildren().size()<=2) day.getChildren().add(descLbl);

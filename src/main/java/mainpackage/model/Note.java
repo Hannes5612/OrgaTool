@@ -1,93 +1,43 @@
 package mainpackage.model;
 
-import com.jfoenix.controls.base.IFXLabelFloatControl;
-
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
-public class Note {
-    private int noteid;
-    private String title;
-    private String content;
-    private Date date = new java.sql.Date(System.currentTimeMillis());
-    private State state = State.ACTIVE;
+/**
+ * The Note object contains variables with user input
+ * which will be displayed at the NoteList.
+ * The user can create as many notes as he wants.
+ * The note data will be stored in the database.
+ */
+public class Note extends Entry {
 
-    public Note() {}
-
+    /**
+     * ToDo: Description
+     */
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public Note(int noteid, String title, String content, Date date, int state) {
-        this.noteid = noteid;
+    /**
+     * ToDo: Description
+     */
+    public Note(int id, String title, String content, Date creationDate, int state) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.date = date;
-        if (state == 0) {this.state = State.ACTIVE;}
-        if (state == 1) {this.state = State.FINISHED;}
-        if (state == 2) {this.state = State.ARCHIVED;}
+        this.creationDate = creationDate;
+        if (state == 0) { this.state = State.ACTIVE;   }
+        if (state == 1) { this.state = State.FINISHED; }
+        if (state == 2) { this.state = State.ARCHIVED; }
     }
-
-    public int getNoteid() {
-        return noteid;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public int getState() {
-        switch (state) {
-            case ACTIVE:   return 0;
-            case FINISHED: return 1;
-            case ARCHIVED: return 2;
-            // default: return eigeneException?
-        }
-        return 0;
-    }
-
-    public void createNote() {
-
-    }
-
-    public void deleteNote() {
-
-    }
-
-    public void editNote(Note note) {
-
-    }
-
-    public void archiveNote(Note note) {
-        note.setState(State.ARCHIVED);
-    }
-
 
     @Override
     public String toString() {
-        return "\nTitle: " + title + "\nContent: " + content + "\nDate: " + date + "\nState: " + state + "\n";
+        return "Note {" +
+                " title='"         + title        + '\'' +
+                ", content='"      + content      + '\'' +
+                ", creationDate='" + creationDate + '\'' +
+                ", state='"        + state        + '\'' +
+                " }";
     }
 }
