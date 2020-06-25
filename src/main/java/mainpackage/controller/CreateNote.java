@@ -4,11 +4,13 @@ import com.jfoenix.controls.*;
 
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
 import mainpackage.model.User;
@@ -38,7 +40,14 @@ public class CreateNote {
             Note createdNote = new Note(title, content);
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
-            databaseHandler.createNote(createdNote);
+            try {
+                databaseHandler.createNote(createdNote);
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            } catch (SQLException throwables) {
+                Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.");
+                error.showAndWait();
+            }
 
             newNoteCreateButton.getScene().getWindow().hide();
 

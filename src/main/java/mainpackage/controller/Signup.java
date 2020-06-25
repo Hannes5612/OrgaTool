@@ -96,7 +96,7 @@ public class Signup {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new FadeOut(rootPane).play();
+
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
     }

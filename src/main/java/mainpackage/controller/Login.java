@@ -110,7 +110,17 @@ public class Login {
     private void overview() {
 
 
-        loginLoginButton.getScene().getWindow().hide();                                   //Hide login screen
+        AnchorPane login = null;
+        try {
+            login = FXMLLoader.load(getClass().getResource("/view/Overview.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(login);
+        new FadeIn(login).play();
+
+/*
+        loginLoginButton.getScene().getWindow().close();                                   //Hide login screen
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/Overview.fxml"));
 
@@ -126,7 +136,7 @@ public class Login {
         stage.setScene(new Scene(root));
         stage.setTitle("Overview");
         stage.setResizable(false);
-        stage.showAndWait();
+        stage.showAndWait();*/
 
     }
 
@@ -202,10 +212,11 @@ public class Login {
                     }
 
                     //catch a SQLException in any case
-                } catch (SQLException sqlException) {
+                } catch (SQLException | ClassNotFoundException sqlException) {
                     noSpin();
-                    Alert connectionalert = new Alert(Alert.AlertType.ERROR, sqlException.getMessage(), ButtonType.OK);
-                    connectionalert.showAndWait();
+
+                    Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);
+                    error.showAndWait();
                 }
             });
 

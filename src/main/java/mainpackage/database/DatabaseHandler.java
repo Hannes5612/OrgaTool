@@ -70,52 +70,40 @@ public class DatabaseHandler extends Config {
         return resultSet;
     }
 
-    public void createTask(Task task) {
+    public void createTask(Task task) throws ClassNotFoundException, SQLException {
 
         String insert = "INSERT INTO " + TASK_TABLE + "("
                 + TASK_USER + "," + TASK_TYPE + "," + TASK_TITLE + "," + TASK_CONTENT + "," + TASK_PRIO + "," +
                 TASK_COLOR + "," + TASK_DUEDATE + "," + TASK_CREATIONDATE + "," + TASK_STATE + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
-        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, ListManager.getUserId());
-            preparedStatement.setString(2, "Task");
-            preparedStatement.setString(3, task.getTitle());
-            preparedStatement.setString(4, task.getContent());
-            preparedStatement.setString(5, task.getPriority());
-            preparedStatement.setString(6, task.getColor());
-            preparedStatement.setDate(7, task.getDueDate());
-            preparedStatement.setDate(8, task.getCreationDate());
-            preparedStatement.setInt(9, task.getState());
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setInt(1, ListManager.getUserId());
+        preparedStatement.setString(2, "Task");
+        preparedStatement.setString(3, task.getTitle());
+        preparedStatement.setString(4, task.getContent());
+        preparedStatement.setString(5, task.getPriority());
+        preparedStatement.setString(6, task.getColor());
+        preparedStatement.setDate(7, task.getDueDate());
+        preparedStatement.setDate(8, task.getCreationDate());
+        preparedStatement.setInt(9, task.getState());
 
-            preparedStatement.executeUpdate();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            alert.showAndWait();
-        }
+        preparedStatement.executeUpdate();
 
     }
 
-    public ResultSet getTasks(User user) {
+    public ResultSet getTasks(User user) throws SQLException, ClassNotFoundException {
         ResultSet tasksResulSet = null;
 
         String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + TASK_USER + "=?";
-        try {
-            PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
-            preparedStatement.setInt(1, user.getUserid());
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+        preparedStatement.setInt(1, user.getUserid());
 
-            tasksResulSet = preparedStatement.executeQuery();
+        tasksResulSet = preparedStatement.executeQuery();
 
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
         return tasksResulSet;
     }
 
-    public void deleteTask(Task task) {
+    public void deleteTask(Task task) throws SQLException, ClassNotFoundException {
         String insert = "DELETE FROM " + TASK_TABLE + " WHERE " + TASK_ID + "=?";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
@@ -123,22 +111,16 @@ public class DatabaseHandler extends Config {
 
             preparedStatement.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            alert.showAndWait();
         }
     }
 
-    public void createNote(Note note) {
+    public void createNote(Note note) throws ClassNotFoundException, SQLException {
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("
                 + NOTE_USER + "," + NOTE_TITLE + "," + NOTE_CONTENT + "," + NOTE_DATE + "," +
                 NOTE_STATE + ") VALUES(?,?,?,?,?)";
 
-        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
             preparedStatement.setInt(1, ListManager.getUserId());
             preparedStatement.setString(2, note.getTitle());
             preparedStatement.setString(3, note.getContent());
@@ -148,28 +130,18 @@ public class DatabaseHandler extends Config {
 
             preparedStatement.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Connection failed", ButtonType.OK);
-            alert.showAndWait();
-        }
+
     }
 
-    public ResultSet getNotes() {
+    public ResultSet getNotes() throws SQLException, ClassNotFoundException {
         ResultSet notesResultSet = null;
 
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
-        try {
-            PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
-            preparedStatement.setInt(1, ListManager.getUserId());
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+        preparedStatement.setInt(1, ListManager.getUserId());
 
-            notesResultSet = preparedStatement.executeQuery();
+        notesResultSet = preparedStatement.executeQuery();
 
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
         return notesResultSet;
     }
 }

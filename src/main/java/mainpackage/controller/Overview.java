@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Calendar;
 
+import animatefx.animation.FadeIn;
+import animatefx.animation.FadeOut;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -119,6 +121,7 @@ public class Overview implements Runnable {
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
         overviewAddItemImage.setDisable(false);
+
     }
 
     private void loadCalendar() {
@@ -139,6 +142,7 @@ public class Overview implements Runnable {
         }
         rootPane.getChildren().clear();
         rootPane.getChildren().setAll(calendar);
+        new FadeIn(calendar).play();
     }
 
     //Deprecated
@@ -150,7 +154,7 @@ public class Overview implements Runnable {
 
         javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
             @Override
-            public Void call() throws SQLException {
+            public Void call() throws SQLException, ClassNotFoundException {
                 listManager.update();
                 return null;
             }
@@ -183,6 +187,22 @@ public class Overview implements Runnable {
         //usersTasks.clear();
         //setUser(loggedInUser);
     }
+
+    @FXML
+    void logout(ActionEvent event) {
+        ListManager.wipe();
+
+        AnchorPane login = null;
+        try {
+            login = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(login);
+        new FadeIn(login).play();
+
+    }
+
 
     @Override
     public void run() {

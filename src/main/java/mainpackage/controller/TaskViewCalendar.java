@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import mainpackage.model.Task;
 
 public class TaskViewCalendar{
@@ -24,15 +25,14 @@ public class TaskViewCalendar{
 
     @FXML
     void initialize() {
-
-
-
+        taskViewCalendarList.setPlaceholder(new Label("Deleted all tasks, please close!"));
     }
 
     public void setTasks(ObservableList<Task> clickedTasks) {
         this.clickedTasks = clickedTasks;
         taskViewCalendarList.setCellFactory(Cell -> new Cell());
         taskViewCalendarList.setItems(clickedTasks);
+
     }
 
 

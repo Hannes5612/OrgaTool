@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
@@ -12,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.ListManager;
 import mainpackage.model.Task;
@@ -22,8 +24,6 @@ public class CreateTask {
     private ResourceBundle resources;
     @FXML
     private URL location;
-    @FXML
-    private JFXButton newTaskOnlyNoteButton;
     @FXML
     private JFXTextField newTaskTitle;
     @FXML
@@ -37,8 +37,7 @@ public class CreateTask {
     @FXML
     private JFXButton newTaskCreateButton;
 
-    private Overview overviewController;
-    private Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+    private final Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
     @FXML
     void initialize() {
@@ -58,24 +57,37 @@ public class CreateTask {
 
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
-            databaseHandler.createTask(createdTask);
+            try {
+                databaseHandler.createTask(createdTask);
 
-            ListManager.incrementCountingTaskId();
-            ListManager.addTask(createdTask);
+                ListManager.incrementCountingTaskId();
+                ListManager.addTask(createdTask);
 
-            newTaskCreateButton.getScene().getWindow().hide();
+                newTaskCreateButton.getScene().getWindow().hide();
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            } catch (SQLException throwables) {
+                String msg = checkError(title,content);
+                Alert error = new Alert(Alert.AlertType.ERROR,msg);
+                error.showAndWait();
+            }
+
+
 
         });
 
     }
+
+    private String checkError(String title, String content) {
+        if (title.length()>45) return "Title can't be longer than 45 chars." ;
+        if (content.length()>1024) return "Contenc can't be longer than 1024 chars.";
+        return "Connection failed.\nPlease check your connection or try again.";
+    }
+
     @FXML
     void close(ActionEvent event) {
         newTaskTitle.getScene().getWindow().hide();
 
     }
 
-    public void setOverviewController(Overview ownController) {
-        this.overviewController = ownController;
-
-    }
 }

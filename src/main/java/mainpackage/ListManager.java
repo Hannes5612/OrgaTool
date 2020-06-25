@@ -37,12 +37,12 @@ public class ListManager {
         countingTaskID++;
     }
 
-    public void update() throws SQLException {
+    public void update() throws SQLException, ClassNotFoundException {
         updateNotes();
         updateTasks();
     }
 
-    public void updateNotes() throws SQLException {
+    public void updateNotes() throws SQLException, ClassNotFoundException {
         noteList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet noteRow = databaseHandler.getNotes();
@@ -60,7 +60,7 @@ public class ListManager {
         }
     }
 
-    public void updateTasks() throws SQLException {
+    public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet taskRow = databaseHandler.getTasks(user);
@@ -107,6 +107,15 @@ public class ListManager {
 
     public Stream<Task> getTaskList() {
         return taskList.stream();
+    }
+
+    public static void wipe(){
+        taskList.clear();
+        noteList.clear();
+        user = new User();
+        countingNoteId = -1;
+        countingTaskID = -1;
+
     }
 
 }

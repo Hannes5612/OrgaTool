@@ -23,6 +23,7 @@
                   <Font name="Calibri" size="23.0" />
                </font>
             </Label>
+            <JFXButton layoutX="1018.0" layoutY="6.0" onAction="#logout" style="-fx-background-color: #ffffff;" text="Logout" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
          </children>
       </AnchorPane>
       <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">

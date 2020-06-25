@@ -13,6 +13,7 @@ import mainpackage.model.Task;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -65,11 +66,17 @@ public class Cell extends JFXListCell<Task> {
                                         ListManager.deleteTask(itemToRemove.getId());
                                         //debugLogger.info(selectedIdx);
 
-                                        listViewProperty().get().getItems().remove(selectedIdx);
                                         DatabaseHandler databaseHandler = new DatabaseHandler();
-                                        databaseHandler.deleteTask(task);
+                                        try {
+                                                databaseHandler.deleteTask(task);
+                                        } catch (SQLException throwables) {
+                                                Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.");
+                                                error.showAndWait();
+                                        } catch (ClassNotFoundException e) {
+                                                e.printStackTrace();
+                                        }
                                         //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
-
+                                        listViewProperty().get().getItems().remove(selectedIdx);
                                 }
 
                         }

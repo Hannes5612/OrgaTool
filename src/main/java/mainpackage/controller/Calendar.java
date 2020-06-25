@@ -97,17 +97,12 @@ public class Calendar {
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
 
                 vPane.setOnMouseClicked(e -> {
-/*
                     if (isListOpen) {
-
-                        Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first", ButtonType.OK);
+                        Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
                         openAlert.showAndWait();
-
                     } else {
-                        clickedTasks.clear();
-*/
                     showClickedDayTasks(vPane.getChildren().get(0));
-                    //}
+                    }
 
                 });
                 // Add it to the grid
@@ -119,34 +114,16 @@ public class Calendar {
 
     //Fills the calendar with Tasks
     public void fillCalendarWithTasks() {
-
-   /*     calendarSpinner.setVisible(true);
-
-        javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
-            @Override
-            public Void call() throws SQLException {
-                entryLists.update();
-                return null;
-            }
-        };
-
-        thread.setOnSucceeded(e -> {*/
-            listManager.getTaskList().forEach(this::checkTasks);
-          /*  calendarSpinner.setVisible(false);
-        });
-
-        new Thread(thread).start();*/
-    }
-
-    private void checkTasks(Task tasks) {
-        String year = String.valueOf(tasks.getDueDate().toLocalDate().getYear());
-        String month = tasks.getDueMonth();
-        String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
-        String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
-        if (year.equals(yearSelection) && month.equals(monthSelection)) {
-            int day = tasks.getDueDate().toLocalDate().getDayOfMonth();
-            showDate(day, tasks);
-        }
+            listManager.getTaskList().forEach(task->{
+                String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+                String month = task.getDueMonth();
+                String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
+                String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+                if (year.equals(yearSelection) && month.equals(monthSelection)) {
+                    int day = task.getDueDate().toLocalDate().getDayOfMonth();
+                    showDate(day, task);
+                }
+            });
     }
 
     //loads the day labels
@@ -293,7 +270,7 @@ public class Calendar {
             loadSelectedMonth();
 
             //fillCalendarWithTasks();
-            listManager.getTaskList().forEach(this::checkTasks);
+            fillCalendarWithTasks();
 
             isListOpen = false;
         }
