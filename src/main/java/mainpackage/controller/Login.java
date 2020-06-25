@@ -1,5 +1,6 @@
 package mainpackage.controller;
 
+import animatefx.animation.*;
 import com.jfoenix.controls.*;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.model.EntryLists;
+import mainpackage.ListManager;
 import mainpackage.model.User;
 
 import java.io.IOException;
@@ -97,6 +98,7 @@ public class Login {
             e.printStackTrace();
         }
         rootPane.getChildren().setAll(signup);                                            //Show Signup page
+        new FadeIn(signup).play();
 
     }
 
@@ -119,7 +121,6 @@ public class Login {
         }
 
         Overview controller = loader.getController();
-        controller.setOwnController(controller);
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
@@ -167,8 +168,6 @@ public class Login {
                 }
             };
 
-            //run database handler task
-            new Thread(task).start();
 
             //if task succeeded take resultset and check wether it has values
             task.setOnSucceeded(e -> {
@@ -187,7 +186,8 @@ public class Login {
                     //if a row exists, fetch userid and pass the user to the overview method to load nest scene
                     if (counter == 1 && loginUser.getUserName().equals(resUName) && loginUser.getPassword().equals(resPwd)) {
                         System.out.println("Login successful!");
-                        EntryLists.setUser(loginUser);
+                        ListManager.setUser(loginUser);
+                        new ListManager().update();
                         overview();
 
                         //if no row exists stop spinner, shake again and display error message
@@ -209,12 +209,17 @@ public class Login {
                 }
             });
 
+
+
             //if task failed display connection error message
             task.setOnFailed(e -> {
                 noSpin();
                 Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
                 connectionalert.showAndWait();
             });
+
+            //run database handler task
+            new Thread(task).start();
 
 
         }

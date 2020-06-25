@@ -13,8 +13,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.ListManager;
 import mainpackage.model.Task;
-import mainpackage.model.User;
 
 public class CreateTask {
 
@@ -38,7 +38,6 @@ public class CreateTask {
     private JFXButton newTaskCreateButton;
 
     private Overview overviewController;
-    private User user;
     private Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
     @FXML
@@ -55,10 +54,14 @@ public class CreateTask {
             String color = String.valueOf(newTaskColor.getValue());
             Date duedate = Date.valueOf(newTaskDueDate.getValue());
 
-            Task createdTask = new Task(title,content,prio,color,duedate,today);
+            Task createdTask = new Task(ListManager.getCountingTaskID(),title,content,prio,color,duedate,today);
+
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.createTask(createdTask);
+
+            ListManager.incrementCountingTaskId();
+            ListManager.addTask(createdTask);
 
             newTaskCreateButton.getScene().getWindow().hide();
 
@@ -69,10 +72,6 @@ public class CreateTask {
     void close(ActionEvent event) {
         newTaskTitle.getScene().getWindow().hide();
 
-    }
-
-    void setUser(User user){
-        this.user = user;
     }
 
     public void setOverviewController(Overview ownController) {

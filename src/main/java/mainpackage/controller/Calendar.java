@@ -23,7 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import mainpackage.model.EntryLists;
+import mainpackage.ListManager;
 import mainpackage.model.Task;
 
 public class Calendar {
@@ -50,16 +50,15 @@ public class Calendar {
 
     private ArrayList<Task> usersTasks = new ArrayList<>();
     private boolean isListOpen = false;
-    private EntryLists entryLists = new EntryLists();
+    private ListManager listManager = new ListManager();
 
     // YearCombo
     private final int currentYear = Year.now().getValue();
     private final ObservableList<String> years = FXCollections.observableArrayList();
-    private final ObservableList<Task> clickedTasks = FXCollections.observableArrayList();
 
     // creates year list for year List View
     private ObservableList<String> yearList() {
-        for (int x = Year.now().getValue()+10; x >= 1980; x--) {
+        for (int x = Year.now().getValue() + 10; x >= 1980; x--) {
             years.add(String.valueOf(x));
         }
         return (years);
@@ -98,7 +97,7 @@ public class Calendar {
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
 
                 vPane.setOnMouseClicked(e -> {
-
+/*
                     if (isListOpen) {
 
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first", ButtonType.OK);
@@ -106,13 +105,9 @@ public class Calendar {
 
                     } else {
                         clickedTasks.clear();
-
-                        try {
-                            showTasks(vPane.getChildren().get(0));
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    }
+*/
+                    showClickedDayTasks(vPane.getChildren().get(0));
+                    //}
 
                 });
                 // Add it to the grid
@@ -123,9 +118,9 @@ public class Calendar {
 
 
     //Fills the calendar with Tasks
-    public void setTaskList() throws SQLException {
+    public void fillCalendarWithTasks() {
 
-        calendarSpinner.setVisible(true);
+   /*     calendarSpinner.setVisible(true);
 
         javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
             @Override
@@ -135,70 +130,22 @@ public class Calendar {
             }
         };
 
-        new Thread(thread).start();
-
-        thread.setOnSucceeded(e -> {
-
-            usersTasks.clear();
-            entryLists.getTaskList().forEach(task -> usersTasks.add(task));
-            setTasks();
-            calendarSpinner.setVisible(false);
+        thread.setOnSucceeded(e -> {*/
+            listManager.getTaskList().forEach(this::checkTasks);
+          /*  calendarSpinner.setVisible(false);
         });
+
+        new Thread(thread).start();*/
     }
 
-    private void setTasks() {
-        try {
-            for (Task tasks : usersTasks) {
-                String year = String.valueOf(tasks.getDueDate().toLocalDate().getYear());
-                int monthInt = tasks.getDueDate().toLocalDate().getMonthValue();
-                String month = "";
-                switch (monthInt) {
-                    case 1:
-                        month = "January";
-                        break;
-                    case 2:
-                        month = "February";
-                        break;
-                    case 3:
-                        month = "March";
-                        break;
-                    case 4:
-                        month = "April";
-                        break;
-                    case 5:
-                        month = "May";
-                        break;
-                    case 6:
-                        month = "June";
-                        break;
-                    case 7:
-                        month = "July";
-                        break;
-                    case 8:
-                        month = "August";
-                        break;
-                    case 9:
-                        month = "September";
-                        break;
-                    case 10:
-                        month = "October";
-                        break;
-                    case 11:
-                        month = "November";
-                        break;
-                    case 12:
-                        month = "December";
-                        break;
-                }
-                String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
-                String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
-                if (year.equals(yearSelection) && month.equals(monthSelection)) {
-                    int day = tasks.getDueDate().toLocalDate().getDayOfMonth();
-                    showDate(day, tasks);
-                }
-            }
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
+    private void checkTasks(Task tasks) {
+        String year = String.valueOf(tasks.getDueDate().toLocalDate().getYear());
+        String month = tasks.getDueMonth();
+        String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
+        String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+        if (year.equals(yearSelection) && month.equals(monthSelection)) {
+            int day = tasks.getDueDate().toLocalDate().getDayOfMonth();
+            showDate(day, tasks);
         }
     }
 
@@ -224,7 +171,7 @@ public class Calendar {
             day.setStyle("-fx-backgroud-color: white");
             // Start placing labels on the first day for the month
             if (gridCount < offset) {
-                day.setOnMouseClicked(e-> System.out.println("Nothing to click"));
+                day.setOnMouseClicked(e -> System.out.println("Nothing to click"));
                 gridCount++;
                 // Darken color of the offset days
                 day.setStyle(noDay);
@@ -234,7 +181,7 @@ public class Calendar {
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
 
-                    day.setOnMouseClicked(e-> System.out.println("Nothing to click"));
+                    day.setOnMouseClicked(e -> System.out.println("Nothing to click"));
                     // Instead, darken day color
                     day.setStyle(noDay);
                     day.setOnMouseEntered(e -> day.setStyle(noDay));
@@ -277,7 +224,6 @@ public class Calendar {
         }
     }
 
-
     public void showDate(int dayNumber, Task task) {
         for (Node node : calendarGrid.getChildren()) {
             // Get the current day
@@ -292,76 +238,38 @@ public class Calendar {
                 if (currentNumber == dayNumber) {
                     // Add an event label with the given description
                     Label descLbl = new Label(task.getTitle());    //(desc + time);
-                    descLbl.setText("- "+task.getTitle());
-                    descLbl.setPadding(new Insets(-4,0,0,2));
+                    descLbl.setText("- " + task.getTitle());
+                    descLbl.setPadding(new Insets(-4, 0, 0, 2));
                     // Add label to calendar
-                    if(day.getChildren().size()<=2) day.getChildren().add(descLbl);
-                    else if(day.getChildren().size()==3) {
+                    if (day.getChildren().size() <= 2) day.getChildren().add(descLbl);
+                    else if (day.getChildren().size() == 3) {
                         Label info = new Label();
                         info.setText("Click to show more");
-                        info.setPadding(new Insets(-1,0,0,2));
+                        info.setPadding(new Insets(-1, 0, 0, 2));
                         info.setStyle("-fx-text-fill: #3F51B5 ");
                         day.getChildren().add(info);
-                    }
                     }
                 }
             }
         }
+    }
 
-
-    private void showTasks(Node clickedDayNode) throws SQLException {
+    private void showClickedDayTasks(Node clickedDayNode) {
+        ObservableList<Task> clickedTasks = FXCollections.observableArrayList();
         Label label = (Label) clickedDayNode;
         int dayClicked = Integer.parseInt(label.getText());
         String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
         String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
 
-        for (Task task : usersTasks) {
+        listManager.getTaskList().forEach(task -> {
             String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
-            int monthInt = task.getDueDate().toLocalDate().getMonthValue();
-            String month = "";
-            switch (monthInt) {
-                case 1:
-                    month = "January";
-                    break;
-                case 2:
-                    month = "February";
-                    break;
-                case 3:
-                    month = "March";
-                    break;
-                case 4:
-                    month = "April";
-                    break;
-                case 5:
-                    month = "May";
-                    break;
-                case 6:
-                    month = "June";
-                    break;
-                case 7:
-                    month = "July";
-                    break;
-                case 8:
-                    month = "August";
-                    break;
-                case 9:
-                    month = "September";
-                    break;
-                case 10:
-                    month = "October";
-                    break;
-                case 11:
-                    month = "November";
-                    break;
-                case 12:
-                    month = "December";
-                    break;
-            }
+            String month = task.getDueMonth();
             int day = task.getDueDate().toLocalDate().getDayOfMonth();
             if (year.equals(yearSelection) && month.equals(monthSelection) && dayClicked == day) {
                 clickedTasks.add(task);
             }
-        }
+        });
+
         if (!clickedTasks.isEmpty()) {
             isListOpen = true;
             FXMLLoader loader = new FXMLLoader();
@@ -380,10 +288,13 @@ public class Calendar {
             stage.setScene(new Scene(root));
             stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
             stage.setResizable(true);
+            stage.setMinWidth(440);
             stage.showAndWait();
-            clickedTasks.clear();
             loadSelectedMonth();
-            setTaskList();
+
+            //fillCalendarWithTasks();
+            listManager.getTaskList().forEach(this::checkTasks);
+
             isListOpen = false;
         }
 
@@ -391,20 +302,20 @@ public class Calendar {
     }
 
     @FXML
-    void updateView(ActionEvent event) throws SQLException {
+    void updateView(ActionEvent event) {
         loadSelectedMonth();
-        setTaskList();
+        fillCalendarWithTasks();
     }
 
     @FXML
-    void initialize() throws SQLException {
+    void initialize() {
         drawCalendarGrid();
         yearCombo.setItems(yearList());
         yearCombo.setValue(String.valueOf(currentYear));
         monthCombo.setItems(months);
         monthCombo.setValue(currentMonth);
         loadSelectedMonth();
-        setTaskList();
+        fillCalendarWithTasks();
 
         //Due to a jfx bug, this is neccessary to display the combobox list, otherwise it is "confused" whether the list s showing or not
         hPane.requestFocus();
@@ -427,7 +338,6 @@ public class Calendar {
             ex.printStackTrace();
         }
         Overview controller = loader.getController();
-        controller.setOwnController(controller);
         rootPane.getChildren().setAll(overview);
     }
 }

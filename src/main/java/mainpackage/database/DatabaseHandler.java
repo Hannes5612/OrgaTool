@@ -2,7 +2,7 @@ package mainpackage.database;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import mainpackage.model.EntryLists;
+import mainpackage.ListManager;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -30,6 +30,7 @@ public class DatabaseHandler extends Config {
     }
 
     public void signupUser(User user) throws SQLException {
+
 
         String insert = "INSERT INTO " + USER_TABLE + "("
                 + USER_USERNAME + "," + USER_PASSWORD + ") VALUES(?,?)";
@@ -76,7 +77,7 @@ public class DatabaseHandler extends Config {
                 TASK_COLOR + "," + TASK_DUEDATE + "," + TASK_CREATIONDATE + "," + TASK_STATE + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, EntryLists.getUserId());
+            preparedStatement.setInt(1, ListManager.getUserId());
             preparedStatement.setString(2, "Task");
             preparedStatement.setString(3, task.getTitle());
             preparedStatement.setString(4, task.getContent());
@@ -138,7 +139,7 @@ public class DatabaseHandler extends Config {
                 NOTE_STATE + ") VALUES(?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setInt(1, EntryLists.getUserId());
+            preparedStatement.setInt(1, ListManager.getUserId());
             preparedStatement.setString(2, note.getTitle());
             preparedStatement.setString(3, note.getContent());
             preparedStatement.setDate(4, note.getCreationDate());
@@ -162,7 +163,7 @@ public class DatabaseHandler extends Config {
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
-            preparedStatement.setInt(1, EntryLists.getUserId());
+            preparedStatement.setInt(1, ListManager.getUserId());
 
             notesResultSet = preparedStatement.executeQuery();
 

@@ -5,12 +5,10 @@ import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.ListManager;
 import mainpackage.model.Task;
 
 import java.io.IOException;
@@ -63,8 +61,8 @@ public class Cell extends JFXListCell<Task> {
 
                         if (alert.getResult() == ButtonType.YES) {
                                 if (selectedIdx != -1) {
-                                        //Task itemToRemove = listViewProperty().get().getSelectionModel().getSelectedItem();
-
+                                        Task itemToRemove = listViewProperty().get().getSelectionModel().getSelectedItem();
+                                        ListManager.deleteTask(itemToRemove.getId());
                                         //debugLogger.info(selectedIdx);
 
                                         listViewProperty().get().getItems().remove(selectedIdx);
@@ -89,7 +87,7 @@ public class Cell extends JFXListCell<Task> {
                         setGraphic(null);
                 } else {
                         if (fxmlLoader == null) {
-                                fxmlLoader = new FXMLLoader(getClass().getResource("/view/Cell.fxml"));
+                                fxmlLoader = new FXMLLoader(getClass().getResource("/view/TaskCell.fxml"));
                                 fxmlLoader.setController(this);
                                 try {
                                         fxmlLoader.load();
@@ -106,6 +104,7 @@ public class Cell extends JFXListCell<Task> {
                         cellDateLabel.setText(String.valueOf(task.getDueDate()));
                         cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
                         cellCheckbox.setSelected(false);
+                        cellTaskDescription.setWrapText(true);
 
                         setText(null);
                         setGraphic(rootAnchorPane);

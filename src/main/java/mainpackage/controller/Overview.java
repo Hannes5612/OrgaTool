@@ -2,7 +2,6 @@ package mainpackage.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -10,6 +9,8 @@ import java.util.Calendar;
 
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mainpackage.ListManager;
 import mainpackage.model.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -53,17 +55,19 @@ public class Overview implements Runnable {
 
     private String time = "", month = "", day = "";
 
-    private Overview ownController;
-    private EntryLists entryLists = new EntryLists();
-    private List<Task> usersTasks = new ArrayList<>();
-    private List<Note> usersNotes = new ArrayList<>();
+    private ListManager listManager = new ListManager();
+    private List<Task> usersTasks = FXCollections.observableArrayList();
+    private List<Note> usersNotes = FXCollections.observableArrayList();
 
     private static Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {
 
-        setLists();
+        listManager.getNoteList().forEach(note -> usersNotes.add(note));
+        listManager.getTaskList().forEach(task -> usersTasks.add(task));
+        overviewSpinner.setVisible(false);
+        //setLists();
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
@@ -90,10 +94,10 @@ public class Overview implements Runnable {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("New Note");
         stage.initStyle(StageStyle.TRANSPARENT);
+        overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
-        setLists();
+        overviewAddNoteImage.setDisable(false);
 
     }
 
@@ -111,14 +115,10 @@ public class Overview implements Runnable {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("New Task");
         stage.initStyle(StageStyle.TRANSPARENT);
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
         overviewAddItemImage.setDisable(false);
-        setLists();
-
-
     }
 
     private void loadCalendar() {
@@ -141,6 +141,7 @@ public class Overview implements Runnable {
         rootPane.getChildren().setAll(calendar);
     }
 
+    //Deprecated
     void setLists() {
 
         overviewSpinner.setVisible(true);
@@ -150,7 +151,7 @@ public class Overview implements Runnable {
         javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
             @Override
             public Void call() throws SQLException {
-                entryLists.update();
+                listManager.update();
                 return null;
             }
         };
@@ -159,9 +160,8 @@ public class Overview implements Runnable {
 
         thread.setOnSucceeded(e -> {
 
-            entryLists.getNoteList().forEach(note -> usersNotes.add(note));
-            entryLists.getTaskList().forEach(task -> usersTasks.add(task));
-
+            listManager.getNoteList().forEach(note -> usersNotes.add(note));
+            listManager.getTaskList().forEach(task -> usersTasks.add(task));
 
             overviewSpinner.setVisible(false);
         });
@@ -170,21 +170,16 @@ public class Overview implements Runnable {
 
     @FXML
     void reload(ActionEvent event) {
-        for (Task usersTask : usersTasks) {
-            System.out.println(usersTask);
-        }
-        System.out.println("_____________________");
-        for (Note usersNote : usersNotes) {
-            System.out.println(usersNotes);
-        }
-        System.out.println("_____________________");
 
+        listManager.getTaskList().forEach(System.out::println);
+
+        System.out.println("------------------------");
 
         for (Note userNote : usersNotes) {
             System.out.println(userNote);
         }
         System.out.println("_____________________");
-        setLists();
+        //setLists();
         //usersTasks.clear();
         //setUser(loggedInUser);
     }
@@ -224,7 +219,4 @@ public class Overview implements Runnable {
 
     }
 
-    public void setOwnController(Overview controller) {
-        this.ownController = controller;
-    }
 }

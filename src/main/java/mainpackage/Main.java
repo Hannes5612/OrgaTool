@@ -1,5 +1,6 @@
 package mainpackage;
 
+import animatefx.animation.FadeIn;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main extends Application {
-    private static Map controllers = new HashMap();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -28,9 +28,12 @@ public class Main extends Application {
         }
 
         primaryStage.setTitle("Login");
+        assert root != null;
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(true);
         primaryStage.show();
+
+        new FadeIn(root).setSpeed(1).play();
         System.out.println("Application started successfully!");
     }
 

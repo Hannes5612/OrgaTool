@@ -22,7 +22,8 @@ public class Task extends Entry {
     /**
      * ToDo: Description
      */
-    public Task(String title, String content, String priority, String color, Date dueDate, Date creationDate) {
+    public Task(int taskId,String title, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.id=taskId;
         this.title = title;
         this.content = content;
         this.priority = priority;
@@ -59,16 +60,60 @@ public class Task extends Entry {
         return dueDate;
     }
 
+    public String getDueMonth(){
+        String month = "";
+        switch (dueDate.toLocalDate().getMonthValue()) {
+            case 1:
+                month = "January";
+                break;
+            case 2:
+                month = "February";
+                break;
+            case 3:
+                month = "March";
+                break;
+            case 4:
+                month = "April";
+                break;
+            case 5:
+                month = "May";
+                break;
+            case 6:
+                month = "June";
+                break;
+            case 7:
+                month = "July";
+                break;
+            case 8:
+                month = "August";
+                break;
+            case 9:
+                month = "September";
+                break;
+            case 10:
+                month = "October";
+                break;
+            case 11:
+                month = "November";
+                break;
+            case 12:
+                month = "December";
+                break;
+        }
+        return month;
+    }
+
     @Override
     public String toString() {
-        return "Task {" +
-                " title='"         + title        + '\'' +
-                ", content='"      + content      + '\'' +
-                ", priority='"     + priority     + '\'' +
-                ", color='"        + color        + '\'' +
-                ", dueDate='"      + dueDate      + '\'' +
-                ", creationDate='" + creationDate + '\'' +
-                ", state='"        + state        + '\'' +
-                " }";
+        return "Task{" +
+                "priority='" + priority + '\'' +
+                ", color='" + color + '\'' +
+                ", dueDate=" + dueDate +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", creationDate=" + creationDate +
+                ", state=" + state +
+                '}';
     }
 }

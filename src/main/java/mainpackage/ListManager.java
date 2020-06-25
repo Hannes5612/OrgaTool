@@ -1,6 +1,9 @@
-package mainpackage.model;
+package mainpackage;
 
 import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Note;
+import mainpackage.model.Task;
+import mainpackage.model.User;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 import java.sql.ResultSet;
@@ -9,19 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class EntryLists {
+public class ListManager {
 
-    private static Logger log = LogManager.getLogger(EntryLists.class);
+    private static Logger log = LogManager.getLogger(ListManager.class);
 
     private static User user = new User();
-    private final List<Task> taskList = new ArrayList<>();
-    private final List<Note> noteList = new ArrayList<>();
+    private static int countingTaskID;
+    private static int countingNoteId;
+    private static final List<Task> taskList = new ArrayList<>();
+    private static final List<Note> noteList = new ArrayList<>();
 
-    public EntryLists() {
+    public ListManager() {
     }
 
     public static int getUserId() {
         return user.getUserid();
+    }
+
+    public static int getCountingTaskID(){
+        return countingTaskID;
+    }
+
+    public static void incrementCountingTaskId(){
+        countingTaskID++;
     }
 
     public void update() throws SQLException {
@@ -41,6 +54,7 @@ public class EntryLists {
             java.sql.Date creationDate = noteRow.getDate("creationDate");
             int state = noteRow.getInt("state");
 
+            countingNoteId = noteid + 1;
             Note note = new Note(noteid, title, content, creationDate, state);
             noteList.add(note);
         }
@@ -60,31 +74,39 @@ public class EntryLists {
             java.sql.Date creationDate = taskRow.getDate("creationDate");
             int state = taskRow.getInt("state");
 
+            countingTaskID = id + 1;
             Task task = new Task(id, title, content, priority, color, dueDate, creationDate, state);
-            log.info("Task created: " + task.toString());
-            System.out.println("Task created: " + task.toString());
+            log.info("Task loaded: " + task.toString());
+            System.out.println("Task loaded: " + task.toString());
             taskList.add(task);
         }
     }
 
     public static void setUser(User user) {
-        EntryLists.user = user;
+        ListManager.user = user;
     }
 
-    public void addTask(Task task) {
+    public static void deleteTask(int taskId){
+        taskList.removeIf(task -> task.getId() == taskId);
+    }
+    public static void deleteNote(int noteId){
+        noteList.removeIf(note -> note.getId() == noteId);
+    }
+
+    public static void addTask(Task task) {
         taskList.add(task);
     }
 
-    public void addNote(Note note) {
+    public static void addNote(Note note) {
         noteList.add(note);
     }
 
     public Stream<Note> getNoteList() {
-        return this.noteList.stream();
+        return noteList.stream();
     }
 
     public Stream<Task> getTaskList() {
-        return this.taskList.stream();
+        return taskList.stream();
     }
 
 }

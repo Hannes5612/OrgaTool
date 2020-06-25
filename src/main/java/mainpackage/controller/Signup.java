@@ -1,5 +1,6 @@
 package mainpackage.controller;
 
+import animatefx.animation.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
@@ -56,10 +57,11 @@ public class Signup {
 
     private DatabaseHandler databaseHandler = new DatabaseHandler();
 
-    @FXML
+
     /**
      * Signup handler to create an account
      */
+    @FXML
     void initialize() {
         //Hide error messages
         signupMessage.setVisible(false);
@@ -94,8 +96,9 @@ public class Signup {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new FadeOut(rootPane).play();
         rootPane.getChildren().setAll(login);
-
+        new FadeIn(login).play();
     }
 
     private void spin() {
