@@ -1,6 +1,7 @@
 package mainpackage.controller;
 
 import animatefx.animation.FadeIn;
+import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
@@ -12,12 +13,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
+import mainpackage.exceptions.UnsupportedCellType;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
@@ -106,9 +109,17 @@ public class Overview {
     }
 
     public void setNotes() {
+        CellFactory cellFactory = new CellFactory();
         usersNotes.clear();
         listManager.getNoteList().forEach(usersNotes::add);
-        noteListView.setCellFactory(NoteCell -> new NoteCell());
+        noteListView.setCellFactory(NoteCell -> {
+            try {
+                return cellFactory.createCell("note");
+            } catch (UnsupportedCellType unsupportedCellType) {
+                unsupportedCellType.printStackTrace();
+                return new JFXListCell<>();
+            }
+        });
         noteListView.setItems(usersNotes);
     }
 
