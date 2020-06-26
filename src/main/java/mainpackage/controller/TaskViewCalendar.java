@@ -30,7 +30,7 @@ public class TaskViewCalendar{
 
     public void setTasks(ObservableList<Task> clickedTasks) {
         this.clickedTasks = clickedTasks;
-        taskViewCalendarList.setCellFactory(Cell -> new Cell());
+        taskViewCalendarList.setCellFactory(Cell -> new TaskCell());
         taskViewCalendarList.setItems(clickedTasks);
 
     }

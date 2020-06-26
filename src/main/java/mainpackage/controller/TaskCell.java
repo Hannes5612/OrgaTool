@@ -19,7 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class Cell extends JFXListCell<Task> {
+public class TaskCell extends JFXListCell<Task> {
 
         @FXML
         private ResourceBundle resources;
