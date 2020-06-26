@@ -1,14 +1,7 @@
 package mainpackage.controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Calendar;
-
 import animatefx.animation.FadeIn;
-import animatefx.animation.FadeOut;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,9 +17,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
-import mainpackage.model.*;
+import mainpackage.model.Note;
+import mainpackage.model.Task;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 
 /**
@@ -53,13 +55,15 @@ public class Overview implements Runnable {
     private ImageView overviewCalendarImage;
     @FXML
     private JFXSpinner overviewSpinner;
+    @FXML
+    private JFXListView<Note> noteListView;
 
 
     private String time = "", month = "", day = "";
 
     private ListManager listManager = new ListManager();
-    private List<Task> usersTasks = FXCollections.observableArrayList();
-    private List<Note> usersNotes = FXCollections.observableArrayList();
+    private ObservableList<Task> usersTasks = FXCollections.observableArrayList();
+    private ObservableList<Note> usersNotes = FXCollections.observableArrayList();
 
     private static Logger log = LogManager.getLogger(Overview.class);
 
@@ -80,7 +84,16 @@ public class Overview implements Runnable {
         clock.setDaemon(true);
         clock.start();
 
+        setNotes();
     }
+
+    public void setNotes() {
+        usersNotes.clear();
+        listManager.getNoteList().forEach(note -> usersNotes.add(note));
+        noteListView.setCellFactory(NoteCell -> new NoteCell());
+        noteListView.setItems(usersNotes);
+    }
+
 
     private void loadAddNote() {
 
@@ -142,7 +155,6 @@ public class Overview implements Runnable {
         }
         rootPane.getChildren().clear();
         rootPane.getChildren().setAll(calendar);
-        new FadeIn(calendar).play();
     }
 
     //Deprecated
@@ -175,14 +187,10 @@ public class Overview implements Runnable {
     @FXML
     void reload(ActionEvent event) {
 
-        listManager.getTaskList().forEach(System.out::println);
+        // listManager.getTaskList().forEach(System.out::println);
+        listManager.getNoteList().forEach(System.out::println);
 
         System.out.println("------------------------");
-
-        for (Note userNote : usersNotes) {
-            System.out.println(userNote);
-        }
-        System.out.println("_____________________");
         //setLists();
         //usersTasks.clear();
         //setUser(loggedInUser);

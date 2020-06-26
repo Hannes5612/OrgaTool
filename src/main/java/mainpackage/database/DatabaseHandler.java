@@ -1,7 +1,5 @@
 package mainpackage.database;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import mainpackage.ListManager;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
@@ -121,16 +119,26 @@ public class DatabaseHandler extends Config {
                 NOTE_STATE + ") VALUES(?,?,?,?,?)";
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
-            preparedStatement.setInt(1, ListManager.getUserId());
-            preparedStatement.setString(2, note.getTitle());
-            preparedStatement.setString(3, note.getContent());
-            preparedStatement.setDate(4, note.getCreationDate());
-            preparedStatement.setInt(5, note.getState());
+        preparedStatement.setInt(1, ListManager.getUserId());
+        preparedStatement.setString(2, note.getTitle());
+        preparedStatement.setString(3, note.getContent());
+        preparedStatement.setDate(4, note.getCreationDate());
+        preparedStatement.setInt(5, note.getState());
 
+
+        preparedStatement.executeUpdate();
+
+    }
+
+    public void deleteNote(Note note) throws SQLException, ClassNotFoundException {
+        String insert = "DELETE FROM " + NOTE_TABLE + " WHERE " + NOTE_ID + "=?";
+
+        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
+            preparedStatement.setInt(1, note.getId());
 
             preparedStatement.executeUpdate();
 
-
+        }
     }
 
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {

@@ -2,22 +2,22 @@ package mainpackage.controller;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListCell;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import mainpackage.database.DatabaseHandler;
+import javafx.scene.layout.AnchorPane;
 import mainpackage.ListManager;
+import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 
 public class Cell extends JFXListCell<Task> {
 
@@ -44,7 +44,7 @@ public class Cell extends JFXListCell<Task> {
         @FXML
         private ImageView cellDeleteButton;
 
-        private  FXMLLoader fxmlLoader;
+        private FXMLLoader fxmlLoader;
 
         @FXML
         void initialize() {
