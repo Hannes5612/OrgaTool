@@ -14,14 +14,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
+import mainpackage.threads.ClockThread;
+import mainpackage.threads.SaveThread;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -35,7 +39,7 @@ import java.util.ResourceBundle;
  * Main view after log in. Shows three different views of the created tasks.
  */
 
-public class Overview implements Runnable {
+public class Overview {
 
     @FXML
     private ResourceBundle resources;
@@ -57,39 +61,53 @@ public class Overview implements Runnable {
     private JFXSpinner overviewSpinner;
     @FXML
     private JFXListView<Note> noteListView;
+    @FXML
+    private ImageView overviewExport;
 
 
-    private String time = "", month = "", day = "";
-
-    private ListManager listManager = new ListManager();
-    private ObservableList<Task> usersTasks = FXCollections.observableArrayList();
-    private ObservableList<Note> usersNotes = FXCollections.observableArrayList();
-
-    private static Logger log = LogManager.getLogger(Overview.class);
+    private final ListManager listManager = new ListManager();
+    private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
+    private final ObservableList<Note> usersNotes = FXCollections.observableArrayList();
+    private final ClockThread clock = new ClockThread();
+    private static final Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {
 
-        listManager.getNoteList().forEach(note -> usersNotes.add(note));
-        listManager.getTaskList().forEach(task -> usersTasks.add(task));
+        listManager.getNoteList().forEach(usersNotes::add);
+        listManager.getTaskList().forEach(usersTasks::add);
         overviewSpinner.setVisible(false);
         //setLists();
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
+        overviewExport.setOnMouseClicked(mouseEvent -> export());
 
-        //Initializing clock variables
-        Thread clock = new Thread(this);
+        //Initializing clock
+        clock.setLabels(timeLabel, dateLabel);
         clock.setDaemon(true);
         clock.start();
 
         setNotes();
     }
 
+    private void export() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("Orga-Exports.txt");
+        File file = fileChooser.showSaveDialog(rootPane.getScene().getWindow());
+        if (file != null) {
+            SaveThread save = new SaveThread(file);
+            save.setDaemon(true);
+            save.start();
+        }
+    }
+
     public void setNotes() {
         usersNotes.clear();
-        listManager.getNoteList().forEach(note -> usersNotes.add(note));
+        listManager.getNoteList().forEach(usersNotes::add);
         noteListView.setCellFactory(NoteCell -> new NoteCell());
         noteListView.setItems(usersNotes);
     }
@@ -139,8 +157,6 @@ public class Overview implements Runnable {
 
     private void loadCalendar() {
 
-        overviewSpinner.setVisible(true);
-
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Calendar");
 
@@ -155,6 +171,7 @@ public class Overview implements Runnable {
         }
         rootPane.getChildren().clear();
         rootPane.getChildren().setAll(calendar);
+        new FadeIn(calendar).play();
     }
 
     //Deprecated
@@ -176,8 +193,8 @@ public class Overview implements Runnable {
 
         thread.setOnSucceeded(e -> {
 
-            listManager.getNoteList().forEach(note -> usersNotes.add(note));
-            listManager.getTaskList().forEach(task -> usersTasks.add(task));
+            listManager.getNoteList().forEach(usersNotes::add);
+            listManager.getTaskList().forEach(usersTasks::add);
 
             overviewSpinner.setVisible(false);
         });
@@ -208,42 +225,6 @@ public class Overview implements Runnable {
         }
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
-
-    }
-
-
-    @Override
-    public void run() {
-        try {
-            while (true) {
-
-                //Setting date format and variables:
-
-                Calendar calendar = Calendar.getInstance();
-
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-                Date date = calendar.getTime();
-                time = format.format(date);
-
-                format = new SimpleDateFormat("EEE, MMMM dd yyyy");
-                date = calendar.getTime();
-                month = format.format(date);
-
-                //Setting elements to pane:
-
-                Platform.runLater(() -> {
-                    dateLabel.setText(String.valueOf(month));
-                    timeLabel.setText(time);
-
-                });
-
-                Thread.sleep(1000);
-            }
-        } catch (Exception e) { //Error check
-            dateLabel.setText("");
-            timeLabel.setText("Error occurred!!");
-        }
-
 
     }
 
