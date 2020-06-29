@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="502.0" prefWidth="335.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.CreateNote">
+<AnchorPane prefHeight="502.0" prefWidth="335.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
         <AnchorPane prefHeight="58.0" prefWidth="335.0" style="-fx-background-color: #3F51B5;">
             <children>
@@ -28,7 +28,7 @@
                 <Font name="Calibri" size="17.0" />
             </font>
         </JFXTextArea>
-        <JFXButton fx:id="newNoteCreateButton" layoutX="252.0" layoutY="460.0" style="-fx-background-color: #3F51B5;" text="Create" textFill="WHITE" />
+        <JFXButton fx:id="newNoteEditButton" layoutX="252.0" layoutY="460.0" style="-fx-background-color: #3F51B5;" text="Save" textFill="WHITE" />
         <JFXButton alignment="CENTER" layoutX="34.0" layoutY="460.0" onAction="#close" prefHeight="16.0" prefWidth="56.0" style="-fx-background-color: #3F51B5;" text="Close" textFill="WHITE" />
     </children>
 </AnchorPane>

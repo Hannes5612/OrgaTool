@@ -141,6 +141,25 @@ public class DatabaseHandler extends Config {
         }
     }
 
+    public void editNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_TITLE + "=?, " + NOTE_CONTENT + "=? WHERE " + NOTE_ID + "=" + noteId;
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setString(1, note.getTitle());
+        preparedStatement.setString(2, note.getContent());
+
+        preparedStatement.executeUpdate();
+    }
+
+    public void archiveNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=" + noteId;
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setInt(1, 2);
+
+        preparedStatement.executeUpdate();
+    }
+
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
         ResultSet notesResultSet = null;
 

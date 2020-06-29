@@ -93,6 +93,8 @@ public class ListManager {
         noteList.removeIf(note -> note.getId() == noteId);
     }
 
+    public static void editNote(int noteIndex, Note note) { noteList.set(noteIndex, note); }
+
     public static void addTask(Task task) {
         taskList.add(task);
     }
@@ -115,7 +117,6 @@ public class ListManager {
         user = new User();
         countingNoteId = -1;
         countingTaskID = -1;
-
     }
 
 }

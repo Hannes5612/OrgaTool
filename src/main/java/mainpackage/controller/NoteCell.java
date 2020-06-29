@@ -3,12 +3,16 @@ package mainpackage.controller;
 import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
@@ -48,11 +52,9 @@ public class NoteCell extends JFXListCell<Note> {
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES,  ButtonType.CANCEL);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
             alert.setTitle("Confirmation");
             alert.setHeaderText("You are about to delete a note!");
-            //Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            //stage.getIcons().add(new Image("/icons/appicon_small.png")); // To add an icon
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
@@ -65,7 +67,7 @@ public class NoteCell extends JFXListCell<Note> {
                         databaseHandler.deleteNote(note);
                         ListManager.deleteNote(itemToRemove.getId());
                     } catch (SQLException throwables) {
-                        Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.");
+                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -75,6 +77,33 @@ public class NoteCell extends JFXListCell<Note> {
                 }
 
             }
+        });
+
+
+        noteCellEditButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+            final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
+            final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
+            System.out.println(note);
+            System.out.println(selectedIdx);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditNotes.fxml"));
+            loader.setController(new EditNote(note, selectedIdx));
+
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.TRANSPARENT);
+            noteCellEditButton.setDisable(true);
+            stage.showAndWait();
+            noteCellEditButton.setDisable(false);
+
         });
 
     }
