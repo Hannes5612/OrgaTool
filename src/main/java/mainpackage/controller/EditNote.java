@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
@@ -47,28 +48,34 @@ public class EditNote implements Initializable {
 
         newNoteEditButton.setOnAction(e -> {
             System.out.println("'Save' button pressed");
+            if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
+                alert.setTitle("MISSING TITLE");
+                alert.setHeaderText("Your note has no title yet.");
+                alert.showAndWait();
+            } else {
+                if (selectedIdx != -1) {
 
-            if (selectedIdx != -1) {
+                    String title = newNoteTitle.getText().trim();
+                    String content = newNoteContent.getText().trim();
 
-                String title = newNoteTitle.getText().trim();
-                String content = newNoteContent.getText().trim();
+                    Note editedNote = new Note(title, content);
+                    DatabaseHandler databaseHandler = new DatabaseHandler();
 
-                Note editedNote = new Note(title, content);
-                DatabaseHandler databaseHandler = new DatabaseHandler();
-
-                try {
-                    databaseHandler.editNote(noteId, editedNote);
-                    ListManager.editNote(selectedIdx, note);
-                    System.out.println("Note edited");
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
-                } catch (SQLException throwables) {
-                    Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                    error.showAndWait();
+                    try {
+                        databaseHandler.editNote(noteId, editedNote);
+                        ListManager.editNote(selectedIdx, note);
+                        System.out.println("Note edited");
+                    } catch (ClassNotFoundException classNotFoundException) {
+                        classNotFoundException.printStackTrace();
+                    } catch (SQLException throwables) {
+                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                        error.showAndWait();
+                    }
                 }
-            }
 
-            newNoteEditButton.getScene().getWindow().hide();
+                newNoteEditButton.getScene().getWindow().hide();
+            }
 
         });
 

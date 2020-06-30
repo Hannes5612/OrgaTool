@@ -37,6 +37,10 @@ public class ListManager {
         countingTaskID++;
     }
 
+    public static void incrementCountingNoteId(){
+        countingNoteId++;
+    }
+
     public void update() throws SQLException, ClassNotFoundException {
         updateNotes();
         updateTasks();

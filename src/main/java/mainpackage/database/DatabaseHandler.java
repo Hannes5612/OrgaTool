@@ -152,10 +152,11 @@ public class DatabaseHandler extends Config {
     }
 
     public void archiveNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
-        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=" + noteId;
+        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setInt(1, 2);
+        preparedStatement.setInt(2, noteId);
 
         preparedStatement.executeUpdate();
     }

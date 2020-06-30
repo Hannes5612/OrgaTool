@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -47,20 +48,25 @@ public class NoteCell extends JFXListCell<Note> {
 
     @FXML
     void initialize() {
+
+        Tooltip.install(noteCellDeleteButton, new Tooltip("Delete note"));
+        Tooltip.install(noteCellEditButton, new Tooltip("Edit note"));
+        Tooltip.install(noteCellArchiveButton, new Tooltip("Archive note"));
+
         noteCellDeleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-            alert.setTitle("Confirmation");
+            alert.setTitle("DELETING NOTE");
             alert.setHeaderText("You are about to delete a note!");
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
                 if (selectedIdx != -1) {
                     Note itemToRemove = listViewProperty().get().getSelectionModel().getSelectedItem();
-                    //debugLogger.info(selectedIdx);
+                    System.out.println("Note at index " + selectedIdx + " selected.");
 
                     DatabaseHandler databaseHandler = new DatabaseHandler();
                     try {
@@ -72,7 +78,7 @@ public class NoteCell extends JFXListCell<Note> {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                    //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
+                    // debugLogger.info("Removed from Listview " + itemToRemove.getTitle());
                     listViewProperty().get().getItems().remove(selectedIdx);
                 }
 
@@ -84,8 +90,7 @@ public class NoteCell extends JFXListCell<Note> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
-            System.out.println(note);
-            System.out.println(selectedIdx);
+            System.out.println("Note at index " + selectedIdx + " selected.");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditNotes.fxml"));
             loader.setController(new EditNote(note, selectedIdx));
@@ -106,13 +111,45 @@ public class NoteCell extends JFXListCell<Note> {
 
         });
 
+        noteCellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+            final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
+            final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
+            int noteId = note.getId();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+            alert.setTitle("ARCHIVING NOTE");
+            alert.setHeaderText("You are about to archive a note!");
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.YES) {
+                if (selectedIdx != -1) {
+                    System.out.println("Note at index " + selectedIdx + " selected.");
+                    DatabaseHandler databaseHandler = new DatabaseHandler();
+                    try {
+                        databaseHandler.archiveNote(noteId, note);
+                        // ListManager.archiveNote(noteId);
+                    } catch (SQLException throwables) {
+                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                        error.showAndWait();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
+                    listViewProperty().get().getItems().remove(selectedIdx);
+                }
+
+            }
+        });
+
     }
 
     @Override
     protected void updateItem(Note note, boolean empty) {
 
         super.updateItem(note, empty);
-        this.setStyle("-fx-padding: 0px;");
+        this.setStyle("-fx-padding: 4px;");
+        this.setStyle("-fx-background-color: white");
         if (empty || note == null) {
             setText(null);
             setGraphic(null);

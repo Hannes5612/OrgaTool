@@ -14,7 +14,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Overview">
+<?import com.jfoenix.controls.JFXComboBox?>
+<AnchorPane fx:id="rootPane" style="-fx-background-color: white" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Overview">
    <children>
       <AnchorPane prefHeight="37.0" prefWidth="1080.0" style="-fx-background-color: #303F9F;">
          <children>
@@ -26,9 +27,9 @@
             <JFXButton layoutX="1018.0" layoutY="6.0" onAction="#logout" style="-fx-background-color: #ffffff;" text="Logout" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
          </children>
       </AnchorPane>
-      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+      <SplitPane style="-fx-background-color: white" dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
          <items>
-            <AnchorPane minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane style="-fx-background-color: white" minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="199.0" text="TO-DO" textFill="#3f51b5">
                      <font>
@@ -37,15 +38,15 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane style="-fx-background-color: white" minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <JFXListView fx:id="noteListView" layoutY="61.0" prefHeight="496.0" prefWidth="536.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0" />
-                  <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="208.0" text="NOTES" textFill="#3f51b5">
+                  <JFXListView fx:id="noteListView" layoutY="67.0" prefHeight="490.0" prefWidth="536.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0" />
+                  <Label layoutX="14.0" layoutY="15.0" prefHeight="1.0" prefWidth="208.0" text="NOTES" textFill="#3f51b5">
                      <font>
                         <Font name="Calibri Bold" size="32.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="sortNoteListDropdown" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="208.0" style="-fx-focus-color: grey; -fx-faint-focus-color: transparent" value="Sort by date (newest to oldest)" AnchorPane.rightAnchor="18.0">
+                  <JFXComboBox fx:id="sortNoteListDropdown" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="208.0" style="-fx-focus-color: grey; -fx-faint-focus-color: transparent" value="Sort by date (newest to oldest)" AnchorPane.rightAnchor="18.0">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="Sort by date (newest to oldest)" />
@@ -54,7 +55,7 @@
                            <String fx:value="Sort alphabetically (Z-A)" />
                         </FXCollections>
                      </items>
-                  </ChoiceBox>
+                  </JFXComboBox>
                </children>
             </AnchorPane>
          </items>
