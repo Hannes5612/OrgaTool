@@ -1,7 +1,10 @@
 package mainpackage.controller;
 
 import animatefx.animation.FadeIn;
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,23 +19,23 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mainpackage.ListManager;
+import mainpackage.exceptions.UnsupportedCellType;
+import mainpackage.model.Entry;
+import mainpackage.model.Note;
+import mainpackage.model.Task;
+import mainpackage.threads.ClockThread;
+import mainpackage.threads.SaveThread;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import mainpackage.ListManager;
-import mainpackage.exceptions.UnsupportedCellType;
-import mainpackage.model.Note;
-import mainpackage.model.Task;
-import mainpackage.threads.ClockThread;
-import mainpackage.threads.SaveThread;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -108,7 +111,7 @@ public class Overview {
 
         sortNoteListDropdown.setOnAction(event -> sort(sortNoteListDropdown.getValue()));
 
-        sortNoteListDropdown.setValue("Sort by date (oldest to newest)");
+        sortNoteListDropdown.setValue("Sort by date (newest to oldest)");
 
         //Initializing clock
         clock.setLabels(timeLabel, dateLabel);
@@ -116,6 +119,7 @@ public class Overview {
         clock.start();
 
         setNotes();
+        sort(sortNoteListDropdown.getValue());
     }
 
     private void sort(String choice) {
@@ -127,10 +131,10 @@ public class Overview {
                 sortDateAsc(usersNotes);
                 break;
             case "Sort alphabetically (A-Z)":
-                //sort
+                sortTitleAsc(usersNotes);
                 break;
             case "Sort alphabetically (Z-A)":
-                //sort
+                sortTitleDesc(usersNotes);
                 break;
             default:
                 break;
@@ -149,6 +153,15 @@ public class Overview {
 
     }
 
+    private void sortTitleAsc(ObservableList<Note> usersNotes) {
+        usersNotes.sort(Comparator.comparing(Entry::getTitle));
+        //debugLogger.info("List " + list.toString() + "  sorted by title in ascending order.");
+    }
+
+    private void sortTitleDesc(ObservableList<Note> usersNotes) {
+        usersNotes.sort((n1, n2) -> n2.getTitle().compareTo(n1.getTitle()));
+        //debugLogger.info("List " + list.toString() + "  sorted by title in descending order.");
+    }
 
     private void export() {
         FileChooser fileChooser = new FileChooser();
@@ -203,7 +216,7 @@ public class Overview {
         overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
         usersNotes.add(listManager.getLatestNote());
-        //Insert sorting listener and sort the usersNotes
+        sort(sortNoteListDropdown.getValue());
         overviewAddNoteImage.setDisable(false);
 
     }
