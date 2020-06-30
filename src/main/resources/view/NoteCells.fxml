@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefWidth="420.0" style="-fx-background-color: #BBDEFB; -fx-border-color: #1976D2;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootPane" prefWidth="420.0" style="-fx-background-color: #e8eaf6; -fx-border-color: #9fa8da;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="cellNoteTitle" layoutX="17.0" layoutY="12.0" prefHeight="40.0" prefWidth="295.0" text="Note" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="109.0">
             <font>
