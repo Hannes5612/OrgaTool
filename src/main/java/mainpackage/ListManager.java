@@ -1,5 +1,6 @@
 package mainpackage;
 
+import javafx.collections.FXCollections;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
@@ -8,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,8 +19,8 @@ public class ListManager {
     private static User user = new User();
     private static int countingTaskID;
     private static int countingNoteId;
-    private static final List<Task> taskList = new ArrayList<>();
-    private static final List<Note> noteList = new ArrayList<>();
+    private static final List<Task> taskList = FXCollections.observableArrayList();
+    private static final List<Note> noteList = FXCollections.observableArrayList();
 
     public ListManager() {
     }
@@ -97,7 +97,17 @@ public class ListManager {
         noteList.removeIf(note -> note.getId() == noteId);
     }
 
-    public static void editNote(int noteIndex, Note note) { noteList.set(noteIndex, note); }
+    public static void editNote(Note note) {
+        int remove=0;
+        for (Note note1 : noteList) {
+            if(note.getId()==note1.getId()){
+                noteList.remove(note1);
+                noteList.set(remove, note);
+            }
+            remove++;
+        }
+
+    }
 
     public static void addTask(Task task) {
         taskList.add(task);
@@ -115,6 +125,7 @@ public class ListManager {
         return taskList.stream();
     }
 
+
     public static void wipe(){
         taskList.clear();
         noteList.clear();
@@ -122,5 +133,6 @@ public class ListManager {
         countingNoteId = -1;
         countingTaskID = -1;
     }
+
 
 }

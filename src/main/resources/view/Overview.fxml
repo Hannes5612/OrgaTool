@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
@@ -14,8 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
-<AnchorPane fx:id="rootPane" style="-fx-background-color: white" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Overview">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Overview">
    <children>
       <AnchorPane prefHeight="37.0" prefWidth="1080.0" style="-fx-background-color: #303F9F;">
          <children>
@@ -27,9 +26,9 @@
             <JFXButton layoutX="1018.0" layoutY="6.0" onAction="#logout" style="-fx-background-color: #ffffff;" text="Logout" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
          </children>
       </AnchorPane>
-      <SplitPane style="-fx-background-color: white" dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" style="-fx-background-color: white" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
          <items>
-            <AnchorPane style="-fx-background-color: white" minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: white">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="199.0" text="TO-DO" textFill="#3f51b5">
                      <font>
@@ -38,7 +37,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane style="-fx-background-color: white" minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane minHeight="0.0" minWidth="440.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: white">
                <children>
                   <JFXListView fx:id="noteListView" layoutY="67.0" prefHeight="490.0" prefWidth="536.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0" />
                   <Label layoutX="14.0" layoutY="15.0" prefHeight="1.0" prefWidth="208.0" text="NOTES" textFill="#3f51b5">
@@ -56,6 +55,7 @@
                         </FXCollections>
                      </items>
                   </JFXComboBox>
+                  <JFXTextField fx:id="noteListSearchField" layoutX="155.0" layoutY="21.0" promptText="Search" />
                </children>
             </AnchorPane>
          </items>
@@ -93,7 +93,6 @@
       <JFXButton layoutX="615.0" layoutY="686.0" onAction="#reload" text="Reload" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="412.0" />
       <Label layoutX="868.0" layoutY="691.0" text="New Note" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="158.0" />
       <Label layoutX="990.0" layoutY="692.0" text="New Task" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="39.0" />
-      <JFXSpinner fx:id="overviewSpinner" layoutX="474.0" layoutY="276.0" prefHeight="114.0" prefWidth="129.0" />
       <ImageView fx:id="overviewExport" fitHeight="77.0" fitWidth="74.0" layoutX="590.0" layoutY="615.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/csv1600.png" />

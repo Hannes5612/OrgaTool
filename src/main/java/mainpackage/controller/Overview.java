@@ -4,6 +4,7 @@ import animatefx.animation.FadeIn;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,21 +19,22 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import mainpackage.ListManager;
 import mainpackage.exceptions.UnsupportedCellType;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
 import mainpackage.threads.SaveThread;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
-
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -57,25 +59,25 @@ public class Overview {
     @FXML
     private ImageView overviewCalendarImage;
     @FXML
-    private JFXSpinner overviewSpinner;
-    @FXML
     private JFXListView<Note> noteListView;
     @FXML
     private ImageView overviewExport;
+    @FXML
+    private JFXTextField noteListSearchField;
 
 
-    private final ListManager listManager = new ListManager();
+    private static final ListManager listManager = new ListManager();
     private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
     private final ObservableList<Note> usersNotes = FXCollections.observableArrayList();
+    private final ObservableList<Note> usersNotesSearch = FXCollections.observableArrayList();
     private final ClockThread clock = new ClockThread();
     private static final Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {
 
-        listManager.getNoteList().forEach(usersNotes::add);
+        //listManager.getNoteList().forEach(usersNotes::add);
         listManager.getTaskList().forEach(usersTasks::add);
-        overviewSpinner.setVisible(false);
         //setLists();
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
@@ -83,16 +85,37 @@ public class Overview {
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
         overviewExport.setOnMouseClicked(mouseEvent -> export());
 
+        noteListSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
+
+
+            if (!newValue.trim().isEmpty() && usersNotes.size() > 0) {
+                usersNotesSearch.setAll(search(noteListSearchField.getText(), usersNotes));
+                noteListView.setItems(usersNotesSearch);
+
+
+            } else {
+
+                noteListView.setItems(usersNotes);
+
+
+            }
+
+            //debugLogger.debug("Search");
+            //debugLogger.info("TaskListView Size: " + todolistTaskList.getItems().size());
+            //debugLogger.info("TaskList Size: " + taskListView.size());
+            //debugLogger.info("tasks Arraylist Size: " + tasks.getTasks().size());
+
+
+        });
+
+
         //Initializing clock
         clock.setLabels(timeLabel, dateLabel);
         clock.setDaemon(true);
         clock.start();
 
         setNotes();
-        // Placeholder if user has no notes
-        Label noNotes = new Label("No notes yet!");
-        noNotes.setFont(new Font(20));
-        noteListView.setPlaceholder(noNotes);
     }
 
     private void export() {
@@ -109,6 +132,12 @@ public class Overview {
     }
 
     public void setNotes() {
+
+        // Placeholder if user has no notes
+        Label noNotes = new Label("No notes yet!");
+        noNotes.setFont(new Font(20));
+        noteListView.setPlaceholder(noNotes);
+
         CellFactory cellFactory = new CellFactory();
         usersNotes.clear();
         listManager.getNoteList().forEach(usersNotes::add);
@@ -188,7 +217,6 @@ public class Overview {
     //Deprecated
     void setLists() {
 
-        overviewSpinner.setVisible(true);
         usersTasks.clear();
         usersNotes.clear();
 
@@ -207,10 +235,27 @@ public class Overview {
             listManager.getNoteList().forEach(usersNotes::add);
             listManager.getTaskList().forEach(usersTasks::add);
 
-            overviewSpinner.setVisible(false);
         });
     }
 
+    private ArrayList<Note> search(String filter, ObservableList<Note> list) {
+        //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
+        ArrayList<Note> searchResult = new ArrayList<>();
+            if (!filter.isEmpty() && !filter.trim().equals("")) {
+                //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
+                for (Note t : list) {
+                    if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
+                        searchResult.add(t);
+                    }
+                }
+                return searchResult;
+            } else if (searchResult.isEmpty()) {
+                // debugLogger.info("No task found containing the filter: '" + filter + "'.");
+            } else {
+                searchResult.addAll(list);
+            }
+            return searchResult;
+    }
 
     @FXML
     void reload(ActionEvent event) {

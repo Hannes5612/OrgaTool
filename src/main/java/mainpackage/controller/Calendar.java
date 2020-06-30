@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.model.Task;
 
-public class Calendar {
+public class Calendar{
 
     @FXML
     private ResourceBundle resources;
@@ -48,7 +48,6 @@ public class Calendar {
     private JFXSpinner calendarSpinner;
 
 
-    private ArrayList<Task> usersTasks = new ArrayList<>();
     private boolean isListOpen = false;
     private ListManager listManager = new ListManager();
 
@@ -254,7 +253,7 @@ public class Calendar {
 
             try {
                 loader.load();
-            } catch (IOException e) {                                                         //Load overview screen
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -314,7 +313,7 @@ public class Calendar {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        Overview controller = loader.getController();
+
         rootPane.getChildren().setAll(overview);
     }
 }

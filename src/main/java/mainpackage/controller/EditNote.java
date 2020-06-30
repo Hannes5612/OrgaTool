@@ -32,6 +32,7 @@ public class EditNote implements Initializable {
 
     private User user;
     private Note note;
+    private static Note editedNote;
     private int selectedIdx;
 
     public EditNote(Note note, int selectedIdx) {
@@ -59,12 +60,12 @@ public class EditNote implements Initializable {
                     String title = newNoteTitle.getText().trim();
                     String content = newNoteContent.getText().trim();
 
-                    Note editedNote = new Note(title, content);
+                    editedNote = new Note(title, content);
                     DatabaseHandler databaseHandler = new DatabaseHandler();
 
                     try {
                         databaseHandler.editNote(noteId, editedNote);
-                        ListManager.editNote(selectedIdx, note);
+                        ListManager.editNote(editedNote);
                         System.out.println("Note edited");
                     } catch (ClassNotFoundException classNotFoundException) {
                         classNotFoundException.printStackTrace();
@@ -88,6 +89,10 @@ public class EditNote implements Initializable {
 
     void setUser(User user) {
         this.user = user;
+    }
+
+    public static Note getEditedNote(){
+        return editedNote;
     }
 
 }

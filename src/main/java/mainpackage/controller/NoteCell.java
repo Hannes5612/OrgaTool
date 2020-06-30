@@ -1,6 +1,8 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXListCell;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -107,6 +109,7 @@ public class NoteCell extends JFXListCell<Note> {
             stage.initStyle(StageStyle.TRANSPARENT);
             noteCellEditButton.setDisable(true);
             stage.showAndWait();
+            listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
             noteCellEditButton.setDisable(false);
 
         });

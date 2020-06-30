@@ -21,15 +21,12 @@ public class TaskViewCalendar{
     @FXML
     private JFXListView<Task> taskViewCalendarList;
 
-    private ObservableList<Task> clickedTasks = FXCollections.observableArrayList();
-
     @FXML
     void initialize() {
         taskViewCalendarList.setPlaceholder(new Label("Deleted all tasks, please close!"));
     }
 
     public void setTasks(ObservableList<Task> clickedTasks) {
-        this.clickedTasks = clickedTasks;
         taskViewCalendarList.setCellFactory(Cell -> new TaskCell());
         taskViewCalendarList.setItems(clickedTasks);
 
