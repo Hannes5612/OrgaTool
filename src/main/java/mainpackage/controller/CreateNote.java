@@ -30,6 +30,7 @@ public class CreateNote {
     private JFXButton newNoteCreateButton;
 
     private User user;
+    private static Note createdNote;
 
     @FXML
     void initialize() {
@@ -72,5 +73,9 @@ public class CreateNote {
 
     void setUser(User user) {
         this.user = user;
+    }
+
+    public static mainpackage.model.Note getCreatedNote() {
+        return createdNote;
     }
 }

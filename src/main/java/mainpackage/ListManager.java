@@ -125,6 +125,10 @@ public class ListManager {
         return taskList.stream();
     }
 
+    public Note getLatestNote(){
+        return noteList.get(noteList.size() - 1);
+    }
+
 
     public static void wipe(){
         taskList.clear();

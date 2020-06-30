@@ -48,8 +48,8 @@
                   <JFXComboBox fx:id="sortNoteListDropdown" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="208.0" style="-fx-focus-color: grey; -fx-faint-focus-color: transparent" value="Sort by date (newest to oldest)" AnchorPane.rightAnchor="18.0">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Sort by date (oldest to newest)"/>
                            <String fx:value="Sort by date (newest to oldest)" />
-                           <String fx:value="Sort by date (oldest to newest)" />
                            <String fx:value="Sort alphabetically (A-Z)" />
                            <String fx:value="Sort alphabetically (Z-A)" />
                         </FXCollections>

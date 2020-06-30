@@ -5,8 +5,6 @@ import com.jfoenix.controls.*;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -197,8 +195,25 @@ public class Login {
                     if (counter == 1 && loginUser.getUserName().equals(resUName) && loginUser.getPassword().equals(resPwd)) {
                         System.out.println("Login successful!");
                         ListManager.setUser(loginUser);
-                        new ListManager().update();
-                        overview();
+
+                        Task<Void> update = new Task<>() {
+                            @Override
+                            public Void call() {
+
+
+                                try {
+                                    new ListManager().update();
+                                } catch (SQLException | ClassNotFoundException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                                return null;
+                            }
+                        };
+
+                        update.setOnSucceeded(succ -> overview());
+
+                        new Thread(update).start();
+
 
                         //if no row exists stop spinner, shake again and display error message
                     } else {
@@ -212,7 +227,7 @@ public class Login {
                     }
 
                     //catch a SQLException in any case
-                } catch (SQLException | ClassNotFoundException sqlException) {
+                } catch (SQLException sqlException) {
                     noSpin();
 
                     Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);

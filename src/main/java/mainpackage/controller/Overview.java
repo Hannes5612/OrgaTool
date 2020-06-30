@@ -1,10 +1,7 @@
 package mainpackage.controller;
 
 import animatefx.animation.FadeIn;
-import com.jfoenix.controls.JFXListCell;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXSpinner;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -64,7 +62,8 @@ public class Overview {
     private ImageView overviewExport;
     @FXML
     private JFXTextField noteListSearchField;
-
+    @FXML
+    private JFXComboBox<String> sortNoteListDropdown;
 
     private static final ListManager listManager = new ListManager();
     private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
@@ -105,10 +104,11 @@ public class Overview {
             //debugLogger.info("TaskListView Size: " + todolistTaskList.getItems().size());
             //debugLogger.info("TaskList Size: " + taskListView.size());
             //debugLogger.info("tasks Arraylist Size: " + tasks.getTasks().size());
-
-
         });
 
+        sortNoteListDropdown.setOnAction(event -> sort(sortNoteListDropdown.getValue()));
+
+        sortNoteListDropdown.setValue("Sort by date (oldest to newest)");
 
         //Initializing clock
         clock.setLabels(timeLabel, dateLabel);
@@ -117,6 +117,38 @@ public class Overview {
 
         setNotes();
     }
+
+    private void sort(String choice) {
+        switch (choice) {
+            case "Sort by date (newest to oldest)":
+                sortDateDesc(usersNotes);
+                break;
+            case "Sort by date (oldest to newest)":
+                sortDateAsc(usersNotes);
+                break;
+            case "Sort alphabetically (A-Z)":
+                //sort
+                break;
+            case "Sort alphabetically (Z-A)":
+                //sort
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void sortDateDesc(ObservableList<Note> usersNotes) {
+            usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
+            //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
+
+    }
+
+    private void sortDateAsc(ObservableList<Note> usersNotes) {
+        usersNotes.sort(Comparator.comparing(Note::getCreationDate));
+        //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
+
+    }
+
 
     private void export() {
         FileChooser fileChooser = new FileChooser();
@@ -170,6 +202,8 @@ public class Overview {
         stage.initStyle(StageStyle.TRANSPARENT);
         overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
+        usersNotes.add(listManager.getLatestNote());
+        //Insert sorting listener and sort the usersNotes
         overviewAddNoteImage.setDisable(false);
 
     }

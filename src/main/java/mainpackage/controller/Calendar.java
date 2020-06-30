@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXComboBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
@@ -44,8 +43,6 @@ public class Calendar{
     private JFXButton calendarBackButton;
     @FXML
     private HBox hPane;
-    @FXML
-    private JFXSpinner calendarSpinner;
 
 
     private boolean isListOpen = false;
