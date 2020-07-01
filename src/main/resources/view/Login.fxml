@@ -21,7 +21,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="873.0" layoutY="675.0" text="No account yet?">
+      <Label layoutX="873.0" layoutY="681.0" text="No account yet?">
          <font>
             <Font name="Calibri" size="17.0" />
          </font>
@@ -42,14 +42,14 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="loginSignupButton" layoutX="1001.0" layoutY="672.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
+      <JFXButton fx:id="loginSignupButton" layoutX="1001.0" layoutY="678.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXButton>
-      <Label layoutX="271.0" layoutY="87.0" text="Get your life under control!" textFill="#212121">
+      <Label layoutX="306.0" layoutY="121.0" text="Get your life in order!" textFill="#41408a">
          <font>
-            <Font size="45.0" />
+            <Font name="Yu Gothic Bold" size="45.0" />
          </font>
       </Label>
       <Ellipse fx:id="loginBlueX" fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />

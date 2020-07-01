@@ -2,16 +2,13 @@ package mainpackage;
 
 import animatefx.animation.FadeIn;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main extends Application {
 
@@ -30,6 +27,7 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         assert root != null;
         primaryStage.setScene(new Scene(root));
+        primaryStage.getIcons().add(new Image("icon/Logo organizingTool small.png"));
         primaryStage.setResizable(true);
         primaryStage.show();
 
