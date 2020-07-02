@@ -1,6 +1,5 @@
 package mainpackage.controller;
 
-import animatefx.animation.FadeIn;
 import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
+import mainpackage.animation.FadeIn;
 import mainpackage.exceptions.UnsupportedCellType;
 import mainpackage.model.Entry;
 import mainpackage.model.Note;
@@ -261,6 +261,7 @@ public class Overview {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
+        loader.setController(new CreateTask());
 
         try {
             loader.load();

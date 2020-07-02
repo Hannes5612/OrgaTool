@@ -59,7 +59,7 @@ public abstract class Entry implements IEntry {
             case ACTIVE:   return 0;
             case FINISHED: return 1;
             case ARCHIVED: return 2;
-            default: throw new RuntimeException("Illegal type State!");
+            default: throw new RuntimeException("Illegal type State!"); //TODO new Exception?
         }
     }
 

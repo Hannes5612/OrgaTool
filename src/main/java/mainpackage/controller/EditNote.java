@@ -31,7 +31,6 @@ public class EditNote implements Initializable {
 
     private User user;
     private Note note;
-    private static Note editedNote;
     private int selectedIdx;
 
     public EditNote(Note note, int selectedIdx) {
@@ -91,5 +90,6 @@ public class EditNote implements Initializable {
         return editedNote;
     }
 
+    private static Note editedNote;
 }
 

@@ -172,7 +172,6 @@ public class NoteCell extends JFXListCell<Note> {
                     }
                 }
             }
-
         });
 
     }

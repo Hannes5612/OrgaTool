@@ -5,13 +5,25 @@ import com.jfoenix.controls.JFXComboBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,8 +31,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
@@ -46,7 +60,6 @@ public class Calendar{
 
 
     private boolean isListOpen = false;
-    private ListManager listManager = new ListManager();
 
     // YearCombo
     private final int currentYear = Year.now().getValue();
@@ -101,15 +114,62 @@ public class Calendar{
                     }
 
                 });
+
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem edit = new MenuItem("New Task for this day");
+                edit.setOnAction(click-> loadAddTask(vPane.getChildren().get(0)));
+
+                // Add MenuItem to ContextMenu
+                contextMenu.getItems().addAll(edit);
+
+                vPane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                    @Override
+                    public void handle(ContextMenuEvent event) {
+                        contextMenu.show(vPane,event.getScreenX() ,event.getScreenY());
+                    }
+                });
+
+
                 // Add it to the grid
                 calendarGrid.add(vPane, j, i);
             }
         }
     }
 
+    private void loadAddTask(Node node) {
+        Label label = (Label)node;
+        int day = Integer.parseInt(label.getText());
+        NumberFormat formatter1 = new DecimalFormat("00");
+        String inputString = formatter1.format(day) +"-" + formatter1.format(monthCombo.getSelectionModel().getSelectedIndex()+1)
+                            +"-"+formatter1.format(2030-yearCombo.getSelectionModel().getSelectedIndex());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate inputDate = LocalDate.parse(inputString,formatter);
+
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
+        loader.setController(new CreateTask(inputDate));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.showAndWait();
+        loadSelectedMonth();
+        fillCalendarWithTasks();
+    }
+
 
     //Fills the calendar with Tasks
     public void fillCalendarWithTasks() {
+
+        ListManager listManager = new ListManager();
             listManager.getTaskList().forEach(task->{
                 String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
                 String month = task.getDueMonth();
@@ -233,6 +293,9 @@ public class Calendar{
         int dayClicked = Integer.parseInt(label.getText());
         String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
         String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+
+
+        ListManager listManager = new ListManager();
 
         listManager.getTaskList().forEach(task -> {
             String year = String.valueOf(task.getDueDate().toLocalDate().getYear());

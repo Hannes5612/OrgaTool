@@ -39,15 +39,25 @@ public class CreateTask {
     private JFXButton newTaskCreateButton;
 
     private final Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+    private LocalDate date;
+    private boolean dateSet;
+
+    public CreateTask() {
+    }
+    public CreateTask(LocalDate date) {
+        this.date = date;
+        dateSet = true;
+    }
 
     @FXML
     void initialize() {
 
+       newTaskDueDate.setValue(date);
 
         ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
         newTaskPriority.setItems(priorities);
         newTaskPriority.setValue("Medium");
-        newTaskDueDate.setValue(LocalDate.now().plusDays(1));
+        if(!dateSet)newTaskDueDate.setValue(LocalDate.now().plusDays(1));
 
         newTaskCreateButton.setOnAction(e ->{
             String title = newTaskTitle.getText().trim();
@@ -82,7 +92,7 @@ public class CreateTask {
     }
 
     private String checkError(String title, String content) {
-        if (title.length()>45) return "Title can't be longer than 45 chars." ;
+        if (title.length()>28) return "Title can't be longer than 45 chars." ;
         if (content.length()>1024) return "Contenc can't be longer than 1024 chars.";
         return "Connection failed.\nPlease check your connection or try again.";
     }

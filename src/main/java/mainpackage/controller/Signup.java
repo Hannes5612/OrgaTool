@@ -1,6 +1,5 @@
 package mainpackage.controller;
 
-import animatefx.animation.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
@@ -24,6 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Ellipse;
+import mainpackage.animation.FadeIn;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.User;
