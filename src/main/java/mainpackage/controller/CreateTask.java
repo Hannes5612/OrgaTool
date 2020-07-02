@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import mainpackage.animation.FadeIn;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.ListManager;
 import mainpackage.model.Task;
@@ -41,6 +42,8 @@ public class CreateTask {
 
     @FXML
     void initialize() {
+
+
         ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
         newTaskPriority.setItems(priorities);
         newTaskPriority.setValue("Medium");

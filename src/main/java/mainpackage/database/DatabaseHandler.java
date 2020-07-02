@@ -90,13 +90,12 @@ public class DatabaseHandler extends Config {
     }
 
     public ResultSet getTasks(User user) throws SQLException, ClassNotFoundException {
-        ResultSet tasksResulSet = null;
 
         String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + TASK_USER + "=?";
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
         preparedStatement.setInt(1, user.getUserid());
 
-        tasksResulSet = preparedStatement.executeQuery();
+        ResultSet tasksResulSet = preparedStatement.executeQuery();
 
         return tasksResulSet;
     }
@@ -162,13 +161,12 @@ public class DatabaseHandler extends Config {
     }
 
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
-        ResultSet notesResultSet = null;
 
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
         preparedStatement.setInt(1, ListManager.getUserId());
 
-        notesResultSet = preparedStatement.executeQuery();
+        ResultSet notesResultSet = preparedStatement.executeQuery();
 
         return notesResultSet;
     }

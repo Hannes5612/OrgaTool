@@ -1,6 +1,6 @@
 package mainpackage.controller;
 
-import animatefx.animation.FadeIn;
+//import animatefx.animation.FadeIn;
 import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,15 +16,14 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mainpackage.animation.FadeIn;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import mainpackage.ListManager;
@@ -243,34 +242,11 @@ public class Overview {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new FadeIn(rootPane).play();
         rootPane.getChildren().clear();
         rootPane.getChildren().setAll(calendar);
-        new FadeIn(calendar).play();
     }
 
-    //Deprecated
-    void setLists() {
-
-        usersTasks.clear();
-        usersNotes.clear();
-
-        javafx.concurrent.Task<Void> thread = new javafx.concurrent.Task<>() {
-            @Override
-            public Void call() throws SQLException, ClassNotFoundException {
-                listManager.update();
-                return null;
-            }
-        };
-
-        new Thread(thread).start();
-
-        thread.setOnSucceeded(e -> {
-
-            listManager.getNoteList().forEach(usersNotes::add);
-            listManager.getTaskList().forEach(usersTasks::add);
-
-        });
-    }
 
     private ArrayList<Note> search(String filter, ObservableList<Note> list) {
         //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
