@@ -7,7 +7,6 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -26,40 +25,37 @@
             <JFXButton layoutX="1018.0" layoutY="6.0" onAction="#logout" style="-fx-background-color: #ffffff;" text="Logout" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
          </children>
       </AnchorPane>
-      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="559.0" prefWidth="1080.0" style="-fx-background-color: white" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
-         <items>
-            <AnchorPane maxWidth="540.0" minHeight="0.0" minWidth="540.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: white">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="199.0" text="TO-DO" textFill="#3f51b5">
-                     <font>
-                        <Font name="Calibri Bold" size="32.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane maxWidth="540.0" minHeight="0.0" minWidth="540.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: white">
-               <children>
-                  <JFXListView fx:id="noteListView" layoutY="67.0" prefHeight="490.0" prefWidth="536.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0" />
-                  <Label layoutX="14.0" layoutY="15.0" prefHeight="1.0" prefWidth="208.0" text="NOTES" textFill="#3f51b5">
-                     <font>
-                        <Font name="Calibri Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <JFXComboBox fx:id="sortNoteListDropdown" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="208.0" style="-fx-focus-color: grey; -fx-faint-focus-color: transparent" value="Sort by date (newest to oldest)" AnchorPane.rightAnchor="18.0">
-                     <items>
-                        <FXCollections fx:factory="observableArrayList">
-                           <String fx:value="Sort by date (oldest to newest)"/>
-                           <String fx:value="Sort by date (newest to oldest)" />
-                           <String fx:value="Sort alphabetically (A-Z)" />
-                           <String fx:value="Sort alphabetically (Z-A)" />
-                        </FXCollections>
-                     </items>
-                  </JFXComboBox>
-                  <JFXTextField fx:id="noteListSearchField" layoutX="155.0" layoutY="21.0" promptText="Search" />
-               </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
+      <AnchorPane layoutY="37.0" maxWidth="540.0" minHeight="0.0" minWidth="540.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: white">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="100.0" text="TO-DO" textFill="#3f51b5">
+               <font>
+                  <Font name="Calibri Bold" size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="540.0" layoutY="37.0" maxWidth="540.0" minHeight="0.0" minWidth="540.0" prefHeight="160.0" prefWidth="540.0" style="-fx-background-color: white">
+         <children>
+            <JFXListView fx:id="noteListView" layoutY="67.0" prefHeight="492.0" prefWidth="540.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="-399.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0" />
+            <Label layoutX="14.0" layoutY="15.0" prefHeight="37.0" prefWidth="100.0" text="NOTES" textFill="#3f51b5">
+               <font>
+                  <Font name="Calibri Bold" size="32.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="sortNoteListDropdown" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="208.0" style="-fx-focus-color: grey; -fx-faint-focus-color: transparent" value="Sort by date (newest to oldest)" AnchorPane.rightAnchor="18.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Sort by date (newest to oldest)" />
+                     <String fx:value="Sort by date (oldest to newest)" />
+                     <String fx:value="Sort alphabetically (A-Z)" />
+                     <String fx:value="Sort alphabetically (Z-A)" />
+                  </FXCollections>
+               </items>
+            </JFXComboBox>
+            <JFXTextField fx:id="noteListSearchField" layoutX="155.0" layoutY="21.0" promptText="Search" />
+            <Line endX="429.5" endY="-10.5" layoutX="-430.0" layoutY="570.0" startX="430.0" startY="-569.0" />
+         </children>
+      </AnchorPane>
       <ImageView fx:id="overviewAddItemImage" fitHeight="77.0" fitWidth="74.0" layoutX="978.0" layoutY="612.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="28.0">
          <image>
             <Image url="@../icon/Icon newTask.png" />

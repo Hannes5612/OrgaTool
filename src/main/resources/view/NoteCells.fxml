@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,6 +18,9 @@
             <font>
                 <Font name="System Italic" size="12.0" />
             </font>
+         <padding>
+            <Insets top="3.0" />
+         </padding>
         </Label>
         <Label fx:id="cellNoteDate" layoutX="17.0" layoutY="2.0" prefHeight="25.0" prefWidth="66.0" text="12.02.2018" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="2.0" />
         <ImageView fx:id="noteCellDeleteButton" fitHeight="25.0" fitWidth="27.0" layoutX="388.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="11.268293380737305" AnchorPane.topAnchor="9.0">
