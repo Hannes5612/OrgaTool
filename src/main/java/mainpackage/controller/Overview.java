@@ -1,5 +1,6 @@
 package mainpackage.controller;
 
+import animatefx.animation.FadeIn;
 import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mainpackage.animation.FadeIn;
 import mainpackage.ListManager;
 import mainpackage.exceptions.UnsupportedCellType;
 import mainpackage.model.Entry;
@@ -25,19 +25,13 @@ import mainpackage.threads.ClockThread;
 import mainpackage.threads.SaveThread;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-
-import mainpackage.ListManager;
-import mainpackage.exceptions.UnsupportedCellType;
-import mainpackage.model.Note;
-import mainpackage.model.Task;
-import mainpackage.threads.ClockThread;
-import mainpackage.threads.SaveThread;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -69,6 +63,8 @@ public class Overview {
     private JFXTextField noteListSearchField;
     @FXML
     private JFXComboBox<String> sortNoteListDropdown;
+    @FXML
+    private JFXToggleButton toggleArchiveButton;
 
     private static final ListManager listManager = new ListManager();
     private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
@@ -88,6 +84,15 @@ public class Overview {
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
         overviewExport.setOnMouseClicked(mouseEvent -> export());
+        // toggleArchiveButton.setOnAction(mouseEvent -> toggleArchive(usersNotes));
+        toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
+            if(toggleArchiveButton.isSelected()) {
+                toggleArchive(usersNotes);
+            }
+            else {
+                toggleActive(usersNotes);
+            }
+        });
 
         noteListSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
@@ -143,6 +148,26 @@ public class Overview {
         }
     }
 
+    private void toggleArchive(ObservableList<Note> usersNotes) {
+        usersNotes.clear();
+        listManager.getNoteList().forEach((n) -> {
+            if (n.getState() == 2) {
+                usersNotes.add(n);
+            }
+        });
+        sort(sortNoteListDropdown.getValue());
+    }
+
+    private void toggleActive(ObservableList<Note> usersNotes) {
+        usersNotes.clear();
+        listManager.getNoteList().forEach((n) -> {
+            if (n.getState() == 0) {
+                usersNotes.add(n);
+            }
+        });
+        sort(sortNoteListDropdown.getValue());
+    }
+
     private void sortDateDesc(ObservableList<Note> usersNotes) {
             usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
             //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
@@ -187,7 +212,12 @@ public class Overview {
 
         CellFactory cellFactory = new CellFactory();
         usersNotes.clear();
-        listManager.getNoteList().forEach(usersNotes::add);
+        // listManager.getNoteList().forEach(usersNotes::add);
+        listManager.getNoteList().forEach((n) -> {
+            if (n.getState() == 0) {
+                usersNotes.add(n);
+            }
+        });
         noteListView.setCellFactory(NoteCell -> {
             try {
                 return cellFactory.createCell("note");

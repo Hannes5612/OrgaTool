@@ -1,8 +1,6 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXListCell;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -120,29 +118,52 @@ public class NoteCell extends JFXListCell<Note> {
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
             int noteId = note.getId();
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-            alert.setTitle("ARCHIVING NOTE");
-            alert.setHeaderText("You are about to archive a note!");
-            alert.showAndWait();
+            if (note.getState() == 0) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                alert.setTitle("ARCHIVING NOTE");
+                alert.setHeaderText("You are about to archive a note!");
+                alert.showAndWait();
 
-            if (alert.getResult() == ButtonType.YES) {
-                if (selectedIdx != -1) {
-                    System.out.println("Note at index " + selectedIdx + " selected.");
-                    DatabaseHandler databaseHandler = new DatabaseHandler();
-                    try {
-                        databaseHandler.archiveNote(noteId, note);
-                        // ListManager.archiveNote(noteId);
-                    } catch (SQLException throwables) {
-                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                        error.showAndWait();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                if (alert.getResult() == ButtonType.YES) {
+                    if (selectedIdx != -1) {
+                        System.out.println("Note at index " + selectedIdx + " selected.");
+                        DatabaseHandler databaseHandler = new DatabaseHandler();
+                        try {
+                            databaseHandler.archiveNote(noteId, note);
+                        } catch (SQLException throwables) {
+                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                            error.showAndWait();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
+                        listViewProperty().get().getItems().remove(selectedIdx);
                     }
-                    //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
-                    listViewProperty().get().getItems().remove(selectedIdx);
                 }
+            } else if (note.getState() == 2) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                alert.setTitle("REACTIVATING NOTE");
+                alert.setHeaderText("You are about to reactivate a note!");
+                alert.showAndWait();
 
+                if (alert.getResult() == ButtonType.YES) {
+                    if (selectedIdx != -1) {
+                        System.out.println("Note at index " + selectedIdx + " selected.");
+                        DatabaseHandler databaseHandler = new DatabaseHandler();
+                        try {
+                            databaseHandler.reactivateNote(noteId, note);
+                        } catch (SQLException throwables) {
+                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                            error.showAndWait();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
+                        listViewProperty().get().getItems().remove(selectedIdx);
+                    }
+                }
             }
+
         });
 
     }

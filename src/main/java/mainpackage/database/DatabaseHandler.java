@@ -160,6 +160,16 @@ public class DatabaseHandler extends Config {
         preparedStatement.executeUpdate();
     }
 
+    public void reactivateNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setInt(1, 0);
+        preparedStatement.setInt(2, noteId);
+
+        preparedStatement.executeUpdate();
+    }
+
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
 
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
