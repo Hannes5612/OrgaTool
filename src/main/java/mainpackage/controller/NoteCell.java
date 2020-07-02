@@ -130,6 +130,7 @@ public class NoteCell extends JFXListCell<Note> {
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.archiveNote(noteId, note);
+                            ListManager.archiveNote(note);
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                             error.showAndWait();

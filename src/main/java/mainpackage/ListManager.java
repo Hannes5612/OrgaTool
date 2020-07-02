@@ -97,6 +97,10 @@ public class ListManager {
         noteList.removeIf(note -> note.getId() == noteId);
     }
 
+    public static void archiveNote(Note note) {
+        note.archive();
+    }
+
     public static void editNote(Note note) {
         int remove=0;
         for (Note note1 : noteList) {

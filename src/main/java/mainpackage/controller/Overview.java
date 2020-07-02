@@ -247,7 +247,9 @@ public class Overview {
         stage.initStyle(StageStyle.TRANSPARENT);
         overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
-        usersNotes.add(listManager.getLatestNote());
+        if (!toggleArchiveButton.isSelected()) {
+            usersNotes.add(listManager.getLatestNote());
+        }
         sort(sortNoteListDropdown.getValue());
         overviewAddNoteImage.setDisable(false);
 
