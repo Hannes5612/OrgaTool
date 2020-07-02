@@ -87,9 +87,11 @@ public class Overview {
         // toggleArchiveButton.setOnAction(mouseEvent -> toggleArchive(usersNotes));
         toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
             if(toggleArchiveButton.isSelected()) {
+                noteListSearchField.clear();
                 toggleArchive(usersNotes);
             }
             else {
+                noteListSearchField.clear();
                 toggleActive(usersNotes);
             }
         });

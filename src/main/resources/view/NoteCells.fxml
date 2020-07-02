@@ -14,7 +14,7 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="cellNoteDescription" alignment="TOP_LEFT" layoutX="17.0" layoutY="40.0" prefWidth="394.0" text="Description" textAlignment="JUSTIFY" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+        <Label fx:id="cellNoteDescription" alignment="TOP_LEFT" layoutX="17.0" layoutY="40.0" prefWidth="394.0" text="Description" textAlignment="JUSTIFY" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
             <font>
                 <Font name="System Italic" size="12.0" />
             </font>
@@ -39,4 +39,7 @@
             </image>
         </ImageView>
     </children>
+   <padding>
+      <Insets bottom="10.0" />
+   </padding>
 </AnchorPane>
