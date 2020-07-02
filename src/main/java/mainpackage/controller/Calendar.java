@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
 
-import com.jfoenix.controls.JFXSpinner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
+import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
 
 public class Calendar{
@@ -312,5 +312,6 @@ public class Calendar{
         }
 
         rootPane.getChildren().setAll(overview);
+        new FadeIn(overview).play();
     }
 }
