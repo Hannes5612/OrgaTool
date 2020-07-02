@@ -34,6 +34,10 @@ public abstract class Entry implements IEntry {
         state = State.ARCHIVED;
     }
 
+    public void reactivate() {
+        state = State.ACTIVE;
+    }
+
     public int getId() {
         return id;
     }

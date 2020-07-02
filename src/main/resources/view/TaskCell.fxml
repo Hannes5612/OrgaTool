@@ -20,9 +20,9 @@
       <Label fx:id="cellDateLabel" layoutX="350.0" layoutY="83.0" prefHeight="25.0" prefWidth="66.0" text="12.02.2018" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="0.0" />
       <Label layoutX="322.0" layoutY="87.0" text="Due:" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="67.0" />
       <JFXCheckBox fx:id="cellCheckbox" layoutX="12.0" layoutY="31.0" prefHeight="17.0" prefWidth="8.0" text=" " />
-      <ImageView fx:id="cellDeleteButton" fitHeight="25.0" fitWidth="27.0" layoutX="381.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="8.0">
+      <ImageView fx:id="cellDeleteButton" fitHeight="25.0" fitWidth="27.0" layoutX="373.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="20.268293380737305">
          <image>
-            <Image url="@../icon/Material_icons-07-98-512.png" />
+            <Image url="@../icon/delete.png" />
          </image>
       </ImageView>
       <Label fx:id="cellTaskDescription" alignment="TOP_LEFT" layoutX="47.0" layoutY="46.0" prefHeight="40.0" prefWidth="327.0" text="Label" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="40.0" />

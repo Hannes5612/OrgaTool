@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
@@ -37,10 +39,7 @@ public class CreateNote {
 
         newNoteCreateButton.setOnAction(e -> {
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
-                alert.setTitle("MISSING TITLE");
-                alert.setHeaderText("Your note has no title yet.");
-                alert.showAndWait();
+                missingTitleAlert();
             } else {
                 String title = newNoteTitle.getText().trim();
                 String content = newNoteContent.getText().trim();
@@ -64,6 +63,15 @@ public class CreateNote {
 
         });
 
+    }
+
+    static void missingTitleAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
+        alert.setTitle("MISSING TITLE");
+        alert.setHeaderText("Your note has no title yet.");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+        alert.showAndWait();
     }
 
     @FXML

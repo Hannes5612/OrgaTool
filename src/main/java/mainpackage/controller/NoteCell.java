@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -61,6 +62,8 @@ public class NoteCell extends JFXListCell<Note> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
             alert.setTitle("DELETING NOTE");
             alert.setHeaderText("You are about to delete a note!");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
@@ -122,6 +125,8 @@ public class NoteCell extends JFXListCell<Note> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("ARCHIVING NOTE");
                 alert.setHeaderText("You are about to archive a note!");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
@@ -145,6 +150,8 @@ public class NoteCell extends JFXListCell<Note> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("REACTIVATING NOTE");
                 alert.setHeaderText("You are about to reactivate a note!");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
@@ -153,6 +160,7 @@ public class NoteCell extends JFXListCell<Note> {
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.reactivateNote(noteId, note);
+                            ListManager.reactivateNote(note);
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                             error.showAndWait();

@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
@@ -50,10 +49,7 @@ public class EditNote implements Initializable {
         newNoteEditButton.setOnAction(e -> {
             System.out.println("'Save' button pressed");
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
-                alert.setTitle("MISSING TITLE");
-                alert.setHeaderText("Your note has no title yet.");
-                alert.showAndWait();
+                CreateNote.missingTitleAlert();
             } else {
                 if (selectedIdx != -1) {
 

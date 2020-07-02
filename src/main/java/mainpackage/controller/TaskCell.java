@@ -7,9 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
@@ -56,8 +58,8 @@ public class TaskCell extends JFXListCell<Task> {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + task.getTitle() + " ?", ButtonType.YES,  ButtonType.CANCEL);
                         alert.setTitle("Confirmation");
                         alert.setHeaderText("You are about to delete a task!");
-                        //Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                        //stage.getIcons().add(new Image("/icons/appicon_small.png")); // To add an icon
+                        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
                         alert.showAndWait();
 
                         if (alert.getResult() == ButtonType.YES) {

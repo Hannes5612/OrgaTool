@@ -27,7 +27,7 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         assert root != null;
         primaryStage.setScene(new Scene(root));
-        primaryStage.getIcons().add(new Image("icon/Logo organizingTool small.png"));
+        primaryStage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
         primaryStage.setResizable(true);
         primaryStage.show();
 

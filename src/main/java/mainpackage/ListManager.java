@@ -101,6 +101,10 @@ public class ListManager {
         note.archive();
     }
 
+    public static void reactivateNote(Note note) {
+        note.reactivate();
+    }
+
     public static void editNote(Note note) {
         int remove=0;
         for (Note note1 : noteList) {
