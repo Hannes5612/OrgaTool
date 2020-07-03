@@ -4,16 +4,21 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Note;
 import mainpackage.model.Task;
 
 import java.io.IOException;
@@ -45,11 +50,18 @@ public class TaskCell extends JFXListCell<Task> {
         private AnchorPane cellColor;
         @FXML
         private ImageView cellDeleteButton;
+        @FXML
+        private ImageView cellEditButton;
 
         private FXMLLoader fxmlLoader;
 
         @FXML
         void initialize() {
+
+                Tooltip.install(cellDeleteButton, new Tooltip("Delete task"));
+                Tooltip.install(cellDeleteButton, new Tooltip("Edit task"));
+                Tooltip.install(cellDeleteButton, new Tooltip("Archive task"));
+
                 cellDeleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
                         final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
@@ -82,6 +94,32 @@ public class TaskCell extends JFXListCell<Task> {
                                 }
 
                         }
+                });
+
+                cellEditButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+                        final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
+                        final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
+                        System.out.println("Task at index " + selectedIdx + " selected.");
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditTasks.fxml"));
+                        loader.setController(new EditTask(task, selectedIdx));
+
+                        try {
+                                loader.load();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+
+                        Parent root = loader.getRoot();
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.initStyle(StageStyle.TRANSPARENT);
+                        cellEditButton.setDisable(true);
+                        stage.showAndWait();
+                        listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask());
+                        cellEditButton.setDisable(false);
+
                 });
 
         }
@@ -119,6 +157,7 @@ public class TaskCell extends JFXListCell<Task> {
                         setGraphic(rootAnchorPane);
                 }
         }
-    }
+
+}
 
 

@@ -105,7 +105,7 @@ public class Task extends Entry {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "{" +
                 "priority='" + priority + '\'' +
                 ", color='" + color + '\'' +
                 ", dueDate=" + dueDate +

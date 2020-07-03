@@ -33,7 +33,7 @@ public class Note extends Entry {
 
     @Override
     public String toString() {
-        return "Note {" +
+        return "{" +
                 " title='"         + title        + '\'' +
                 ", content='"      + content      + '\'' +
                 ", creationDate='" + creationDate + '\'' +

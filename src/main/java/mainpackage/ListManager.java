@@ -106,11 +106,25 @@ public class ListManager {
     }
 
     public static void editNote(Note note) {
+
         int remove=0;
         for (Note note1 : noteList) {
-            if(note.getId()==note1.getId()){
+            if(note.getId() == note1.getId()){
                 noteList.remove(note1);
                 noteList.set(remove, note);
+            }
+            remove++;
+        }
+
+    }
+
+    public static void editTask(Task task) {
+
+        int remove=0;
+        for (Task task1 : taskList) {
+            if(task.getId() == task1.getId()){
+                taskList.remove(task1);
+                taskList.set(remove, task);
             }
             remove++;
         }

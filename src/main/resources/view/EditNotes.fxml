@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="502.0" prefWidth="335.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane prefHeight="502.0" prefWidth="335.0" style="-fx-background-color: #C5CAE9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="58.0" prefWidth="335.0" style="-fx-background-color: #3F51B5;">
             <children>
-                <Label layoutX="32.0" layoutY="14.0" text="NEW NOTE" textFill="WHITE">
+                <Label layoutX="32.0" layoutY="14.0" text="EDIT NOTE" textFill="WHITE">
                     <font>
                         <Font name="Calibri" size="27.0" />
                     </font>

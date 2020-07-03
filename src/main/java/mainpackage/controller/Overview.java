@@ -65,9 +65,16 @@ public class Overview {
     private JFXComboBox<String> sortNoteListDropdown;
     @FXML
     private JFXToggleButton toggleArchiveButton;
+    @FXML
+    private JFXListView<Task> taskListView;
+    @FXML
+    private JFXTextField taskListSearchField;
+    @FXML
+    private JFXComboBox<String> sortTaskListDropdown;
 
     private static final ListManager listManager = new ListManager();
     private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
+    private final ObservableList<Task> usersTasksSearch = FXCollections.observableArrayList();
     private final ObservableList<Note> usersNotes = FXCollections.observableArrayList();
     private final ObservableList<Note> usersNotesSearch = FXCollections.observableArrayList();
     private final ClockThread clock = new ClockThread();
@@ -129,6 +136,7 @@ public class Overview {
 
         setNotes();
         sort(sortNoteListDropdown.getValue());
+        setTasks();
     }
 
     private void sort(String choice) {
@@ -173,7 +181,6 @@ public class Overview {
     private void sortDateDesc(ObservableList<Note> usersNotes) {
             usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
             //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
-
     }
 
     private void sortDateAsc(ObservableList<Note> usersNotes) {
@@ -231,6 +238,31 @@ public class Overview {
         noteListView.setItems(usersNotes);
     }
 
+    public void setTasks() {
+
+        // Placeholder if user has no tasks
+        Label noTasks = new Label("No tasks yet!");
+        noTasks.setFont(new Font(20));
+        taskListView.setPlaceholder(noTasks);
+
+        CellFactory cellFactory = new CellFactory();
+        usersTasks.clear();
+        listManager.getTaskList().forEach((n) -> {
+            if (n.getState() == 0) {
+                usersTasks.add(n);
+            }
+        });
+        taskListView.setCellFactory(TaskCell -> {
+           try {
+               return cellFactory.createCell("task");
+           } catch (UnsupportedCellType unsupportedCellType) {
+               unsupportedCellType.printStackTrace();
+               return new JFXListCell<>();
+           }
+        });
+        taskListView.setItems(usersTasks);
+
+    }
 
     private void loadAddNote() {
 
@@ -296,10 +328,12 @@ public class Overview {
         new FadeIn(rootPane).play();
         rootPane.getChildren().clear();
         rootPane.getChildren().setAll(calendar);
+
     }
 
 
     private ArrayList<Note> search(String filter, ObservableList<Note> list) {
+
         //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
         ArrayList<Note> searchResult = new ArrayList<>();
             if (!filter.isEmpty() && !filter.trim().equals("")) {
@@ -316,6 +350,7 @@ public class Overview {
                 searchResult.addAll(list);
             }
             return searchResult;
+
     }
 
     @FXML
@@ -328,10 +363,12 @@ public class Overview {
         //setLists();
         //usersTasks.clear();
         //setUser(loggedInUser);
+
     }
 
     @FXML
     void logout(ActionEvent event) {
+
         ListManager.wipe();
 
         AnchorPane login = null;

@@ -25,10 +25,10 @@ public class DatabaseHandler extends Config {
             e.printStackTrace();
         }
         return dbConnection;
+
     }
 
     public void signupUser(User user) throws SQLException {
-
 
         String insert = "INSERT INTO " + USER_TABLE + "("
                 + USER_USERNAME + "," + USER_PASSWORD + ") VALUES(?,?)";
@@ -43,6 +43,7 @@ public class DatabaseHandler extends Config {
             e.printStackTrace();
 
         }
+
     }
 
 
@@ -66,6 +67,7 @@ public class DatabaseHandler extends Config {
         }
 
         return resultSet;
+
     }
 
     public void createTask(Task task) throws ClassNotFoundException, SQLException {
@@ -98,9 +100,11 @@ public class DatabaseHandler extends Config {
         ResultSet tasksResulSet = preparedStatement.executeQuery();
 
         return tasksResulSet;
+
     }
 
     public void deleteTask(Task task) throws SQLException, ClassNotFoundException {
+
         String insert = "DELETE FROM " + TASK_TABLE + " WHERE " + TASK_ID + "=?";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
@@ -109,6 +113,7 @@ public class DatabaseHandler extends Config {
             preparedStatement.executeUpdate();
 
         }
+
     }
 
     public void createNote(Note note) throws ClassNotFoundException, SQLException {
@@ -130,6 +135,7 @@ public class DatabaseHandler extends Config {
     }
 
     public void deleteNote(Note note) throws SQLException, ClassNotFoundException {
+
         String insert = "DELETE FROM " + NOTE_TABLE + " WHERE " + NOTE_ID + "=?";
 
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
@@ -138,9 +144,11 @@ public class DatabaseHandler extends Config {
             preparedStatement.executeUpdate();
 
         }
+
     }
 
     public void editNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+
         String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_TITLE + "=?, " + NOTE_CONTENT + "=? WHERE " + NOTE_ID + "=" + noteId;
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
@@ -148,9 +156,11 @@ public class DatabaseHandler extends Config {
         preparedStatement.setString(2, note.getContent());
 
         preparedStatement.executeUpdate();
+
     }
 
     public void archiveNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+
         String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
@@ -158,9 +168,11 @@ public class DatabaseHandler extends Config {
         preparedStatement.setInt(2, noteId);
 
         preparedStatement.executeUpdate();
+
     }
 
     public void reactivateNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+
         String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
@@ -168,6 +180,7 @@ public class DatabaseHandler extends Config {
         preparedStatement.setInt(2, noteId);
 
         preparedStatement.executeUpdate();
+
     }
 
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
@@ -179,5 +192,55 @@ public class DatabaseHandler extends Config {
         ResultSet notesResultSet = preparedStatement.executeQuery();
 
         return notesResultSet;
+
     }
+
+    public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
+
+        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=? WHERE " + TASK_ID + "=" + taskId;
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setString(1, task.getTitle());
+        preparedStatement.setString(2, task.getContent());
+
+        preparedStatement.executeUpdate();
+
+    }
+
+    public void archiveTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
+
+        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_STATE + "=? WHERE " + TASK_ID + "=?";
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setInt(1, 2);
+        preparedStatement.setInt(2, taskId);
+
+        preparedStatement.executeUpdate();
+
+    }
+
+    public void reactivateTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
+
+        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_STATE + "=? WHERE " + TASK_ID + "=?";
+
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setInt(1, 0);
+        preparedStatement.setInt(2, taskId);
+
+        preparedStatement.executeUpdate();
+
+    }
+
+    public ResultSet getTasks() throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + TASK_USER + "=?";
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+        preparedStatement.setInt(1, ListManager.getUserId());
+
+        ResultSet tasksResultSet = preparedStatement.executeQuery();
+
+        return tasksResultSet;
+
+    }
+
 }

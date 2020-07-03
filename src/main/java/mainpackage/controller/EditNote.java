@@ -91,5 +91,6 @@ public class EditNote implements Initializable {
     }
 
     private static Note editedNote;
+
 }
 

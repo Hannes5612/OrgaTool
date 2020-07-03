@@ -14,6 +14,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import mainpackage.animation.FadeIn;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.ListManager;
@@ -42,8 +45,8 @@ public class CreateTask {
     private LocalDate date;
     private boolean dateSet;
 
-    public CreateTask() {
-    }
+    public CreateTask() {}
+
     public CreateTask(LocalDate date) {
         this.date = date;
         dateSet = true;
@@ -84,23 +87,26 @@ public class CreateTask {
                 Alert error = new Alert(Alert.AlertType.ERROR,msg);
                 error.showAndWait();
             }
-
-
-
         });
 
     }
 
+    static void missingTitleAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
+        alert.setTitle("MISSING TITLE");
+        alert.setHeaderText("Your note has no title yet.");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+        alert.showAndWait();
+    }
+
     private String checkError(String title, String content) {
         if (title.length()>28) return "Title can't be longer than 45 chars." ;
-        if (content.length()>1024) return "Contenc can't be longer than 1024 chars.";
+        if (content.length()>1024) return "Content can't be longer than 1024 chars.";
         return "Connection failed.\nPlease check your connection or try again.";
     }
 
     @FXML
-    void close(ActionEvent event) {
-        newTaskTitle.getScene().getWindow().hide();
-
-    }
+    void close(ActionEvent event) { newTaskTitle.getScene().getWindow().hide(); }
 
 }
