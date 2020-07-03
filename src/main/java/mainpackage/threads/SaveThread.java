@@ -1,15 +1,10 @@
 package mainpackage.threads;
 
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import mainpackage.ListManager;
-import mainpackage.model.Note;
-import mainpackage.model.Task;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SaveThread extends Thread {
     private final ListManager listManager = new ListManager();
@@ -24,7 +19,7 @@ public class SaveThread extends Thread {
     private void createFile() throws IOException {
         FileWriter writer = new FileWriter(file,false );
 
-        writer.write("Notes : \n\n");
+        writer.write("NOTES: \n\n");
 
         listManager.getNoteList().forEach(note -> {
             try {
@@ -35,7 +30,7 @@ public class SaveThread extends Thread {
         });
 
         writer.write("\n");
-        writer.write("TASKS : \n\n");
+        writer.write("TASKS: \n\n");
 
         listManager.getTaskList().forEach(task->{
             try {

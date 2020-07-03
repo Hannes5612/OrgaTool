@@ -34,6 +34,9 @@ public abstract class Entry implements IEntry {
         state = State.ARCHIVED;
     }
 
+    /**
+     * Method changes the state of the entry to ACTIVE.
+     */
     public void reactivate() {
         state = State.ACTIVE;
     }

@@ -1,5 +1,8 @@
 package mainpackage.model;
 
+/**
+ * 3 different states of notes/tasks: active, finished and archived
+ */
 public enum State {
 
     ACTIVE(0, "ACTIVE"),

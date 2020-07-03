@@ -91,7 +91,7 @@ public class Overview {
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
         overviewExport.setOnMouseClicked(mouseEvent -> export());
-        // toggleArchiveButton.setOnAction(mouseEvent -> toggleArchive(usersNotes));
+
         toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
             if(toggleArchiveButton.isSelected()) {
                 noteListSearchField.clear();
@@ -106,17 +106,11 @@ public class Overview {
         noteListSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
 
-
             if (!newValue.trim().isEmpty() && usersNotes.size() > 0) {
                 usersNotesSearch.setAll(search(noteListSearchField.getText(), usersNotes));
                 noteListView.setItems(usersNotesSearch);
-
-
             } else {
-
                 noteListView.setItems(usersNotes);
-
-
             }
 
             //debugLogger.debug("Search");
@@ -139,6 +133,10 @@ public class Overview {
         setTasks();
     }
 
+    /**
+     * Sorting notes depending on selected String in sortNoteListDropdown (dropdown menu to sort notes in overview)
+     * @param choice selected String in DropDown
+     */
     private void sort(String choice) {
         switch (choice) {
             case "Sort by date (newest to oldest)":
@@ -158,6 +156,12 @@ public class Overview {
         }
     }
 
+
+    /**
+     * Clearing list of user's note and adding only archived notes.
+     * Result: only archived notes are shown when toggleArchiveButton is selected
+     * @param usersNotes list of user's notes
+     */
     private void toggleArchive(ObservableList<Note> usersNotes) {
         usersNotes.clear();
         listManager.getNoteList().forEach((n) -> {
@@ -168,6 +172,11 @@ public class Overview {
         sort(sortNoteListDropdown.getValue());
     }
 
+    /**
+     * Clearing list of user's note and adding only archived notes.
+     * Result: only active notes are shown when toggleArchiveButton is not selected
+     * @param usersNotes list of user's notes
+     */
     private void toggleActive(ObservableList<Note> usersNotes) {
         usersNotes.clear();
         listManager.getNoteList().forEach((n) -> {
@@ -178,27 +187,46 @@ public class Overview {
         sort(sortNoteListDropdown.getValue());
     }
 
+    /**
+     * Sorting list of user's notes by date (descending)
+     * @param usersNotes list of user's notes
+     */
     private void sortDateDesc(ObservableList<Note> usersNotes) {
             usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
             //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
     }
 
+    /**
+     * Sorting list of user's notes by date (ascending)
+     * @param usersNotes list of user's notes
+     */
     private void sortDateAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(Note::getCreationDate));
         //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
 
     }
 
+    /**
+     * Sorting list of user's notes alphabetically (ascending)
+     * @param usersNotes list of user's notes
+     */
     private void sortTitleAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(Entry::getTitle));
         //debugLogger.info("List " + list.toString() + "  sorted by title in ascending order.");
     }
 
+    /**
+     * Sorting list of user's notes alphabetically (descending)
+     * @param usersNotes list of user's notes
+     */
     private void sortTitleDesc(ObservableList<Note> usersNotes) {
         usersNotes.sort((n1, n2) -> n2.getTitle().compareTo(n1.getTitle()));
         //debugLogger.info("List " + list.toString() + "  sorted by title in descending order.");
     }
 
+    /**
+     * Exporting notes and tasks into a .txt file on user's computer
+     */
     private void export() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");

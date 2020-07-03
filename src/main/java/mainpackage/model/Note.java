@@ -4,14 +4,17 @@ import java.sql.Date;
 
 /**
  * The Note object contains variables with user input
- * which will be displayed at the NoteList.
+ * which will be displayed in the NoteList.
  * The user can create as many notes as he wants.
  * The note data will be stored in the database.
  */
 public class Note extends Entry {
 
     /**
-     * ToDo: Description
+     * Creating note with only title and content
+     * The rest is set automatically
+     * @param title title of note
+     * @param content description of note
      */
     public Note(String title, String content) {
         this.title = title;
@@ -19,7 +22,12 @@ public class Note extends Entry {
     }
 
     /**
-     * ToDo: Description
+     * Creating note
+     * @param id note ID, unique
+     * @param title title of note
+     * @param content description of note
+     * @param creationDate date when note was created
+     * @param state state of note (ACTIVE/ARCHIVED/FINISHED)
      */
     public Note(int id, String title, String content, Date creationDate, int state) {
         this.id = id;
