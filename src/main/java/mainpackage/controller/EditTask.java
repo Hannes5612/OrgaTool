@@ -1,10 +1,13 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
@@ -13,6 +16,7 @@ import mainpackage.model.User;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class EditTask implements Initializable {
@@ -50,6 +54,19 @@ public class EditTask implements Initializable {
         newTaskContent.setText(task.getContent());
         int taskId = task.getId();
         Date creationDate = task.getCreationDate();
+
+        //newTaskDueDate.setValue((LocalDate) task.getDueDate());
+
+        ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
+        newTaskPriority.setItems(priorities);
+        switch(task.getPriority()) {
+            case "H": newTaskPriority.setValue("High");   break;
+            case "M": newTaskPriority.setValue("Medium"); break;
+            case "L": newTaskPriority.setValue("Low");    break;
+        }
+        newTaskColor.setValue(Color.web(task.getColor()));
+        newTaskDueDate.setValue(LocalDate.now().plusDays(1));
+        newTaskDueDate.setValue(task.getDueDate().toLocalDate());
 
         newTaskEditButton.setOnAction(e -> {
             System.out.println("'Save' button pressed");

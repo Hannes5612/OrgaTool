@@ -144,7 +144,7 @@ public class Calendar{
                             +"-"+formatter1.format(2030-yearCombo.getSelectionModel().getSelectedIndex());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate inputDate = LocalDate.parse(inputString,formatter);
-
+System.out.println(inputDate);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));

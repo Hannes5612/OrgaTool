@@ -122,8 +122,7 @@ public class ListManager {
 
         int remove=0;
         for (Task task1 : taskList) {
-            if(task.getId() == task1.getId()){
-                taskList.remove(task1);
+            if(task.getId() == task1.getId()) {
                 taskList.set(remove, task);
             }
             remove++;

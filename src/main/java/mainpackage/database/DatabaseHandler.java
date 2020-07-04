@@ -197,11 +197,19 @@ public class DatabaseHandler extends Config {
 
     public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
 
-        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=? WHERE " + TASK_ID + "=" + taskId;
+        String insert = "UPDATE " + TASK_TABLE +
+                        " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=?, " + TASK_PRIO + "=?, " + TASK_COLOR + "=?, " +
+                        TASK_DUEDATE + "=?, " + TASK_CREATIONDATE + "=?, " + TASK_STATE + "=? " +
+                        "WHERE " + TASK_ID + "=" + taskId;
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, task.getTitle());
         preparedStatement.setString(2, task.getContent());
+        preparedStatement.setString(3, task.getPriority());
+        preparedStatement.setString(4, task.getColor());
+        preparedStatement.setDate(5, task.getDueDate());
+        preparedStatement.setDate(6, task.getCreationDate());
+        preparedStatement.setInt(7, task.getState());
 
         preparedStatement.executeUpdate();
 

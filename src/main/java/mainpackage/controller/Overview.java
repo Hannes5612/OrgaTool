@@ -151,8 +151,6 @@ public class Overview {
             case "Sort alphabetically (Z-A)":
                 sortTitleDesc(usersNotes);
                 break;
-            default:
-                break;
         }
     }
 

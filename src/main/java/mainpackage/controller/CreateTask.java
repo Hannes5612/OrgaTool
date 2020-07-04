@@ -55,7 +55,7 @@ public class CreateTask {
     @FXML
     void initialize() {
 
-       newTaskDueDate.setValue(date);
+        newTaskDueDate.setValue(date);
 
         ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
         newTaskPriority.setItems(priorities);
