@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mainpackage.animation.FadeIn;
+import org.apache.log4j.BasicConfigurator;
 
 import java.net.URL;
 
@@ -17,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
-
+        BasicConfigurator.configure();
 
         URL fxmlFileUrl = getClass().getClassLoader().getResource("view/Login.fxml");
         Parent root = null;
