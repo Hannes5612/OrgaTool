@@ -14,6 +14,11 @@ public interface IEntry {
      */
     void archive();
 
+    /**
+     * Method changes the state of the entry to ACTIVE.
+     */
+    void reactivate();
+
     int getId();
 
     String getTitle();
