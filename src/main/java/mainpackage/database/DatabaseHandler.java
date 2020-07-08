@@ -147,37 +147,13 @@ public class DatabaseHandler extends Config {
 
     }
 
-    public void editNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
+    public void editNote(int noteId, Note note, int state) throws ClassNotFoundException, SQLException {
 
-        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_TITLE + "=?, " + NOTE_CONTENT + "=? WHERE " + NOTE_ID + "=" + noteId;
+        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_TITLE + "=?, " + NOTE_CONTENT + "=?, " + NOTE_STATE + "=" + state + " WHERE " + NOTE_ID + "=" + noteId;
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, note.getTitle());
         preparedStatement.setString(2, note.getContent());
-
-        preparedStatement.executeUpdate();
-
-    }
-
-    public void archiveNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
-
-        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
-
-        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
-        preparedStatement.setInt(1, 2);
-        preparedStatement.setInt(2, noteId);
-
-        preparedStatement.executeUpdate();
-
-    }
-
-    public void reactivateNote(int noteId, Note note) throws ClassNotFoundException, SQLException {
-
-        String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_STATE + "=? WHERE " + NOTE_ID + "=?";
-
-        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
-        preparedStatement.setInt(1, 0);
-        preparedStatement.setInt(2, noteId);
 
         preparedStatement.executeUpdate();
 
@@ -198,9 +174,9 @@ public class DatabaseHandler extends Config {
     public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
 
         String insert = "UPDATE " + TASK_TABLE +
-                        " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=?, " + TASK_PRIO + "=?, " + TASK_COLOR + "=?, " +
-                        TASK_DUEDATE + "=?, " + TASK_CREATIONDATE + "=?, " + TASK_STATE + "=? " +
-                        "WHERE " + TASK_ID + "=" + taskId;
+                " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=?, " + TASK_PRIO + "=?, " + TASK_COLOR + "=?, " +
+                TASK_DUEDATE + "=?, " + TASK_CREATIONDATE + "=?, " + TASK_STATE + "=? " +
+                "WHERE " + TASK_ID + "=" + taskId;
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, task.getTitle());

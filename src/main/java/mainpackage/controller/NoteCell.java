@@ -134,7 +134,7 @@ public class NoteCell extends JFXListCell<Note> {
                         System.out.println("Note at index " + selectedIdx + " selected.");
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
-                            databaseHandler.archiveNote(noteId, note);
+                            databaseHandler.editNote(noteId, note, 2);
                             ListManager.archiveNote(note);
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
@@ -159,7 +159,7 @@ public class NoteCell extends JFXListCell<Note> {
                         System.out.println("Note at index " + selectedIdx + " selected.");
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
-                            databaseHandler.reactivateNote(noteId, note);
+                            databaseHandler.editNote(noteId, note, 0);
                             ListManager.reactivateNote(note);
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");

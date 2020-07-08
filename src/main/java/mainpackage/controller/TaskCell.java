@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.model.Note;
 import mainpackage.model.Task;
 
 import java.io.IOException;
@@ -128,7 +127,8 @@ public class TaskCell extends JFXListCell<Task> {
         protected void updateItem(Task task, boolean empty) {
 
                 super.updateItem(task, empty);
-                this.setStyle("-fx-padding: 0px;");
+                this.setStyle("-fx-padding: 4px;");
+                this.setStyle("-fx-background-color: white");
                 if (empty || task == null) {
                         setText(null);
                         setGraphic(null);

@@ -1,6 +1,14 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import mainpackage.ListManager;
+import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Task;
 
 import java.net.URL;
 import java.sql.Date;
@@ -8,19 +16,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import mainpackage.animation.FadeIn;
-import mainpackage.database.DatabaseHandler;
-import mainpackage.ListManager;
-import mainpackage.model.Task;
 
 public class CreateTask {
 
@@ -89,15 +84,6 @@ public class CreateTask {
             }
         });
 
-    }
-
-    static void missingTitleAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
-        alert.setTitle("MISSING TITLE");
-        alert.setHeaderText("Your note has no title yet.");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-        alert.showAndWait();
     }
 
     private String checkError(String title, String content) {

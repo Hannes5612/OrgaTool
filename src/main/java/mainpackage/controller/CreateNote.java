@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
-import mainpackage.model.User;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -38,12 +37,17 @@ public class CreateNote {
 
         newNoteCreateButton.setOnAction(e -> {
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
-                missingTitleAlert();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
+                alert.setTitle("MISSING TITLE");
+                alert.setHeaderText("Your note has no title yet.");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                alert.showAndWait();
             } else {
                 String title = newNoteTitle.getText().trim();
                 String content = newNoteContent.getText().trim();
 
-                Note createdNote = new Note(title, content);
+                Note createdNote = new Note(ListManager.getCountingNoteId(), title, content);
 
                 DatabaseHandler databaseHandler = new DatabaseHandler();
                 try {
@@ -59,19 +63,9 @@ public class CreateNote {
 
                 newNoteCreateButton.getScene().getWindow().hide();
             }
-
         });
-
     }
 
-    static void missingTitleAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
-        alert.setTitle("MISSING TITLE");
-        alert.setHeaderText("Your note has no title yet.");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-        alert.showAndWait();
-    }
 
     @FXML
     void close(ActionEvent event) {

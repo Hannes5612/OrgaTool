@@ -16,7 +16,8 @@ public class Note extends Entry {
      * @param title title of note
      * @param content description of note
      */
-    public Note(String title, String content) {
+    public Note(int id, String title, String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
     }

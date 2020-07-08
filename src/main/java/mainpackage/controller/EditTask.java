@@ -7,11 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
-import mainpackage.model.User;
 
 import java.net.URL;
 import java.sql.Date;
@@ -70,7 +72,12 @@ public class EditTask implements Initializable {
         newTaskEditButton.setOnAction(e -> {
             System.out.println("'Save' button pressed");
             if (newTaskTitle.getText() == null || newTaskTitle.getText().trim().isEmpty()) {
-                CreateTask.missingTitleAlert();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your task.", ButtonType.OK);
+                alert.setTitle("MISSING TITLE");
+                alert.setHeaderText("Your task has no title yet.");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                alert.showAndWait();
             } else {
                 if (selectedIdx != -1) {
 

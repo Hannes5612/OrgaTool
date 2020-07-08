@@ -36,6 +36,8 @@ public class ListManager {
         return countingTaskID;
     }
 
+    public static int getCountingNoteId() { return countingNoteId; }
+
     public static void incrementCountingTaskId(){
         countingTaskID++;
     }
