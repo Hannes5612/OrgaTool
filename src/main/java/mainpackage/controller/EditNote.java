@@ -3,7 +3,6 @@ package mainpackage.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -28,7 +27,10 @@ public class EditNote implements Initializable {
     private JFXTextArea newNoteContent;
     @FXML
     private JFXButton newNoteEditButton;
+    @FXML
+    private JFXButton closeEditNote;
 
+    private User user;
     private Note note;
     private int selectedIdx;
 
@@ -43,6 +45,10 @@ public class EditNote implements Initializable {
         newNoteTitle.setText(note.getTitle());
         newNoteContent.setText(note.getContent());
         int noteId = note.getId();
+
+        closeEditNote.setOnAction(e -> {
+            newNoteTitle.getScene().getWindow().hide();
+        });
 
         newNoteEditButton.setOnAction(e -> {
             System.out.println("'Save' button pressed");
@@ -76,11 +82,9 @@ public class EditNote implements Initializable {
 
     }
 
-    @FXML
-    void close(ActionEvent event) {
-        newNoteTitle.getScene().getWindow().hide();
+    void setUser(User user) {
+        this.user = user;
     }
-
 
     public static Note getEditedNote(){
         return editedNote;

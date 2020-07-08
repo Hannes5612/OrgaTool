@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class ListManager {
 
-    private static Logger log = LogManager.getLogger(Main.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ListManager.class);
 
     private static User user = new User();
     private static int countingTaskID;
@@ -83,7 +83,7 @@ public class ListManager {
 
             countingTaskID = id + 1;
             Task task = new Task(id, title, content, priority, color, dueDate, creationDate, state);
-            log.info("Task loaded: " + task.toString());
+            LOG.info("Task loaded: " + task.toString());
             System.out.println("Task loaded: " + task.toString());
             taskList.add(task);
         }
