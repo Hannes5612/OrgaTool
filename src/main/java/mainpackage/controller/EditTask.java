@@ -38,7 +38,6 @@ public class EditTask implements Initializable {
     @FXML
     private JFXButton newTaskEditButton;
 
-    private User user;
     private Task task;
     private int selectedIdx;
 
@@ -108,9 +107,6 @@ public class EditTask implements Initializable {
         newTaskTitle.getScene().getWindow().hide();
     }
 
-    void setUser(User user) {
-        this.user = user;
-    }
 
     public static Task getEditedTask(){
         return editedTask;

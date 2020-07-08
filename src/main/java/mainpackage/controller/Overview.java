@@ -95,11 +95,11 @@ public class Overview {
         toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
             if(toggleArchiveButton.isSelected()) {
                 noteListSearchField.clear();
-                toggleArchive(usersNotes);
+                toggleArchive();
             }
             else {
                 noteListSearchField.clear();
-                toggleActive(usersNotes);
+                toggleActive();
             }
         });
 
@@ -119,7 +119,7 @@ public class Overview {
             //debugLogger.info("tasks Arraylist Size: " + tasks.getTasks().size());
         });
 
-        sortNoteListDropdown.setOnAction(event -> sort(sortNoteListDropdown.getValue()));
+        sortNoteListDropdown.setOnAction(event -> sortNotes(sortNoteListDropdown.getValue()));
 
         sortNoteListDropdown.setValue("Sort by date (newest to oldest)");
 
@@ -129,7 +129,7 @@ public class Overview {
         clock.start();
 
         setNotes();
-        sort(sortNoteListDropdown.getValue());
+        sortNotes(sortNoteListDropdown.getValue());
         setTasks();
     }
 
@@ -137,7 +137,7 @@ public class Overview {
      * Sorting notes depending on selected String in sortNoteListDropdown (dropdown menu to sort notes in overview)
      * @param choice selected String in DropDown
      */
-    private void sort(String choice) {
+    private void sortNotes(String choice) {
         switch (choice) {
             case "Sort by date (newest to oldest)":
                 sortDateDesc(usersNotes);
@@ -158,31 +158,29 @@ public class Overview {
     /**
      * Clearing list of user's note and adding only archived notes.
      * Result: only archived notes are shown when toggleArchiveButton is selected
-     * @param usersNotes list of user's notes
      */
-    private void toggleArchive(ObservableList<Note> usersNotes) {
+    private void toggleArchive() {
         usersNotes.clear();
         listManager.getNoteList().forEach((n) -> {
             if (n.getState() == 2) {
                 usersNotes.add(n);
             }
         });
-        sort(sortNoteListDropdown.getValue());
+        sortNotes(sortNoteListDropdown.getValue());
     }
 
     /**
      * Clearing list of user's note and adding only archived notes.
      * Result: only active notes are shown when toggleArchiveButton is not selected
-     * @param usersNotes list of user's notes
      */
-    private void toggleActive(ObservableList<Note> usersNotes) {
+    private void toggleActive() {
         usersNotes.clear();
         listManager.getNoteList().forEach((n) -> {
             if (n.getState() == 0) {
                 usersNotes.add(n);
             }
         });
-        sort(sortNoteListDropdown.getValue());
+        sortNotes(sortNoteListDropdown.getValue());
     }
 
     /**
@@ -310,7 +308,7 @@ public class Overview {
         if (!toggleArchiveButton.isSelected()) {
             usersNotes.add(listManager.getLatestNote());
         }
-        sort(sortNoteListDropdown.getValue());
+        sortNotes(sortNoteListDropdown.getValue());
         overviewAddNoteImage.setDisable(false);
 
     }

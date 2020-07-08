@@ -39,7 +39,7 @@ import mainpackage.ListManager;
 import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
 
-public class Calendar{
+public class Calendar {
 
     @FXML
     private ResourceBundle resources;
@@ -110,24 +110,19 @@ public class Calendar{
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
                         openAlert.showAndWait();
                     } else {
-                    showClickedDayTasks(vPane.getChildren().get(0));
+                        showClickedDayTasks(vPane.getChildren().get(0));
                     }
 
                 });
 
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem edit = new MenuItem("New Task for this day");
-                edit.setOnAction(click-> loadAddTask(vPane.getChildren().get(0)));
+                edit.setOnAction(click -> loadAddTask(vPane.getChildren().get(0)));
 
                 // Add MenuItem to ContextMenu
                 contextMenu.getItems().addAll(edit);
 
-                vPane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-                    @Override
-                    public void handle(ContextMenuEvent event) {
-                        contextMenu.show(vPane,event.getScreenX() ,event.getScreenY());
-                    }
-                });
+                vPane.setOnContextMenuRequested(event -> contextMenu.show(vPane, event.getScreenX(), event.getScreenY()));
 
 
                 // Add it to the grid
@@ -137,14 +132,14 @@ public class Calendar{
     }
 
     private void loadAddTask(Node node) {
-        Label label = (Label)node;
+        Label label = (Label) node;
         int day = Integer.parseInt(label.getText());
         NumberFormat formatter1 = new DecimalFormat("00");
-        String inputString = formatter1.format(day) +"-" + formatter1.format(monthCombo.getSelectionModel().getSelectedIndex()+1)
-                            +"-"+formatter1.format(2030-yearCombo.getSelectionModel().getSelectedIndex());
+        String inputString = formatter1.format(day) + "-" + formatter1.format(monthCombo.getSelectionModel().getSelectedIndex() + 1)
+                + "-" + formatter1.format(2030 - yearCombo.getSelectionModel().getSelectedIndex());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate inputDate = LocalDate.parse(inputString,formatter);
-System.out.println(inputDate);
+        LocalDate inputDate = LocalDate.parse(inputString, formatter);
+        System.out.println(inputDate);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
@@ -170,16 +165,16 @@ System.out.println(inputDate);
     public void fillCalendarWithTasks() {
 
         ListManager listManager = new ListManager();
-            listManager.getTaskList().forEach(task->{
-                String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
-                String month = task.getDueMonth();
-                String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
-                String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
-                if (year.equals(yearSelection) && month.equals(monthSelection)) {
-                    int day = task.getDueDate().toLocalDate().getDayOfMonth();
-                    showDate(day, task);
-                }
-            });
+        listManager.getTaskList().forEach(task -> {
+            String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+            String month = task.getDueMonth();
+            String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
+            String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+            if (year.equals(yearSelection) && month.equals(monthSelection)) {
+                int day = task.getDueDate().toLocalDate().getDayOfMonth();
+                showDate(day, task);
+            }
+        });
     }
 
     //loads the day labels
@@ -338,7 +333,7 @@ System.out.println(inputDate);
     }
 
     @FXML
-    void updateView(ActionEvent event) {
+    public void updateView(ActionEvent event) {
         loadSelectedMonth();
         fillCalendarWithTasks();
     }

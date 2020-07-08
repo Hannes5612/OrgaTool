@@ -5,8 +5,11 @@ import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
-import org.apache.log4j.Logger;
+
 import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.stream.Stream;
 
 public class ListManager {
 
-    private static Logger log = LogManager.getLogger(ListManager.class);
+    private static Logger log = LogManager.getLogger(Main.class.getName());
 
     private static User user = new User();
     private static int countingTaskID;

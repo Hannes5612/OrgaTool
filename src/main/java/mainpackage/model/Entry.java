@@ -7,6 +7,7 @@ import java.sql.Date;
  */
 public abstract class Entry implements IEntry {
 
+
     /** ToDo:
      * id -
      * title -

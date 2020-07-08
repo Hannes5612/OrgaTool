@@ -6,19 +6,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import mainpackage.animation.FadeIn;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.net.URL;
 
 public class Main extends Application {
 
+    private static final Logger debugLogger = LogManager.getLogger(Main.class.getName());
     @Override
     public void start(Stage primaryStage) throws Exception {
+        String log4jConfPath = "src/main/resources/log4j2.xml";
+        PropertyConfigurator.configure(log4jConfPath);
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
-        BasicConfigurator.configure();
 
         URL fxmlFileUrl = getClass().getClassLoader().getResource("view/Login.fxml");
         Parent root = null;

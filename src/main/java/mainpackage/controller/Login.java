@@ -47,8 +47,6 @@ public class Login {
     @FXML
     private Ellipse loginBlueXY;
 
-    private final DatabaseHandler databaseHandler = new DatabaseHandler();
-    private ResultSet userRow;
 
     /**
      * Handle button presses.
@@ -161,6 +159,7 @@ public class Login {
 
             //if not empty create an user, show loading spinner and
         } else {
+
             User loginUser = new User(username, password);
             spin();
 
@@ -169,10 +168,10 @@ public class Login {
                 @Override
                 public ResultSet call() {
 
+                    final DatabaseHandler databaseHandler = new DatabaseHandler();
                     //Catch the tables' row of the search result, given the users credentials
-                    userRow = databaseHandler.getUser(loginUser);
 
-                    return userRow;
+                    return databaseHandler.getUser(loginUser);
                 }
             };
 

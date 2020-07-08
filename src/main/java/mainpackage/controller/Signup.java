@@ -55,7 +55,6 @@ public class Signup {
     @FXML
     private JFXButton signupGobackButton;
 
-    private DatabaseHandler databaseHandler = new DatabaseHandler();
 
 
     /**
@@ -149,6 +148,7 @@ public class Signup {
 
                     //Catch the tables' row of the search result, given the users credentials
                     try {
+                        DatabaseHandler databaseHandler = new DatabaseHandler();
                         databaseHandler.signupUser(signupUser);
                     } catch (SQLIntegrityConstraintViolationException integrity) {
                         noSpin();

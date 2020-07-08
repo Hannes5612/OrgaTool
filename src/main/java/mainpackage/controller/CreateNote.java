@@ -31,7 +31,6 @@ public class CreateNote {
     @FXML
     private JFXButton newNoteCreateButton;
 
-    private User user;
     private static Note createdNote;
 
     @FXML
@@ -79,9 +78,6 @@ public class CreateNote {
         newNoteTitle.getScene().getWindow().hide();
     }
 
-    void setUser(User user) {
-        this.user = user;
-    }
 
     public static mainpackage.model.Note getCreatedNote() {
         return createdNote;

@@ -4,30 +4,30 @@ package mainpackage.database;
  * SQL configuration tables and rows
  */
 public class Const {
-    public static final String USER_TABLE = "users";
-    public static final String TASK_TABLE = "tasks";
-    public static final String NOTE_TABLE = "notes";
+    protected static final String USER_TABLE = "users";
+    protected static final String TASK_TABLE = "tasks";
+    protected static final String NOTE_TABLE = "notes";
 
-    public static final String USER_ID = "userid";
-    public static final String USER_USERNAME = "username";
-    public static final String USER_PASSWORD = "password";
+    protected static final String USER_ID = "userid";
+    protected static final String USER_USERNAME = "username";
+    protected static final String USER_PASSWORD = "password";
 
-    public static final String TASK_ID = "taskid";
-    public static final String TASK_USER = "userid";
-    public static final String TASK_TYPE = "type";
-    public static final String TASK_TITLE = "title";
-    public static final String TASK_CONTENT = "content";
-    public static final String TASK_PRIO = "prio";
-    public static final String TASK_COLOR = "color";
-    public static final String TASK_DUEDATE = "dueDate";
-    public static final String TASK_CREATIONDATE = "creationDate";
-    public static final String TASK_STATE = "state";
+    protected static final String TASK_ID = "taskid";
+    protected static final String TASK_USER = "userid";
+    protected static final String TASK_TYPE = "type";
+    protected static final String TASK_TITLE = "title";
+    protected static final String TASK_CONTENT = "content";
+    protected static final String TASK_PRIO = "prio";
+    protected static final String TASK_COLOR = "color";
+    protected static final String TASK_DUEDATE = "dueDate";
+    protected static final String TASK_CREATIONDATE = "creationDate";
+    protected static final String TASK_STATE = "state";
 
-    public static final String NOTE_ID = "notesid";
-    public static final String NOTE_USER = "userid";
-    public static final String NOTE_TITLE = "title";
-    public static final String NOTE_CONTENT = "content";
-    public static final String NOTE_DATE = "creationDate";
-    public static final String NOTE_STATE = "state";
+    protected static final String NOTE_ID = "notesid";
+    protected static final String NOTE_USER = "userid";
+    protected static final String NOTE_TITLE = "title";
+    protected static final String NOTE_CONTENT = "content";
+    protected static final String NOTE_DATE = "creationDate";
+    protected static final String NOTE_STATE = "state";
 
 }

@@ -29,7 +29,6 @@ public class EditNote implements Initializable {
     @FXML
     private JFXButton newNoteEditButton;
 
-    private User user;
     private Note note;
     private int selectedIdx;
 
@@ -82,9 +81,6 @@ public class EditNote implements Initializable {
         newNoteTitle.getScene().getWindow().hide();
     }
 
-    void setUser(User user) {
-        this.user = user;
-    }
 
     public static Note getEditedNote(){
         return editedNote;
