@@ -56,7 +56,7 @@ public class TaskCell extends JFXListCell<Task> {
 
         private FXMLLoader fxmlLoader;
 
-        //private static final Logger logger = LogManager.getLogger(TaskCell.class);
+        //private static final Logger logger = LogManager.getLogger(TaskCell.class.getName());
 
         @FXML
         void initialize() {
@@ -192,6 +192,7 @@ public class TaskCell extends JFXListCell<Task> {
                         cellPrioLabel.setText(task.getPriority());
                         cellDateLabel.setText(String.valueOf(task.getDueDate()));
                         cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
+                        cellCheckbox.setSelected(false);
                         cellTaskDescription.setWrapText(true);
                         cellCheckbox.setSelected(task.getState() == 1);
 
