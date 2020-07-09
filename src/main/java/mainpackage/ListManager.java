@@ -115,7 +115,6 @@ public class ListManager {
         int remove=0;
         for (Note note1 : noteList) {
             if(note.getId() == note1.getId()){
-                noteList.remove(note1);
                 noteList.set(remove, note);
             }
             remove++;

@@ -141,6 +141,7 @@ public class DatabaseHandler extends Config {
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, note.getId());
 
+            System.out.println("Gelöschte Note: " + note);
             preparedStatement.executeUpdate();
 
         }

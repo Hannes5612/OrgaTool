@@ -75,7 +75,8 @@ public class EditNote implements Initializable {
                     DatabaseHandler databaseHandler = new DatabaseHandler();
 
                     try {
-                        databaseHandler.editNote(noteId, editedNote, state);
+                        Note dbNote = editedNote;
+                        databaseHandler.editNote(noteId, dbNote, state);
                         ListManager.editNote(editedNote);
                         System.out.println("Note edited");
                     } catch (ClassNotFoundException classNotFoundException) {

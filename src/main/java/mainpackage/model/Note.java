@@ -42,7 +42,7 @@ public class Note extends Entry {
 
     @Override
     public String toString() {
-        return "{" +
+        return "{" + "id=" + id +
                 " title='"         + title        + '\'' +
                 ", content='"      + content      + '\'' +
                 ", creationDate='" + creationDate + '\'' +
