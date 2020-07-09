@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
@@ -113,12 +112,12 @@ public class TaskCell extends JFXListCell<Task> {
                         Parent root = loader.getRoot();
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root));
-                        stage.initStyle(StageStyle.TRANSPARENT);
-                        cellEditButton.setDisable(true);
+                        stage.setResizable(false);
+                        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                        getListView().setDisable(true);
                         stage.showAndWait();
                         listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask());
-                        cellEditButton.setDisable(false);
-
+                        getListView().setDisable(false);
                 });
 
         }

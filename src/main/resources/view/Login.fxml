@@ -47,9 +47,9 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXButton>
-      <Label layoutX="306.0" layoutY="121.0" text="Get your life in order!" textFill="#41408a">
+      <Label layoutX="337.0" layoutY="124.0" text="Get your life in order!" textFill="#41408a">
          <font>
-            <Font name="Yu Gothic Bold" size="45.0" />
+            <Font name="Calibri Bold" size="45.0" />
          </font>
       </Label>
       <Ellipse fx:id="loginBlueX" fill="#3f51b5" layoutX="-84.0" layoutY="734.0" radiusX="448.0" radiusY="375.0" stroke="TRANSPARENT" strokeType="INSIDE" />

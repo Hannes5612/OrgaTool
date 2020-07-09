@@ -14,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
@@ -107,12 +106,12 @@ public class NoteCell extends JFXListCell<Note> {
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.initStyle(StageStyle.TRANSPARENT);
-            noteCellEditButton.setDisable(true);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+            getListView().setDisable(true);
             stage.showAndWait();
             if(!(EditNote.getEditedNote()==null))listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
-            noteCellEditButton.setDisable(false);
-
+            getListView().setDisable(false);
         });
 
         noteCellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -199,6 +198,8 @@ public class NoteCell extends JFXListCell<Note> {
             cellNoteTitle.setText(note.getTitle());
             cellNoteDescription.setText(note.getContent());
             cellNoteDescription.setWrapText(true);
+            cellNoteDescription.maxWidth(394);
+            cellNoteDescription.minWidth(394);
             cellNoteDate.setText(String.valueOf(note.getCreationDate()));
 
             setText(null);

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" prefHeight="109.0" prefWidth="414.0" style="-fx-background-color: #C5CAE9; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootAnchorPane" prefHeight="109.0" prefWidth="414.0" style="-fx-background-color: #BACAE9; -fx-border-color: #6C7587;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="cellColor" layoutX="47.0" layoutY="93.0" prefHeight="6.0" prefWidth="262.0" style="-fx-border-radius: 50;" AnchorPane.bottomAnchor="9.6" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="103.60000000000002" />
       <Label fx:id="cellTaskLabel" layoutX="46.0" layoutY="11.0" prefHeight="40.0" prefWidth="278.0" text="Task" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="90.0">

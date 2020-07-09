@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Configuration status="debug">
+<Configuration>
     <Appenders>
         <RollingFile name="fileLogger" fileName="app-info.log" filePattern="app-info-%d{yyyy-MM-dd}.log" append="false">
             <PatternLayout>

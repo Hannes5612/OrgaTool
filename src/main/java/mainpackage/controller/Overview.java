@@ -9,22 +9,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.animation.FadeIn;
 import mainpackage.exceptions.UnsupportedCellType;
-import mainpackage.model.Entry;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
 import mainpackage.threads.SaveThread;
-//import org.apache.log4j.LogManager;
-//import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +29,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
+
+//import org.apache.log4j.LogManager;
+//import org.apache.log4j.Logger;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -207,7 +207,7 @@ public class Overview {
      * @param usersNotes list of user's notes
      */
     private void sortTitleAsc(ObservableList<Note> usersNotes) {
-        usersNotes.sort(Comparator.comparing(Entry::getTitle));
+        usersNotes.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
         //debugLogger.info("List " + list.toString() + "  sorted by title in ascending order.");
     }
 
@@ -216,7 +216,7 @@ public class Overview {
      * @param usersNotes list of user's notes
      */
     private void sortTitleDesc(ObservableList<Note> usersNotes) {
-        usersNotes.sort((n1, n2) -> n2.getTitle().compareTo(n1.getTitle()));
+        usersNotes.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
         //debugLogger.info("List " + list.toString() + "  sorted by title in descending order.");
     }
 
@@ -302,7 +302,8 @@ public class Overview {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
         overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
         if (!toggleArchiveButton.isSelected()) {
@@ -328,7 +329,8 @@ public class Overview {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
         overviewAddItemImage.setDisable(false);

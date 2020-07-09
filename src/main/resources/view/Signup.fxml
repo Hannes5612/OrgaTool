@@ -32,9 +32,9 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </JFXPasswordField>
-      <Label layoutX="405.0" layoutY="118.0" text="Signing up..." textFill="#41408a">
+      <Label layoutX="426.0" layoutY="123.0" text="Signing up..." textFill="#41408a">
          <font>
-            <Font name="Yu Gothic Bold" size="45.0" />
+            <Font name="Calibri Bold" size="45.0" />
          </font>
       </Label>
       <JFXButton fx:id="signupSignupButton" layoutX="591.0" layoutY="404.0" prefHeight="28.0" prefWidth="69.0" style="-fx-background-color: #3F51B5;" text="Sign up" textFill="WHITE">
