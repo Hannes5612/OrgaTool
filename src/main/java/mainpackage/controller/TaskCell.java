@@ -15,12 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,8 +52,6 @@ public class TaskCell extends JFXListCell<Task> {
         private ImageView cellEditButton;
 
         private FXMLLoader fxmlLoader;
-
-        //private static final Logger logger = LogManager.getLogger(TaskCell.class.getName());
 
         @FXML
         void initialize() {
@@ -117,12 +112,12 @@ public class TaskCell extends JFXListCell<Task> {
                         Parent root = loader.getRoot();
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root));
-                        stage.initStyle(StageStyle.TRANSPARENT);
-                        cellEditButton.setDisable(true);
+                        stage.setResizable(false);
+                        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                        getListView().setDisable(true);
                         stage.showAndWait();
                         if(EditTask.getEditedTask() != null) { listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask()); }
-                        cellEditButton.setDisable(false);
-
+                        getListView().setDisable(false);
                 });
 
                 cellCheckbox.setOnMouseClicked(event -> {
@@ -192,7 +187,6 @@ public class TaskCell extends JFXListCell<Task> {
                         cellPrioLabel.setText(task.getPriority());
                         cellDateLabel.setText(String.valueOf(task.getDueDate()));
                         cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
-                        cellCheckbox.setSelected(false);
                         cellTaskDescription.setWrapText(true);
                         cellCheckbox.setSelected(task.getState() == 1);
 

@@ -51,6 +51,7 @@ public class EditTask implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resourcese) {
 
+        editedTask = null;
         newTaskTitle.setText(task.getTitle());
         newTaskContent.setText(task.getContent());
         int taskId = task.getId();

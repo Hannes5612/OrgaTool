@@ -110,7 +110,7 @@ public class NoteCell extends JFXListCell<Note> {
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
             getListView().setDisable(true);
             stage.showAndWait();
-            if(!(EditNote.getEditedNote()==null))listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
+            if(EditNote.getEditedNote() != null) { listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote()); }
             getListView().setDisable(false);
         });
 
@@ -206,5 +206,4 @@ public class NoteCell extends JFXListCell<Note> {
             setGraphic(rootPane);
         }
     }
-
 }
