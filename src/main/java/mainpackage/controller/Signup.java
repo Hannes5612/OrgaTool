@@ -162,7 +162,7 @@ public class Signup {
                         noSpin();
                         this.done();
                         return 0;
-                    } catch (SQLException sqlException) {
+                    } catch (SQLException | ClassNotFoundException throwable) {
                         noSpin();
                         this.done();
                         return 1;
