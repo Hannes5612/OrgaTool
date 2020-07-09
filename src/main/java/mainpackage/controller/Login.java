@@ -244,7 +244,8 @@ public class Login {
             });
 
             //run database handler task
-            new Thread(task).start();
+            Thread runTask = new Thread(task);
+            runTask.start();
 
 
         }

@@ -23,8 +23,8 @@ import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
 import mainpackage.threads.SaveThread;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.LogManager;
+//import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class Overview {
     private final ObservableList<Note> usersNotes = FXCollections.observableArrayList();
     private final ObservableList<Note> usersNotesSearch = FXCollections.observableArrayList();
     private final ClockThread clock = new ClockThread();
-    private static final Logger log = LogManager.getLogger(Overview.class);
+//    private static final Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     void initialize() {

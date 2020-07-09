@@ -102,7 +102,6 @@ public class EditNote implements Initializable {
     public static Note getEditedNote(){
         return editedNote;
     }
-
     private static Note editedNote;
 
 }

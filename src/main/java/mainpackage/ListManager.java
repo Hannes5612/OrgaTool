@@ -6,8 +6,8 @@ import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.LogManager;
+//import org.apache.log4j.Logger;
 
 
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class ListManager {
 
-    private static final Logger LOG = LogManager.getLogger(ListManager.class);
+//    private static final Logger LOG = LogManager.getLogger(ListManager.class);
 
     private static User user = new User();
     private static int countingTaskID;
@@ -85,7 +85,7 @@ public class ListManager {
 
             countingTaskID = id + 1;
             Task task = new Task(id, title, content, priority, color, dueDate, creationDate, state);
-            LOG.info("Task loaded: " + task.toString());
+           // LOG.info("Task loaded: " + task.toString());
             System.out.println("Task loaded: " + task.toString());
             taskList.add(task);
         }
