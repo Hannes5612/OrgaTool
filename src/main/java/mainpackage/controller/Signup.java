@@ -176,6 +176,9 @@ public class Signup {
                 if (task.getValue() == 0) {
                     userNameShaker.shake();
                     signupPassword.clear();
+                    signupMessage.setStyle("-fx-text-fill: red");
+                    signupMessage.setVisible(true);
+                    signupMessage.setText("User already exists.");
                 }
                 if (task.getValue() == 1) {
                     Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
