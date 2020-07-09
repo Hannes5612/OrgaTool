@@ -10,9 +10,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
+import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
 import mainpackage.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,6 +36,8 @@ public class EditNote implements Initializable {
     @FXML
     private JFXButton closeEditNote;
 
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
     private User user;
     private Note note;
     private int selectedIdx;
@@ -51,13 +56,12 @@ public class EditNote implements Initializable {
         int noteId = note.getId();
 
         closeEditNote.setOnAction(e -> {
-//            Stage stage = (Stage) closeEditNote.getScene().getWindow();
-//            stage.close();
             closeEditNote.getScene().getWindow().hide();
+            logger.info("Cancelling editing note");
         });
 
         newNoteEditButton.setOnAction(e -> {
-            System.out.println("'Save' button pressed");
+            logger.info("'Save' button pressed.");
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
                 alert.setTitle("MISSING TITLE");
@@ -80,9 +84,10 @@ public class EditNote implements Initializable {
                         Note dbNote = editedNote;
                         databaseHandler.editNote(noteId, dbNote, state);
                         ListManager.editNote(editedNote);
-                        System.out.println("Note edited");
+                        logger.info("Note edited: " + editedNote);
                     } catch (ClassNotFoundException classNotFoundException) {
                         classNotFoundException.printStackTrace();
+                        logger.error(classNotFoundException);
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
