@@ -1,3 +1,22 @@
-[DEBUG] 2020-07-09 18:19:06.183 [JavaFX Application Thread] Main - Application started
-[INFO ] 2020-07-09 18:19:06.185 [JavaFX Application Thread] Main - Applichation started
-[ERROR] 2020-07-09 18:19:06.186 [JavaFX Application Thread] Main - Applichation started
+[INFO ] 2020-07-09 21:57:07.774 [JavaFX Application Thread] Main - Application started
+[INFO ] 2020-07-09 21:57:10.404 [Thread-4] Main - Note loaded: {id=29, title='x', content='dwhzgtgduwahuoduhwd
+dwojiuadh
+skdposajdoihawiougtdi
+dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.405 [Thread-4] Main - Note loaded: {id=43, title='gjngh', content='gjghjg', creationDate='2020-06-30', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.406 [Thread-4] Main - Note loaded: {id=50, title='drtdt', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.406 [Thread-4] Main - Note loaded: {id=51, title='wwwww', content='- jdik
+- dksd
+- uwgiuwhd
+- uweiw', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.406 [Thread-4] Main - Note loaded: {id=55, title='jhdhs', content='szugdagizsdw', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.407 [Thread-4] Main - Note loaded: {id=57, title='edf', content='eff', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.407 [Thread-4] Main - Note loaded: {id=59, title='a', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.407 [Thread-4] Main - Note loaded: {id=83, title='SCF', content='', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.407 [Thread-4] Main - Note loaded: {id=90, title='Zsghswwdw', content='dasdasd', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-09 21:57:10.407 [Thread-4] Main - Note loaded: {id=91, title='dfg', content='v dgg', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-09 21:57:10.408 [Thread-4] Main - Note loaded: {id=92, title='wdqw', content='awda', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-09 21:57:10.408 [Thread-4] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-09 21:57:10.408 [Thread-4] Main - Note loaded: {id=94, title='wef', content='wfwef', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-09 21:57:20.773 [JavaFX Application Thread] Main - Note at index 3 selected.
+[INFO ] 2020-07-09 21:06:19.939 [JavaFX Application Thread] Main - Applichation started

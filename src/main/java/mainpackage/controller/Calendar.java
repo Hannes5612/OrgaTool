@@ -21,21 +21,15 @@ import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
-import java.util.ResourceBundle;
 
 public class Calendar {
 
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -48,7 +42,6 @@ public class Calendar {
     private JFXButton calendarBackButton;
     @FXML
     private HBox hPane;
-
 
     private boolean isListOpen = false;
 
@@ -78,8 +71,10 @@ public class Calendar {
         return monthName[cal.get(java.util.Calendar.MONTH)];
     }
 
+
     /**
-     * Draws grid for the calendar view.
+     * Draws grid for the calendar view. Goes through every grid location of the
+     * 7x5 GrindPane and inserts a VBox.
      */
     @FXML
     private void drawCalendarGrid() {
@@ -96,6 +91,7 @@ public class Calendar {
                 vPane.setPadding(new Insets(0, 0, 0, 0));
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
 
+                //Eventhandler to click a day and get its tasks
                 vPane.setOnMouseClicked(e -> {
                     if (isListOpen) {
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
@@ -106,32 +102,37 @@ public class Calendar {
 
                 });
 
+                //Add a rightclick menu
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem edit = new MenuItem("New Task for this day");
                 edit.setOnAction(click -> loadAddTask(vPane.getChildren().get(0)));
 
                 // Add MenuItem to ContextMenu
                 contextMenu.getItems().addAll(edit);
-
+                //Add EventListener
                 vPane.setOnContextMenuRequested(event -> contextMenu.show(vPane, event.getScreenX(), event.getScreenY()));
-
-
                 // Add it to the grid
                 calendarGrid.add(vPane, j, i);
             }
         }
     }
 
+    /**
+     * Method for the right click context menu.
+     * Opens a 'create Task' window to create a task a a specified day.
+     * @param node containing the days number
+     */
     private void loadAddTask(Node node) {
         Label label = (Label) node;
+        //Get day, month and year of the selected day pane.
         int day = Integer.parseInt(label.getText());
         NumberFormat formatter1 = new DecimalFormat("00");
         String inputString = formatter1.format(day) + "-" + formatter1.format(monthCombo.getSelectionModel().getSelectedIndex() + 1)
                 + "-" + formatter1.format(2030 - yearCombo.getSelectionModel().getSelectedIndex());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate inputDate = LocalDate.parse(inputString, formatter);
-        System.out.println(inputDate);
 
+        //Create new window, set Controller and show
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/CreateTask.fxml"));
         loader.setController(new CreateTask(inputDate));
@@ -140,19 +141,22 @@ public class Calendar {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.showAndWait();
+
+        //Update the calendar view after inserting a task
         loadSelectedMonth();
         fillCalendarWithTasks();
     }
 
 
-    //Fills the calendar with Tasks
+    /**
+     * Checks for every task whether day, month and year fit to the currently selected month..
+     * If a match was found, showDate gets called.
+     */
     public void fillCalendarWithTasks() {
 
         ListManager listManager = new ListManager();
@@ -168,44 +172,57 @@ public class Calendar {
         });
     }
 
-    //loads the day labels
+
+    /**
+     * Generates the day number labels. Iterates through the grid and determines whether a pane
+     * is a day the selected month or if it should be empty.
+     * Also sets colors and eventhandler.
+     */
     private void loadSelectedMonth() {
+        //Get current dates, determine where to begin drawing
         int year = Integer.parseInt(yearCombo.getSelectionModel().getSelectedItem());
         int month = monthCombo.getSelectionModel().getSelectedIndex();
+        //create helper calendar
         GregorianCalendar gc = new GregorianCalendar(year, month, 1);
+        //get the monts starting day (Mo-Sun) as int
         int firstDay = gc.get(java.util.Calendar.DAY_OF_WEEK);
+        //get day amount of month
         int daysInMonth = gc.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+        //get offset for the grids start
         int offset = firstDay - 1;
         int gridCount = 1;
         int lblCount = 1;
 
-        String style = "-fx-background-color: #C5CAE9";
-        String hoveredStyle = "-fx-background-color: #95a1d2";
-        String noDay = "-fx-background-color: transparent";
+        //style variables
+        final String style = "-fx-background-color: #C5CAE9";
+        final String hoveredStyle = "-fx-background-color: #95a1d2";
+        final String noDay = "-fx-background-color: transparent";
 
         // Go through calendar grid
         for (Node node : calendarGrid.getChildren()) {
             VBox day = (VBox) node;
+            //delete every child of the vbox and set the background to white
             day.getChildren().clear();
             day.setStyle("-fx-backgroud-color: white");
             // Start placing labels on the first day for the month
             if (gridCount < offset) {
-                day.setOnMouseClicked(e -> System.out.println("Nothing to click"));
+
                 gridCount++;
-                // Darken color of the offset days
+                //"disable"  style and hover properties
                 day.setStyle(noDay);
                 day.setOnMouseEntered(e -> day.setStyle(noDay));
                 day.setOnMouseExited(e -> day.setStyle(noDay));
             } else {
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
-
-                    day.setOnMouseClicked(e -> System.out.println("Nothing to click"));
-                    // Instead, darken day color
+                    // Instead, again disable the styles and hover properties
                     day.setStyle(noDay);
                     day.setOnMouseEntered(e -> day.setStyle(noDay));
                     day.setOnMouseExited(e -> day.setStyle(noDay));
+
+                    //we found a match, lets create the day labels and set the style properties
                 } else {
+                    //checking if day is the current day and set fancy style properties and finally add a day label
                     if (currentMonth.equals(monthCombo.getValue()) && currentYear == year && lblCount == LocalDate.now().getDayOfMonth()) {
                         Label dayNumber = new Label(Integer.toString(lblCount));
                         dayNumber.setPadding(new Insets(2));
@@ -219,9 +236,10 @@ public class Calendar {
                             day.setStyle(style + ";-fx-border-color: #3F51B5;-fx-border-width: 2px");
                             dayNumber.setStyle("-fx-text-fill: #3F51B5");
                         });
+                        //add the day label!
                         day.getChildren().add(dayNumber);
                     } else {
-                        // Make a new day label
+                        // Make a new day label and style
                         Label dayNumber = new Label(Integer.toString(lblCount));
                         dayNumber.setPadding(new Insets(2));
                         dayNumber.setStyle("-fx-text-fill:#757575");
@@ -234,15 +252,24 @@ public class Calendar {
                             day.setStyle(style);
                             dayNumber.setStyle("-fx-text-fill: #757575");
                         });
+                        //add the day label
                         day.getChildren().add(dayNumber);
                     }
                 }
+                // after adding a day label increment it for the next day
                 lblCount++;
             }
 
         }
     }
 
+
+    /**
+     * Iterates the GridPane to check for a day match and then insert a children label with
+     * the tasks title.
+     * @param dayNumber of the day to add the tasks title as a label.
+     * @param task as the task to display on the given day.
+     */
     public void showDate(int dayNumber, Task task) {
         for (Node node : calendarGrid.getChildren()) {
             // Get the current day
@@ -259,7 +286,7 @@ public class Calendar {
                     Label descLbl = new Label(task.getTitle());    //(desc + time);
                     descLbl.setText("- " + task.getTitle());
                     descLbl.setPadding(new Insets(-4, 0, 0, 2));
-                    // Add label to calendar
+                    // Add label to calendar, check for to many labels
                     if (day.getChildren().size() <= 2) day.getChildren().add(descLbl);
                     else if (day.getChildren().size() == 3) {
                         Label info = new Label();
@@ -273,14 +300,24 @@ public class Calendar {
         }
     }
 
+    /**
+     * Opens a new window with a task list of the clicked day
+     * @param clickedDayNode  which is the day klicked
+     */
     private void showClickedDayTasks(Node clickedDayNode) {
+
+        //List for the days tasks
         ObservableList<Task> clickedTasks = FXCollections.observableArrayList();
         Label label = (Label) clickedDayNode;
+
+        //get the clicked day as an int
         int dayClicked = Integer.parseInt(label.getText());
+
+        //get selected month and year, equivalent to the tasks month and year
         String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
         String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
 
-
+        //fetch current tasks
         ListManager listManager = new ListManager();
 
         listManager.getTaskList().forEach(task -> {
@@ -292,6 +329,7 @@ public class Calendar {
             }
         });
 
+        //if the lIst is not empty, show the windows
         if (!clickedTasks.isEmpty()) {
             isListOpen = true;
             FXMLLoader loader = new FXMLLoader();
@@ -313,9 +351,9 @@ public class Calendar {
             stage.setResizable(true);
             stage.setMinWidth(440);
             stage.showAndWait();
-            loadSelectedMonth();
 
-            //fillCalendarWithTasks();
+            //after closing the window, reload the month, in case the user has deleted or changed a task
+            loadSelectedMonth();
             fillCalendarWithTasks();
 
             isListOpen = false;
@@ -324,29 +362,20 @@ public class Calendar {
 
     }
 
+    /**
+     * Helper method to reload the month when a user selects a new month or year
+     * @param event changing dropdownList entiry
+     */
     @FXML
     public void updateView(ActionEvent event) {
         loadSelectedMonth();
         fillCalendarWithTasks();
     }
 
-    @FXML
-    void initialize() {
-        drawCalendarGrid();
-        yearCombo.setItems(yearList());
-        yearCombo.setValue(String.valueOf(currentYear));
-        monthCombo.setItems(months);
-        monthCombo.setValue(currentMonth);
-        loadSelectedMonth();
-        fillCalendarWithTasks();
-
-        //Due to a jfx bug, this is neccessary to display the combobox list, otherwise it is "confused" whether the list s showing or not
-        hPane.requestFocus();
-
-        calendarBackButton.setOnAction(this::backToOverview);
-
-    }
-
+    /**
+     * Loads the Overview Stage and shows it
+     * @param e Button click
+     */
     private void backToOverview(ActionEvent e) {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Overview");
@@ -363,5 +392,23 @@ public class Calendar {
 
         rootPane.getChildren().setAll(overview);
         new FadeIn(overview).play();
+    }
+
+    @FXML
+    void initialize() {
+        drawCalendarGrid();
+        yearCombo.setItems(yearList());
+        yearCombo.setValue(String.valueOf(currentYear));
+        monthCombo.setItems(months);
+        monthCombo.setValue(currentMonth);
+        loadSelectedMonth();
+        fillCalendarWithTasks();
+
+        //Due to a javafx bug, this is neccessary to display the combobox list, otherwise it is "confused"
+        //whether the list is already showing or not
+        hPane.requestFocus();
+
+        calendarBackButton.setOnAction(this::backToOverview);
+
     }
 }

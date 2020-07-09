@@ -1,5 +1,9 @@
 package mainpackage.model;
 
+import mainpackage.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Date;
 
 /**
@@ -9,6 +13,8 @@ import java.sql.Date;
  * The note data will be stored in the database.
  */
 public class Note extends Entry {
+
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     /**
      * Creating note with only title and content
@@ -20,6 +26,7 @@ public class Note extends Entry {
         this.id = id;
         this.title = title;
         this.content = content;
+        logger.info("Note created: " + this);
     }
 
     /**
@@ -38,12 +45,13 @@ public class Note extends Entry {
         if (state == 0) { this.state = State.ACTIVE;   }
         if (state == 1) { this.state = State.FINISHED; }
         if (state == 2) { this.state = State.ARCHIVED; }
+        logger.info("Note loaded: " + this);
     }
 
     @Override
     public String toString() {
         return "{" + "id=" + id +
-                " title='"         + title        + '\'' +
+                ", title='"         + title        + '\'' +
                 ", content='"      + content      + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", state='"        + state        + '\'' +

@@ -26,6 +26,7 @@ public class TaskViewCalendar{
         taskViewCalendarList.setPlaceholder(new Label("Deleted all tasks, please close!"));
     }
 
+    //Sets the cells of the ListView, inserts per cell one task
     public void setTasks(ObservableList<Task> clickedTasks) {
         taskViewCalendarList.setCellFactory(Cell -> new TaskCell());
         taskViewCalendarList.setItems(clickedTasks);

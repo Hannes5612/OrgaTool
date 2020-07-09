@@ -15,8 +15,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
+import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,19 +48,25 @@ public class NoteCell extends JFXListCell<Note> {
     private ImageView noteCellArchiveButton;
 
     private FXMLLoader fxmlLoader;
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     @FXML
     void initialize() {
 
+        // Tooltips for note buttons
         Tooltip.install(noteCellDeleteButton, new Tooltip("Delete note"));
         Tooltip.install(noteCellEditButton, new Tooltip("Edit note"));
         Tooltip.install(noteCellArchiveButton, new Tooltip("Archive note"));
 
+        // deleting note from database and ListView
         noteCellDeleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
+            // user selects note
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
+            logger.info("Note at index " + selectedIdx + " selected.");
 
+            // alert: delete note?
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
             alert.setTitle("DELETING NOTE");
             alert.setHeaderText("You are about to delete a note!");
@@ -68,22 +77,23 @@ public class NoteCell extends JFXListCell<Note> {
             if (alert.getResult() == ButtonType.YES) {
                 if (selectedIdx != -1) {
                     Note itemToRemove = listViewProperty().get().getSelectionModel().getSelectedItem();
-                    System.out.println("Note at index " + selectedIdx + " selected.");
 
                     DatabaseHandler databaseHandler = new DatabaseHandler();
                     try {
                         databaseHandler.deleteNote(note);
                         ListManager.deleteNote(itemToRemove.getId());
+                        logger.info("Note at index " + selectedIdx + " deleted.");
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
+                        logger.error("SQLException: " + throwables);
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
+                        logger.error("ClassNotFoundException: " + e);
                     }
-                    // debugLogger.info("Removed from Listview " + itemToRemove.getTitle());
                     listViewProperty().get().getItems().remove(selectedIdx);
+                    logger.info("Removed from ListView: Note '" + itemToRemove.getTitle() + "'");
                 }
-
             }
         });
 
@@ -92,7 +102,7 @@ public class NoteCell extends JFXListCell<Note> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
-            System.out.println("Note at index " + selectedIdx + " selected.");
+            logger.info("Note at index " + selectedIdx + " selected.");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditNotes.fxml"));
             loader.setController(new EditNote(note, selectedIdx));
@@ -101,6 +111,7 @@ public class NoteCell extends JFXListCell<Note> {
                 loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error("IOException: " + e);
             }
 
             Parent root = loader.getRoot();
@@ -119,6 +130,7 @@ public class NoteCell extends JFXListCell<Note> {
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
             int noteId = note.getId();
+            logger.info("Note at index " + selectedIdx + " selected.");
 
             if (note.getState() == 0) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
@@ -130,11 +142,11 @@ public class NoteCell extends JFXListCell<Note> {
 
                 if (alert.getResult() == ButtonType.YES) {
                     if (selectedIdx != -1) {
-                        System.out.println("Note at index " + selectedIdx + " selected.");
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.editNote(noteId, note, 2);
                             ListManager.archiveNote(note);
+                            logger.info("Note at index " + selectedIdx + " archived.");
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                             error.showAndWait();
