@@ -59,6 +59,7 @@ public class Login {
 
         //Hide error messages
         loginMessage.setVisible(false);
+
         //Hide login loading spinner
         loginSpinner.setVisible(false);
 
@@ -115,27 +116,12 @@ public class Login {
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
 
-/*
-        loginLoginButton.getScene().getWindow().close();                                   //Hide login screen
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/Overview.fxml"));
-
-        try {
-            loader.load();
-        } catch (IOException e) {                                                         //Load overview screen
-            e.printStackTrace();
-        }
-
-        Overview controller = loader.getController();
-        Parent root = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Overview");
-        stage.setResizable(false);
-        stage.showAndWait();*/
-
     }
 
+    /**
+     * Login handler, checks the entered credentials and in case of matching ones fetch the tasks and
+     * notes from the database
+     */
     private void login() {
         //hide error messages after retry
         loginMessage.setVisible(false);
@@ -176,7 +162,7 @@ public class Login {
             };
 
 
-            //if task succeeded take resultset and check wether it has values
+            //if task succeeded take resultSet and check whether it has values
             task.setOnSucceeded(e -> {
                 ResultSet result = task.getValue();
                 String resUName = "";
@@ -195,10 +181,10 @@ public class Login {
                         System.out.println("Login successful!");
                         ListManager.setUser(loginUser);
 
+                        //Create a new concurrentTask to hav a new Thread fetching useres tasks and notes
                         Task<Void> update = new Task<>() {
                             @Override
                             public Void call() {
-
 
                                 try {
                                     new ListManager().update();
@@ -209,6 +195,7 @@ public class Login {
                             }
                         };
 
+                        //when finished call overview()
                         update.setOnSucceeded(succ -> overview());
 
                         new Thread(update).start();
@@ -236,7 +223,7 @@ public class Login {
 
 
 
-            //if task failed display connection error message
+            //if concurrentTask failed display connection error message
             task.setOnFailed(e -> {
                 noSpin();
                 Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
@@ -252,13 +239,14 @@ public class Login {
 
 
     }
-
+    // show loading spinner
     private void spin() {
         loginUsername.setVisible(false);
         loginPassword.setVisible(false);
         loginSpinner.setVisible(true);
     }
 
+    //hide loading spinner
     private void noSpin() {
         loginUsername.setVisible(true);
         loginPassword.setVisible(true);

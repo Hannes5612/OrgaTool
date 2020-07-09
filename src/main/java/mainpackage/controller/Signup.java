@@ -100,18 +100,26 @@ public class Signup {
         new FadeIn(login).play();
     }
 
+    /**
+     * show the loading spinner
+     */
     private void spin() {
         signupUsername.setVisible(false);
         signupPassword.setVisible(false);
         signupSpinner.setVisible(true);
     }
 
+    /**
+     * hide the loading spinner
+     */
     private void noSpin() {
         signupUsername.setVisible(true);
         signupPassword.setVisible(true);
         signupSpinner.setVisible(false);
     }
-
+    /**
+     * signup the user with given credentials
+     */
     private void signup() {
         System.out.println("Signup clicked, creating user.");
         //hide error messages after retry
@@ -141,7 +149,7 @@ public class Signup {
             User signupUser = new User(username, password);
             spin();
 
-            //new task for extra thread, databasehandler to fetch user
+            //new concurrentTask for extra thread, databasehandler to fetch user
             Task<Integer> task = new Task<>() {
                 @Override
                 public Integer call() {
@@ -173,6 +181,7 @@ public class Signup {
                 System.out.println(task.getValue());
                 signupMessage.setText("Account created, go back");
 
+                // 0 if username is already given
                 if (task.getValue() == 0) {
                     userNameShaker.shake();
                     signupPassword.clear();
@@ -180,10 +189,12 @@ public class Signup {
                     signupMessage.setVisible(true);
                     signupMessage.setText("User already exists.");
                 }
+                //1 if the connection failed
                 if (task.getValue() == 1) {
                     Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
                     connectionalert.showAndWait();
                 }
+                //2 if successful
                 if (task.getValue() == 2) {
                     noSpin();
                     signupMessage.setStyle("-fx-text-fill: green");
@@ -196,25 +207,4 @@ public class Signup {
 
         }
     }
-
-    /*
-     Creates an user in the database with given credentials via databasehandler
-
-
-    private void createUser(){
-
-     DatabaseHandler databaseHandler = new DatabaseHandler();
-
-     String username = signupUsername.getText().trim();
-     String password = signupPassword.getText().trim();
-
-     User signupUser = new User(username,password);
-
-
-
-     databaseHandler.signupUser(signupUser);
-
-     goback();
-     }*/
-
 }

@@ -7,6 +7,7 @@ import javafx.util.Duration;
 public class Shake {
     private TranslateTransition translateTransition;
 
+    //Constructor for the transition
     public Shake(Node node) {
         translateTransition =
                 new TranslateTransition(Duration.millis(50), node);
@@ -18,6 +19,7 @@ public class Shake {
 
     }
 
+    //Play the Transition
     public void shake() {
         translateTransition.playFromStart();
     }

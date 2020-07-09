@@ -19,3 +19,4 @@ dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
 [INFO ] 2020-07-09 21:57:10.408 [Thread-4] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ACTIVE' }
 [INFO ] 2020-07-09 21:57:10.408 [Thread-4] Main - Note loaded: {id=94, title='wef', content='wfwef', creationDate='2020-07-09', state='ACTIVE' }
 [INFO ] 2020-07-09 21:57:20.773 [JavaFX Application Thread] Main - Note at index 3 selected.
+[INFO ] 2020-07-09 21:06:19.939 [JavaFX Application Thread] Main - Applichation started

@@ -37,6 +37,10 @@ public class Main extends Application {
 
         new FadeIn(root).play();
 
+        System.out.println("Application started successfully!");
+        //logger.debug("Application started");
+        logger.info("Applichation started");
+        //logger.error("Applichation started");
         logger.info("Application started");
     }
 
