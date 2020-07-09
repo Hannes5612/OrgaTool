@@ -119,7 +119,7 @@ public class DatabaseHandler extends Config {
         preparedStatement.setInt(1, user.getUserid());
 
         ResultSet tasksResulSet = preparedStatement.executeQuery();
-        logger.info("Taskt fetched from server");
+        logger.info("Tasks fetched from server");
         return tasksResulSet;
 
     }
