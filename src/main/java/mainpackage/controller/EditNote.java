@@ -50,8 +50,9 @@ public class EditNote implements Initializable {
         int noteId = note.getId();
 
         closeEditNote.setOnAction(e -> {
-            Stage stage = (Stage) closeEditNote.getScene().getWindow();
-            stage.close();
+//            Stage stage = (Stage) closeEditNote.getScene().getWindow();
+//            stage.close();
+            closeEditNote.getScene().getWindow().hide();
         });
 
         newNoteEditButton.setOnAction(e -> {

@@ -110,7 +110,7 @@ public class NoteCell extends JFXListCell<Note> {
             stage.initStyle(StageStyle.TRANSPARENT);
             noteCellEditButton.setDisable(true);
             stage.showAndWait();
-            listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
+            if(!(EditNote.getEditedNote()==null))listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
             noteCellEditButton.setDisable(false);
 
         });
