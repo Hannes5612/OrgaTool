@@ -15,9 +15,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,6 +55,8 @@ public class TaskCell extends JFXListCell<Task> {
         private ImageView cellEditButton;
 
         private FXMLLoader fxmlLoader;
+
+        //private static final Logger logger = LogManager.getLogger(TaskCell.class);
 
         @FXML
         void initialize() {
@@ -112,13 +117,51 @@ public class TaskCell extends JFXListCell<Task> {
                         Parent root = loader.getRoot();
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root));
-                        stage.setResizable(false);
-                        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-                        getListView().setDisable(true);
+                        stage.initStyle(StageStyle.TRANSPARENT);
+                        cellEditButton.setDisable(true);
                         stage.showAndWait();
-                        listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask());
-                        getListView().setDisable(false);
+                        if(EditTask.getEditedTask() != null) { listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask()); }
+                        cellEditButton.setDisable(false);
+
                 });
+
+                cellCheckbox.setOnMouseClicked(event -> {
+
+                        final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
+                        final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
+
+                        //logger.info("Task at index " + selectedIdx + (cellCheckbox.isSelected() ? " checked." : " unchecked."));
+
+                        if(cellCheckbox.isSelected()) { task.finish(); }
+                        else { task.reactivate(); }
+                        synchronizeDatabase(task);
+
+                });
+
+        }
+
+        /**
+         * New thread to synchronize the database with the updated task.
+         */
+        private void synchronizeDatabase(Task task) {
+
+                DatabaseHandler databaseHandler = new DatabaseHandler();
+
+                javafx.concurrent.Task<Void> taskThread = new javafx.concurrent.Task<>() {
+                        @Override
+                        public Void call() {
+                                try {
+                                        databaseHandler.editTask(task.getId(), task);
+                                } catch (ClassNotFoundException | SQLException e) {
+                                        e.printStackTrace();
+                                }
+                                return null;
+                        }
+                };
+
+                taskThread.setOnFailed(e -> System.out.println("ALERT EINFÜGEN!!!!!"));
+
+                new Thread(taskThread).start();
 
         }
 
@@ -149,11 +192,12 @@ public class TaskCell extends JFXListCell<Task> {
                         cellPrioLabel.setText(task.getPriority());
                         cellDateLabel.setText(String.valueOf(task.getDueDate()));
                         cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
-                        cellCheckbox.setSelected(false);
                         cellTaskDescription.setWrapText(true);
+                        cellCheckbox.setSelected(task.getState() == 1);
 
                         setText(null);
                         setGraphic(rootAnchorPane);
+
                 }
         }
 
