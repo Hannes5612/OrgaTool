@@ -97,7 +97,8 @@ public class Calendar {
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
                         openAlert.showAndWait();
                     } else {
-                        showClickedDayTasks(vPane.getChildren().get(0));
+                        if(vPane.getChildren().toArray().length!=0)showClickedDayTasks(vPane.getChildren().get(0));
+                        else System.out.println("Nothing to click");
                     }
 
                 });
