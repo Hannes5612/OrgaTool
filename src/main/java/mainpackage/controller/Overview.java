@@ -357,7 +357,6 @@ public class Overview {
 
     }
 
-
     private ArrayList<Note> search(String filter, ObservableList<Note> list) {
 
         //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
@@ -380,19 +379,6 @@ public class Overview {
     }
 
     @FXML
-    void reload(ActionEvent event) {
-
-        // listManager.getTaskList().forEach(System.out::println);
-        listManager.getNoteList().forEach(System.out::println);
-
-        System.out.println("------------------------");
-        //setLists();
-        //usersTasks.clear();
-        //setUser(loggedInUser);
-
-    }
-
-    @FXML
     void logout(ActionEvent event) {
 
         ListManager.wipe();
@@ -407,6 +393,4 @@ public class Overview {
         new FadeIn(login).play();
 
     }
-
-
 }

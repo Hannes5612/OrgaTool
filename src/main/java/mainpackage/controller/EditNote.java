@@ -41,6 +41,7 @@ public class EditNote implements Initializable {
     private User user;
     private Note note;
     private int selectedIdx;
+    private static Note editedNote;
 
     public EditNote(Note note, int selectedIdx) {
         this.note = note;
@@ -55,13 +56,16 @@ public class EditNote implements Initializable {
         newNoteContent.setText(note.getContent());
         int noteId = note.getId();
 
+        // closing EditNote window without saving edited note
         closeEditNote.setOnAction(e -> {
             closeEditNote.getScene().getWindow().hide();
-            logger.info("Cancelling editing note");
+            logger.debug("Cancelling note edit");
         });
 
+        // closing EditNote window and saving edited note (in database and ListManager)
+        // only when title is set
         newNoteEditButton.setOnAction(e -> {
-            logger.info("'Save' button pressed.");
+            logger.debug("Saving note...");
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your note.", ButtonType.OK);
                 alert.setTitle("MISSING TITLE");
@@ -71,7 +75,7 @@ public class EditNote implements Initializable {
                 alert.showAndWait();
             } else {
                 if (selectedIdx != -1) {
-
+                    // getting values of edited note and storing it
                     String title = newNoteTitle.getText().trim();
                     String content = newNoteContent.getText().trim();
                     int state = note.getState();
@@ -79,36 +83,27 @@ public class EditNote implements Initializable {
                     editedNote = new Note(noteId, title, content);
 
                     DatabaseHandler databaseHandler = new DatabaseHandler();
-
                     try {
                         Note dbNote = editedNote;
                         databaseHandler.editNote(noteId, dbNote, state);
                         ListManager.editNote(editedNote);
-                        logger.info("Note edited: " + editedNote);
+                        logger.debug("Note edited: " + editedNote);
                     } catch (ClassNotFoundException classNotFoundException) {
                         classNotFoundException.printStackTrace();
-                        logger.error(classNotFoundException);
+                        logger.error("ClassNotFoundException: " + classNotFoundException);
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
+                        logger.error("SQLException: " + throwables);
                     }
                 }
-
                 newNoteEditButton.getScene().getWindow().hide();
             }
-
         });
-
     }
 
-    void setUser(User user) {
-        this.user = user;
-    }
-
-    public static Note getEditedNote(){
+    public static Note getEditedNote() {
         return editedNote;
     }
-    private static Note editedNote;
-
 
 }
