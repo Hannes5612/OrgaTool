@@ -272,7 +272,7 @@ public class Overview {
         CellFactory cellFactory = new CellFactory();
         usersTasks.clear();
         listManager.getTaskList().forEach((n) -> {
-            if (n.getState() == 0) {
+            if (n.getState() == 0 || n.getState() == 1) {
                 usersTasks.add(n);
             }
         });
