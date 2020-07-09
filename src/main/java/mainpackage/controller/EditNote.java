@@ -45,6 +45,7 @@ public class EditNote implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resourcese) {
 
+        editedNote = null;
         newNoteTitle.setText(note.getTitle());
         newNoteContent.setText(note.getContent());
         int noteId = note.getId();

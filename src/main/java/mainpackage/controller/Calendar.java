@@ -2,28 +2,9 @@ package mainpackage.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -31,13 +12,23 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
+
+import java.io.IOException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.util.GregorianCalendar;
+import java.util.ResourceBundle;
 
 public class Calendar {
 
@@ -317,6 +308,7 @@ public class Calendar {
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
             stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
             stage.setResizable(true);
             stage.setMinWidth(440);
