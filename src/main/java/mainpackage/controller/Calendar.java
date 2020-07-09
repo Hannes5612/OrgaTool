@@ -364,4 +364,5 @@ public class Calendar {
         rootPane.getChildren().setAll(overview);
         new FadeIn(overview).play();
     }
+
 }

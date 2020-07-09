@@ -199,8 +199,6 @@ public class TaskCell extends JFXListCell<Task> {
                         setText(null);
                         setGraphic(rootAnchorPane);
 
-
-
                 }
         }
 

@@ -163,5 +163,4 @@ public class ListManager {
         countingTaskID = -1;
     }
 
-
 }

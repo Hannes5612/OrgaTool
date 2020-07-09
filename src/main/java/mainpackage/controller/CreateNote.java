@@ -76,4 +76,5 @@ public class CreateNote {
     public static mainpackage.model.Note getCreatedNote() {
         return createdNote;
     }
+
 }

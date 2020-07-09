@@ -12,4 +12,5 @@ public class CellFactory {
             default: throw new UnsupportedCellType("Cell type does not exist!");
         }
     }
+
 }
