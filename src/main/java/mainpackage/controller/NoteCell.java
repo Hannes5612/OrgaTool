@@ -224,7 +224,6 @@ public class NoteCell extends ListCell<Note> {
             setText(null);
             setGraphic(rootPane);
 
-
         }
     }
 

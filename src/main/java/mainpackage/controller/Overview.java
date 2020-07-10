@@ -171,7 +171,11 @@ public class Overview {
      */
     private synchronized void toggleArchive() {
         usersNotes.clear();
-        listManager.getSeqNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
+        //Unload NotesList from ListView to disable update properties from wrong thread
+        noteListView.setItems(FXCollections.observableArrayList());
+        listManager.getNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
+        //reload NotesList in ListView to update it in FX-Thread
+        Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
     }
 
@@ -181,7 +185,11 @@ public class Overview {
      */
     private void toggleActive() {
         usersNotes.clear();
-        listManager.getSeqNoteList().filter(n -> n.getState()==0).forEach(usersNotes::add);
+        //Unload NotesList from ListView to disable update properties from wrong thread
+        noteListView.setItems(FXCollections.observableArrayList());
+        listManager.getNoteList().filter(n -> n.getState()==0).forEach(usersNotes::add);
+        //reload NotesList in ListView to update it in FX-Thread
+        Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
     }
 
