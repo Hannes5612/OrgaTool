@@ -123,7 +123,7 @@ public class NoteCell extends JFXListCell<Note> {
             getListView().setDisable(true);
             logger.info("Opened window to edit note " + note.getId() + ": '"+ note.getTitle() + "'.");
             stage.showAndWait();
-            if(EditNote.getEditedNote() != null) { listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote()); }
+            if(!(EditNote.getEditedNote()==null))listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
             getListView().setDisable(false);
         });
 
@@ -226,4 +226,5 @@ public class NoteCell extends JFXListCell<Note> {
             setGraphic(rootPane);
         }
     }
+
 }

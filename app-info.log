@@ -1,60 +1,47 @@
-[INFO ] 2020-07-10 00:35:25.428 [JavaFX Application Thread] Main - Applichation started
-[INFO ] 2020-07-10 00:35:25.430 [JavaFX Application Thread] Main - Application started
-[INFO ] 2020-07-10 00:35:27.768 [Thread-4] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@77b2508d
-[INFO ] 2020-07-10 00:35:27.768 [Thread-3] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@1af4a0e5
-[INFO ] 2020-07-10 00:35:27.809 [Thread-4] Main - User table with given credentials fetched: User{userName='m', password='m', userid='0'}
-[INFO ] 2020-07-10 00:35:27.810 [Thread-3] Main - User table with given credentials fetched: User{userName='m', password='m', userid='0'}
-[INFO ] 2020-07-10 00:35:27.976 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@58bc350f
-[INFO ] 2020-07-10 00:35:27.985 [Thread-6] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@eadd2d0
-[INFO ] 2020-07-10 00:35:28.029 [Thread-5] Main - Note loaded: {id=29, title='x', content='dwhzgtgduwahuoduhwd
-dwojiuadh
-skdposajdoihawiougtdi
-dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.029 [Thread-6] Main - Note loaded: {id=29, title='x', content='dwhzgtgduwahuoduhwd
-dwojiuadh
-skdposajdoihawiougtdi
-dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=43, title='gjngh', content='gjghjg', creationDate='2020-06-30', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=43, title='gjngh', content='gjghjg', creationDate='2020-06-30', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=50, title='drtdt', content='', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=50, title='drtdt', content='', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=51, title='wwwww', content='- jdik
-- dksd
-- uwgiuwhd
-- uweiw', creationDate='2020-07-01', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=51, title='wwwww', content='- jdik
-- dksd
-- uwgiuwhd
-- uweiw', creationDate='2020-07-01', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.031 [Thread-6] Main - Note loaded: {id=55, title='jhdhs', content='szugdagizsdw', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.031 [Thread-5] Main - Note loaded: {id=55, title='jhdhs', content='szugdagizsdw', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=57, title='edf', content='eff', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=57, title='edf', content='eff', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=59, title='a', content='', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=59, title='a', content='', creationDate='2020-07-01', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=83, title='SCF', content='', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=83, title='SCF', content='', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=90, title='Zsghswwdw', content='dasdasd', creationDate='2020-07-09', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=90, title='Zsghswwdw', content='dasdasd', creationDate='2020-07-09', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.033 [Thread-5] Main - Note loaded: {id=91, title='dfg', content='v dgg', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.033 [Thread-6] Main - Note loaded: {id=91, title='dfg', content='v dgg', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.033 [Thread-5] Main - Note loaded: {id=92, title='wdqw', content='awda', creationDate='2020-07-09', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.033 [Thread-6] Main - Note loaded: {id=92, title='wdqw', content='awda', creationDate='2020-07-09', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:28.034 [Thread-6] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.034 [Thread-5] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-10 00:35:28.197 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@70ff70b
-[INFO ] 2020-07-10 00:35:28.207 [Thread-6] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7b9d10a8
-[INFO ] 2020-07-10 00:35:28.218 [Thread-5] Main - Tasks fetched from server
-[INFO ] 2020-07-10 00:35:28.228 [Thread-6] Main - Tasks fetched from server
-[DEBUG] 2020-07-10 00:35:33.323 [JavaFX Application Thread] Main - Saving new note...
-[INFO ] 2020-07-10 00:35:33.324 [JavaFX Application Thread] Main - Note created: {id=94, title='dg', content='gfg', creationDate='2020-07-10', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:33.494 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@75829c83
-[DEBUG] 2020-07-10 00:35:33.532 [JavaFX Application Thread] Main - Note created: {id=94, title='dg', content='gfg', creationDate='2020-07-10', state='ACTIVE' }
-[DEBUG] 2020-07-10 00:35:37.849 [JavaFX Application Thread] Main - Saving new note...
-[INFO ] 2020-07-10 00:35:37.850 [JavaFX Application Thread] Main - Note created: {id=95, title='erg', content='ergeger', creationDate='2020-07-10', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:38.242 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7f8dd357
-[DEBUG] 2020-07-10 00:35:38.270 [JavaFX Application Thread] Main - Note created: {id=95, title='erg', content='ergeger', creationDate='2020-07-10', state='ACTIVE' }
-[DEBUG] 2020-07-10 00:35:53.606 [JavaFX Application Thread] Main - Saving new note...
-[INFO ] 2020-07-10 00:35:53.606 [JavaFX Application Thread] Main - Note created: {id=96, title='gerge', content='gegergerger', creationDate='2020-07-10', state='ACTIVE' }
-[INFO ] 2020-07-10 00:35:54.028 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@6505997c
-[DEBUG] 2020-07-10 00:35:54.180 [JavaFX Application Thread] Main - Note created: {id=96, title='gerge', content='gegergerger', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:14:35.342 [Thread-3] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7f46efdc
+[INFO ] 2020-07-10 04:14:35.386 [Thread-3] Main - User table with given credentials fetched: User{userName='test', password='lo', userid='0'}
+[INFO ] 2020-07-10 04:14:37.677 [Thread-4] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@6eb6e791
+[INFO ] 2020-07-10 04:14:37.698 [Thread-4] Main - User table with given credentials fetched: User{userName='test', password='lol', userid='0'}
+[INFO ] 2020-07-10 04:14:37.854 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@eed0766
+[INFO ] 2020-07-10 04:14:37.888 [Thread-5] Main - Note loaded: {id=69, title='wqdwdw', content='2', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:14:37.888 [Thread-5] Main - Note loaded: {id=70, title='regergrerg', content='1', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:14:38.044 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@569a27e0
+[INFO ] 2020-07-10 04:14:38.068 [Thread-5] Main - Tasks fetched from server
+[DEBUG] 2020-07-10 04:14:59.916 [JavaFX Application Thread] Main - Saving new note...
+[INFO ] 2020-07-10 04:14:59.916 [JavaFX Application Thread] Main - Note created: {id=71, title='htzhzj', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:00.066 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@76801e8c
+[DEBUG] 2020-07-10 04:15:00.098 [JavaFX Application Thread] Main - Note created: {id=71, title='htzhzj', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[DEBUG] 2020-07-10 04:15:04.987 [JavaFX Application Thread] Main - Note at index 0 selected.
+[INFO ] 2020-07-10 04:15:04.996 [JavaFX Application Thread] Main - Opened window to edit note 71: 'htzhzj'.
+[DEBUG] 2020-07-10 04:15:05.909 [JavaFX Application Thread] Main - Cancelling note edit
+[DEBUG] 2020-07-10 04:15:06.570 [JavaFX Application Thread] Main - Note at index 0 selected.
+[INFO ] 2020-07-10 04:15:06.574 [JavaFX Application Thread] Main - Opened window to edit note 71: 'htzhzj'.
+[DEBUG] 2020-07-10 04:15:09.190 [JavaFX Application Thread] Main - Cancelling note edit
+[DEBUG] 2020-07-10 04:15:09.969 [JavaFX Application Thread] Main - Note at index 0 selected.
+[INFO ] 2020-07-10 04:15:09.973 [JavaFX Application Thread] Main - Opened window to edit note 71: 'htzhzj'.
+[DEBUG] 2020-07-10 04:15:12.069 [JavaFX Application Thread] Main - Saving note...
+[INFO ] 2020-07-10 04:15:12.070 [JavaFX Application Thread] Main - Note created: {id=71, title='i8i787', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:12.220 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@2add9b8b
+[DEBUG] 2020-07-10 04:15:12.547 [JavaFX Application Thread] Main - Note edited: {id=71, title='i8i787', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:14.881 [Thread-7] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@5ffb3c94
+[INFO ] 2020-07-10 04:15:15.967 [Thread-8] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7128bf07
+[INFO ] 2020-07-10 04:15:17.675 [Thread-9] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@2c8a60ac
+[INFO ] 2020-07-10 04:15:18.730 [Thread-10] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@b8512d
+[INFO ] 2020-07-10 04:15:35.001 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@4bc54635
+[INFO ] 2020-07-10 04:15:39.614 [Thread-11] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@65c999fc
+[INFO ] 2020-07-10 04:15:39.636 [Thread-11] Main - User table with given credentials fetched: User{userName='test', password='lol', userid='0'}
+[INFO ] 2020-07-10 04:15:39.788 [Thread-12] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@67137e8d
+[INFO ] 2020-07-10 04:15:39.809 [Thread-12] Main - Note loaded: {id=69, title='wqdwdw', content='2', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:39.809 [Thread-12] Main - Note loaded: {id=70, title='regergrerg', content='1', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:39.810 [Thread-12] Main - Note loaded: {id=98, title='htzhzj', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:39.951 [Thread-12] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@13f928f3
+[INFO ] 2020-07-10 04:15:39.971 [Thread-12] Main - Tasks fetched from server
+[INFO ] 2020-07-10 04:15:44.523 [Thread-14] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@260b2d4a
+[INFO ] 2020-07-10 04:15:47.421 [Thread-15] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@68df8aa6
+[INFO ] 2020-07-10 04:15:47.442 [Thread-15] Main - User table with given credentials fetched: User{userName='test', password='lol', userid='0'}
+[INFO ] 2020-07-10 04:15:47.603 [Thread-16] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7937270b
+[INFO ] 2020-07-10 04:15:47.624 [Thread-16] Main - Note loaded: {id=69, title='wqdwdw', content='2', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:47.624 [Thread-16] Main - Note loaded: {id=70, title='regergrerg', content='1', creationDate='2020-07-02', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:47.625 [Thread-16] Main - Note loaded: {id=98, title='htzhzj', content='kkuzkuzliuluiiuliu', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 04:15:47.766 [Thread-16] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@dc348cc
+[INFO ] 2020-07-10 04:15:47.787 [Thread-16] Main - Tasks fetched from server

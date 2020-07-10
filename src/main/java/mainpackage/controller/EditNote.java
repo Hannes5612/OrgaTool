@@ -12,8 +12,8 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.model.Note;
 import mainpackage.model.User;
+import mainpackage.model.Note;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
