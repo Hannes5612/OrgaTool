@@ -1,6 +1,9 @@
 package mainpackage.controller;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,17 +28,17 @@ import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
 import mainpackage.threads.SaveThread;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -83,7 +86,6 @@ public class Overview {
     private final ObservableList<Note> usersNotes = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotesSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ClockThread clock = new ClockThread();
-//    private static final Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
     synchronized void initialize() {
@@ -99,6 +101,7 @@ public class Overview {
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
         overviewExport.setOnMouseClicked(mouseEvent -> export());
 
+        // ToggleButton to switch between archived and active notes/tasks
         toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
             if(toggleArchiveButton.isSelected()) {
                 noteListSearchField.clear();
@@ -126,8 +129,10 @@ public class Overview {
             //debugLogger.info("tasks Arraylist Size: " + tasks.getTasks().size());
         });
 
+        // sorting notes when DropDown value is changed
         sortNoteListDropdown.setOnAction(event -> sortNotes(sortNoteListDropdown.getValue()));
 
+        // setting default sorting mechanism to "Sort by date (newest to oldest)"
         sortNoteListDropdown.setValue("Sort by date (newest to oldest)");
 
         //Initializing clock
@@ -140,6 +145,7 @@ public class Overview {
         ex.execute(this::setTasks);
         ex.shutdown();
 
+        // sorting notes
         sortNotes(sortNoteListDropdown.getValue());
     }
 
@@ -177,6 +183,7 @@ public class Overview {
         //reload NotesList in ListView to update it in FX-Thread
         Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
+        logger.info("Archived notes are now displayed.");
     }
 
     /**
@@ -191,6 +198,7 @@ public class Overview {
         //reload NotesList in ListView to update it in FX-Thread
         Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
+        logger.info("Active notes are now displayed.");
     }
 
     /**
@@ -199,7 +207,7 @@ public class Overview {
      */
     private void sortDateDesc(ObservableList<Note> usersNotes) {
             usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
-            //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
+            logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in descending order.");
     }
 
     /**
@@ -208,8 +216,7 @@ public class Overview {
      */
     private void sortDateAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(Note::getCreationDate));
-        //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
-
+        logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in ascending order.");
     }
 
     /**
@@ -218,7 +225,7 @@ public class Overview {
      */
     private void sortTitleAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
-        //debugLogger.info("List " + list.toString() + "  sorted by title in ascending order.");
+        logger.info("Note list " + usersNotes.toString() + " sorted by title in ascending order.");
     }
 
     /**
@@ -227,7 +234,7 @@ public class Overview {
      */
     private void sortTitleDesc(ObservableList<Note> usersNotes) {
         usersNotes.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
-        //debugLogger.info("List " + list.toString() + "  sorted by title in descending order.");
+        logger.info("Note list " + usersNotes.toString() + " sorted by title in descending order.");
     }
 
     /**
