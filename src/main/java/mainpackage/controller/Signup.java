@@ -67,10 +67,7 @@ public class Signup {
         //Hide login loading spinner
         signupSpinner.setVisible(false);
 
-        signupGobackButton.setOnAction(event -> {
-            System.out.println("Back clicked, showing Login screen");
-            goback();
-        });
+        signupGobackButton.setOnAction(event -> goback());
 
         signupPassword.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -121,12 +118,10 @@ public class Signup {
      * signup the user with given credentials
      */
     private void signup() {
-        System.out.println("Signup clicked, creating user.");
         //hide error messages after retry
         signupMessage.setVisible(false);
         signupMessage.setStyle("-fx-text-fill: red");
 
-        System.out.println("Login clicked, checking credentials!");
 
         //get user input
         String username = signupUsername.getText().trim();
@@ -178,7 +173,6 @@ public class Signup {
 
             //if task succeeded take resultset and check wether it has values
             task.setOnSucceeded(e -> {
-                System.out.println(task.getValue());
                 signupMessage.setText("Account created, go back");
 
                 // 0 if username is already given

@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
+import mainpackage.Main;
 import mainpackage.animation.FadeIn;
 import mainpackage.exceptions.UnsupportedCellType;
 import mainpackage.model.Note;
@@ -26,12 +27,13 @@ import mainpackage.threads.SaveThread;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-//import org.apache.log4j.LogManager;
-//import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Main view after log in. Shows three different views of the created tasks.
@@ -72,19 +74,21 @@ public class Overview {
     @FXML
     private JFXComboBox<String> sortTaskListDropdown;
 
-    private static final ListManager listManager = new ListManager();
-    private final ObservableList<Task> usersTasks = FXCollections.observableArrayList();
-    private final ObservableList<Task> usersTasksSearch = FXCollections.observableArrayList();
-    private final ObservableList<Note> usersNotes = FXCollections.observableArrayList();
-    private final ObservableList<Note> usersNotesSearch = FXCollections.observableArrayList();
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private final ListManager listManager = new ListManager();
+    private final ObservableList<Task> usersTasks = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private final ObservableList<Task> usersTasksSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private final ObservableList<Note> usersNotes = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private final ObservableList<Note> usersNotesSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ClockThread clock = new ClockThread();
 //    private static final Logger log = LogManager.getLogger(Overview.class);
 
     @FXML
-    void initialize() {
+    synchronized void initialize() {
 
+        logger.info("Overview initializing");
         //listManager.getNoteList().forEach(usersNotes::add);
-        listManager.getTaskList().forEach(usersTasks::add);
+        //listManager.getTaskList().forEach(usersTasks::add);
         //setLists();
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
@@ -128,9 +132,12 @@ public class Overview {
         clock.setDaemon(true);
         clock.start();
 
-        setNotes();
+        ExecutorService ex = Executors.newCachedThreadPool();
+        ex.execute(this::setNotes);
+        ex.execute(this::setTasks);
+        ex.shutdown();
+
         sortNotes(sortNoteListDropdown.getValue());
-        setTasks();
     }
 
     /**
@@ -236,21 +243,16 @@ public class Overview {
         }
     }
 
-    public void setNotes() {
+    public synchronized void setNotes() {
 
         // Placeholder if user has no notes
         Label noNotes = new Label("No notes yet!");
         noNotes.setFont(new Font(20));
         noteListView.setPlaceholder(noNotes);
 
-        CellFactory cellFactory = new CellFactory();
         usersNotes.clear();
-        // listManager.getNoteList().forEach(usersNotes::add);
-        listManager.getNoteList().forEach((n) -> {
-            if (n.getState() == 0) {
-                usersNotes.add(n);
-            }
-        });
+        listManager.getNoteList().filter(t->t.getState()==0).forEach(usersNotes::add);
+        CellFactory cellFactory = new CellFactory();
         noteListView.setCellFactory(NoteCell -> {
             try {
                 return cellFactory.createCell("note");
@@ -260,22 +262,19 @@ public class Overview {
             }
         });
         noteListView.setItems(usersNotes);
+        logger.info("Notes loaded to overview listview");
     }
 
-    public void setTasks() {
+    public synchronized void setTasks() {
 
         // Placeholder if user has no tasks
         Label noTasks = new Label("No tasks yet!");
         noTasks.setFont(new Font(20));
         taskListView.setPlaceholder(noTasks);
 
-        CellFactory cellFactory = new CellFactory();
         usersTasks.clear();
-        listManager.getTaskList().forEach((n) -> {
-            if (n.getState() == 0 || n.getState() == 1) {
-                usersTasks.add(n);
-            }
-        });
+        listManager.getTaskList().filter(t->t.getState()==0||t.getState()==1).forEach(usersTasks::add);
+        CellFactory cellFactory = new CellFactory();
         taskListView.setCellFactory(TaskCell -> {
            try {
                return cellFactory.createCell("task");
@@ -285,6 +284,8 @@ public class Overview {
            }
         });
         taskListView.setItems(usersTasks);
+
+        logger.info("Tasks loaded to overview listview");
 
     }
 
@@ -342,7 +343,6 @@ public class Overview {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Calendar");
 
-        System.out.println("Signup clicked, changing screen");
         AnchorPane calendar = null;
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/Calendar.fxml"));

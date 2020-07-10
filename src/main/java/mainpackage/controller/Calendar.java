@@ -98,7 +98,6 @@ public class Calendar {
                         openAlert.showAndWait();
                     } else {
                         if(vPane.getChildren().toArray().length!=0)showClickedDayTasks(vPane.getChildren().get(0));
-                        else System.out.println("Nothing to click");
                     }
 
                 });
@@ -381,7 +380,6 @@ public class Calendar {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Overview");
 
-        System.out.println("Back to overview");
         AnchorPane overview = null;
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/Overview.fxml"));

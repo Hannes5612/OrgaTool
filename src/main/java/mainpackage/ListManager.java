@@ -5,9 +5,8 @@ import mainpackage.database.DatabaseHandler;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
-
-//import org.apache.log4j.LogManager;
-//import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.sql.ResultSet;
@@ -17,8 +16,7 @@ import java.util.stream.Stream;
 
 public class ListManager {
 
-//    private static final Logger LOG = LogManager.getLogger(ListManager.class);
-
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
     private static User user = new User();
     private static int countingTaskID;
     private static int countingNoteId;
@@ -55,6 +53,7 @@ public class ListManager {
         noteList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet noteRow = databaseHandler.getNotes();
+        logger.info("Notes from database fetched");
 
         while (noteRow.next()) {
             int noteid = noteRow.getInt("notesid");
@@ -67,12 +66,14 @@ public class ListManager {
             Note note = new Note(noteid, title, content, creationDate, state);
             noteList.add(note);
         }
+        logger.info("Notes in local list loaded");
     }
 
     public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet taskRow = databaseHandler.getTasks(user);
+        logger.info("Tasks from database fetched");
         while (taskRow.next()) {
             int id = taskRow.getInt("taskid");
             String title = taskRow.getString("title");
@@ -85,10 +86,10 @@ public class ListManager {
 
             countingTaskID = id + 1;
             Task task = new Task(id, title, content, priority, color, dueDate, creationDate, state);
-           // LOG.info("Task loaded: " + task.toString());
-            System.out.println("Task loaded: " + task.toString());
+            logger.info("Task loaded: " + task.toString());
             taskList.add(task);
         }
+        logger.info("Tasks in local list loaded");
     }
 
     public static void setUser(User user) {
@@ -142,12 +143,12 @@ public class ListManager {
         noteList.add(note);
     }
 
-    public Stream<Note> getNoteList() {
-        return noteList.stream();
+    public synchronized Stream<Note> getNoteList() {
+        return noteList.parallelStream();
     }
 
-    public Stream<Task> getTaskList() {
-        return taskList.stream();
+    public synchronized Stream<Task> getTaskList() {
+        return taskList.parallelStream();
     }
 
     public Note getLatestNote(){

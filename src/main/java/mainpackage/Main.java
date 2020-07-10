@@ -14,13 +14,14 @@ import java.net.URL;
 
 public class Main extends Application {
 
-    //private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
     @Override
     public void start(Stage primaryStage) throws Exception {
 //        String log4jConfPath = "src/main/resources/log4j2.xml";
 //        PropertyConfigurator.configure(log4jConfPath);
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
+
 
         URL fxmlFileUrl = getClass().getClassLoader().getResource("view/Login.fxml");
         Parent root = null;
@@ -37,9 +38,8 @@ public class Main extends Application {
 
         new FadeIn(root).play();
 
-        System.out.println("Application started successfully!");
         //logger.debug("Application started");
-        //logger.info("Applichation started");
+        logger.info("Applichation started");
         //logger.error("Applichation started");
         //logger.info("Application started");
     }

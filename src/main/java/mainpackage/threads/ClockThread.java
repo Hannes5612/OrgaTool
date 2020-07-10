@@ -2,7 +2,10 @@ package mainpackage.threads;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import mainpackage.Main;
 import mainpackage.controller.Overview;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +15,7 @@ public class ClockThread extends Thread{
     Label timeLabel;
     Label dateLabel;
 
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
     private String time = "", month = "", day = "";
 
     public void setLabels(Label time, Label date){
@@ -20,6 +24,7 @@ public class ClockThread extends Thread{
     }
     @Override
     public void run() {
+        logger.info("Clock running");
         try {
             while (true) {
 

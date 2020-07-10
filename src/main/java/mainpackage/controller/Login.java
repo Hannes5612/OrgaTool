@@ -10,6 +10,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
+
+import mainpackage.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mainpackage.animation.FadeIn;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
@@ -19,6 +24,7 @@ import mainpackage.model.User;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * Entry point of the application.
@@ -47,6 +53,7 @@ public class Login {
     @FXML
     private Ellipse loginBlueXY;
 
+    Logger logger = LogManager.getLogger(Main.class.getName());
 
     /**
      * Handle button presses.
@@ -75,6 +82,8 @@ public class Login {
 
         //Trigger for login button
         loginLoginButton.setOnAction(event -> login());
+
+        logger.info("Loginpage loaded");
     }
 
 
@@ -86,7 +95,6 @@ public class Login {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Signup");
 
-        System.out.println("Sign up clicked!");
 
         AnchorPane signup = null;
         try {
@@ -96,7 +104,7 @@ public class Login {
         }
         rootPane.getChildren().setAll(signup);                                            //Show Signup page
         new FadeIn(signup).play();
-
+        logger.info("Signup Loaded");
     }
 
     /**
@@ -116,6 +124,12 @@ public class Login {
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
 
+        logger.info("Overview loaded");
+        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+
+        for (Thread t : threads) {
+            System.out.println(t);
+        }
     }
 
     /**
@@ -125,7 +139,6 @@ public class Login {
     private void login() {
         //hide error messages after retry
         loginMessage.setVisible(false);
-        System.out.println("Login clicked, checking credentials!");
 
         //get user input
         String username = loginUsername.getText().trim();
@@ -143,6 +156,7 @@ public class Login {
             loginMessage.setVisible(true);
             loginMessage.setText("Enter something!");
 
+            logger.info("Wrong credentials entered");
             //if not empty create an user, show loading spinner and
         } else {
 
@@ -157,10 +171,12 @@ public class Login {
                     final DatabaseHandler databaseHandler = new DatabaseHandler();
                     //Catch the tables' row of the search result, given the users credentials
 
+                    logger.info("Getting user credentials from Database");
                     return databaseHandler.getUser(loginUser);
                 }
             };
 
+            Thread loginCheck = new Thread(task);
 
             //if task succeeded take resultSet and check whether it has values
             task.setOnSucceeded(e -> {
@@ -178,7 +194,7 @@ public class Login {
 
                     //if a row exists, fetch userid and pass the user to the overview method to load nest scene
                     if (counter == 1 && loginUser.getUserName().equals(resUName) && loginUser.getPassword().equals(resPwd)) {
-                        System.out.println("Login successful!");
+                        logger.info("User found!");
                         ListManager.setUser(loginUser);
 
                         //Create a new concurrentTask to hav a new Thread fetching useres tasks and notes
@@ -188,6 +204,7 @@ public class Login {
 
                                 try {
                                     new ListManager().update();
+                                    logger.info("Updating local task and notes list");
                                 } catch (SQLException | ClassNotFoundException throwables) {
                                     throwables.printStackTrace();
                                 }
@@ -195,11 +212,11 @@ public class Login {
                             }
                         };
 
+                        Thread updateLists = new Thread(update);
                         //when finished call overview()
                         update.setOnSucceeded(succ -> overview());
 
-                        new Thread(update).start();
-
+                        updateLists.start();
 
                         //if no row exists stop spinner, shake again and display error message
                     } else {
@@ -210,14 +227,17 @@ public class Login {
 
                         loginMessage.setVisible(true);
                         loginMessage.setText("Wrong username/password !");
+                        logger.info("Wrong credentials entered");
                     }
 
                     //catch a SQLException in any case
-                } catch (SQLException sqlException) {
+                } catch (SQLException  sqlException) {
                     noSpin();
 
                     Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);
                     error.showAndWait();
+
+                    logger.info("Sql exception occured: " +sqlException);
                 }
             });
 
@@ -227,12 +247,12 @@ public class Login {
             task.setOnFailed(e -> {
                 noSpin();
                 Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
+                logger.info("Database connection failed");
                 connectionalert.showAndWait();
             });
 
             //run database handler task
-            Thread runTask = new Thread(task);
-            runTask.start();
+            loginCheck.start();
 
 
         }
