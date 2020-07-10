@@ -159,6 +159,7 @@ public class ListManager {
         return noteList.get(noteList.size() - 1);
     }
 
+    public Task getLatestTask() { return taskList.get(taskList.size() - 1); }
 
     public static void wipe(){
         taskList.clear();

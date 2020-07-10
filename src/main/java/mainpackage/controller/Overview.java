@@ -81,15 +81,14 @@ public class Overview {
 
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
     private final ListManager listManager = new ListManager();
-    private final ObservableList<Task> usersTasks = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private final ObservableList<Task> usersTasks       = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Task> usersTasksSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
-    private final ObservableList<Note> usersNotes = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private final ObservableList<Note> usersNotes       = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotesSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ClockThread clock = new ClockThread();
 
     @FXML
     synchronized void initialize() {
-
 
         logger.info("Overview initializing");
         //listManager.getNoteList().forEach(usersNotes::add);
@@ -105,10 +104,12 @@ public class Overview {
         toggleArchiveButton.selectedProperty().addListener((arg0, arg1, arg2) -> {
             if(toggleArchiveButton.isSelected()) {
                 noteListSearchField.clear();
+                taskListSearchField.clear();
                 toggleArchive();
             }
             else {
                 noteListSearchField.clear();
+                taskListSearchField.clear();
                 toggleActive();
             }
         });
@@ -117,7 +118,7 @@ public class Overview {
             //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
 
             if (!newValue.trim().isEmpty() && usersNotes.size() > 0) {
-                usersNotesSearch.setAll(search(noteListSearchField.getText(), usersNotes));
+                usersNotesSearch.setAll(searchNotes(noteListSearchField.getText(), usersNotes));
                 noteListView.setItems(usersNotesSearch);
             } else {
                 noteListView.setItems(usersNotes);
@@ -135,6 +136,28 @@ public class Overview {
         // setting default sorting mechanism to "Sort by date (newest to oldest)"
         sortNoteListDropdown.setValue("Sort by date (newest to oldest)");
 
+        taskListSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
+
+            if (!newValue.trim().isEmpty() && usersTasks.size() > 0) {
+                usersTasksSearch.setAll(searchTasks(taskListSearchField.getText(), usersTasks));
+                taskListView.setItems(usersTasksSearch);
+            } else {
+                taskListView.setItems(usersTasks);
+            }
+
+            //debugLogger.debug("Search");
+            //debugLogger.info("TaskListView Size: " + todolistTaskList.getItems().size());
+            //debugLogger.info("TaskList Size: " + taskListView.size());
+            //debugLogger.info("tasks Arraylist Size: " + tasks.getTasks().size());
+        });
+
+        // sorting tasks when DropDown value is changed
+        sortTaskListDropdown.setOnAction(event -> sortTasks(sortTaskListDropdown.getValue()));
+
+        // setting default sorting mechanism to "Sort by date (newest to oldest)"
+        sortTaskListDropdown.setValue("Sort by date (newest to oldest)");
+
         //Initializing clock
         clock.setLabels(timeLabel, dateLabel);
         clock.setDaemon(true);
@@ -145,8 +168,8 @@ public class Overview {
         ex.execute(this::setTasks);
         ex.shutdown();
 
-        // sorting notes
         sortNotes(sortNoteListDropdown.getValue());
+        sortTasks(sortTaskListDropdown.getValue());
     }
 
     /**
@@ -156,48 +179,79 @@ public class Overview {
     private void sortNotes(String choice) {
         switch (choice) {
             case "Sort by date (newest to oldest)":
-                sortDateDesc(usersNotes);
+                sortNotesDateDesc(usersNotes);
                 break;
             case "Sort by date (oldest to newest)":
-                sortDateAsc(usersNotes);
+                sortNotesDateAsc(usersNotes);
                 break;
             case "Sort alphabetically (A-Z)":
-                sortTitleAsc(usersNotes);
+                sortNotesTitleAsc(usersNotes);
                 break;
             case "Sort alphabetically (Z-A)":
-                sortTitleDesc(usersNotes);
+                sortNotesTitleDesc(usersNotes);
+                break;
+        }
+    }
+
+    /**
+     * Sorting tasks depending on selected String in sortTaskListDropdown (dropdown menu to sort tasks in overview)
+     * @param choice selected String in DropDown
+     */
+    private void sortTasks(String choice) {
+        switch (choice) {
+            case "Sort by date (newest to oldest)":
+                sortTasksDateDesc(usersTasks);
+                break;
+            case "Sort by date (oldest to newest)":
+                sortTasksDateAsc(usersTasks);
+                break;
+            case "Sort alphabetically (A-Z)":
+                sortTasksTitleAsc(usersTasks);
+                break;
+            case "Sort alphabetically (Z-A)":
+                sortTasksTitleDesc(usersTasks);
                 break;
         }
     }
 
 
     /**
-     * Clearing list of user's note and adding only archived notes.
-     * Result: only archived notes are shown when toggleArchiveButton is selected
+     * Clearing list of user's notes/tasks and adding only archived notes/tasks.
+     * Result: only archived notes/tasks are shown when toggleArchiveButton is selected.
      */
     private synchronized void toggleArchive() {
         usersNotes.clear();
-        //Unload NotesList from ListView to disable update properties from wrong thread
+        usersTasks.clear();
+        //Unload NotesList/TasksList from ListView to disable update properties from wrong thread
         noteListView.setItems(FXCollections.observableArrayList());
         listManager.getNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
-        //reload NotesList in ListView to update it in FX-Thread
+        taskListView.setItems(FXCollections.observableArrayList());
+        listManager.getTaskList().filter(n -> n.getState()==2).forEach(usersTasks::add);
+        //Reload NotesList/TasksList in ListView to update it in FX-Thread
         Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
-        logger.info("Archived notes are now displayed.");
+        Platform.runLater(() -> taskListView.setItems(usersTasks));
+        sortTasks(sortTaskListDropdown.getValue());
+        logger.info("Archived notes/tasks are now displayed.");
     }
 
     /**
-     * Clearing list of user's note and adding only archived notes.
-     * Result: only active notes are shown when toggleArchiveButton is not selected
+     * Clearing list of user's notes/tasks and adding only archived notes/tasks.
+     * Result: only active notes/tasks are shown when toggleArchiveButton is not selected.
      */
     private void toggleActive() {
         usersNotes.clear();
-        //Unload NotesList from ListView to disable update properties from wrong thread
+        usersTasks.clear();
+        //Unload NotesList/TasksList from ListView to disable update properties from wrong thread
         noteListView.setItems(FXCollections.observableArrayList());
+        taskListView.setItems(FXCollections.observableArrayList());
         listManager.getNoteList().filter(n -> n.getState()==0).forEach(usersNotes::add);
-        //reload NotesList in ListView to update it in FX-Thread
+        listManager.getTaskList().filter(n -> n.getState()==0 || n.getState()==1).forEach(usersTasks::add);
+        //Reload NotesList/TasksList in ListView to update it in FX-Thread
         Platform.runLater(() -> noteListView.setItems(usersNotes));
         sortNotes(sortNoteListDropdown.getValue());
+        Platform.runLater(() -> taskListView.setItems(usersTasks));
+        sortTasks(sortTaskListDropdown.getValue());
         logger.info("Active notes are now displayed.");
     }
 
@@ -205,7 +259,7 @@ public class Overview {
      * Sorting list of user's notes by date (descending)
      * @param usersNotes list of user's notes
      */
-    private void sortDateDesc(ObservableList<Note> usersNotes) {
+    private void sortNotesDateDesc(ObservableList<Note> usersNotes) {
             usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
             logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in descending order.");
     }
@@ -214,7 +268,7 @@ public class Overview {
      * Sorting list of user's notes by date (ascending)
      * @param usersNotes list of user's notes
      */
-    private void sortDateAsc(ObservableList<Note> usersNotes) {
+    private void sortNotesDateAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(Note::getCreationDate));
         logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in ascending order.");
     }
@@ -223,7 +277,7 @@ public class Overview {
      * Sorting list of user's notes alphabetically (ascending)
      * @param usersNotes list of user's notes
      */
-    private void sortTitleAsc(ObservableList<Note> usersNotes) {
+    private void sortNotesTitleAsc(ObservableList<Note> usersNotes) {
         usersNotes.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
         logger.info("Note list " + usersNotes.toString() + " sorted by title in ascending order.");
     }
@@ -232,9 +286,45 @@ public class Overview {
      * Sorting list of user's notes alphabetically (descending)
      * @param usersNotes list of user's notes
      */
-    private void sortTitleDesc(ObservableList<Note> usersNotes) {
+    private void sortNotesTitleDesc(ObservableList<Note> usersNotes) {
         usersNotes.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
         logger.info("Note list " + usersNotes.toString() + " sorted by title in descending order.");
+    }
+
+    /**
+     * Sorting list of user's tasks by date (descending)
+     * @param usersTasks list of user's tasks
+     */
+    private void sortTasksDateDesc(ObservableList<Task> usersTasks) {
+        usersTasks.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
+        logger.info("Task list " + usersTasks.toString() + " sorted by creation dates in descending order.");
+    }
+
+    /**
+     * Sorting list of user's tasks by date (ascending)
+     * @param usersTasks list of user's tasks
+     */
+    private void sortTasksDateAsc(ObservableList<Task> usersTasks) {
+        usersTasks.sort(Comparator.comparing(Task::getCreationDate));
+        logger.info("Task list " + usersTasks.toString() + " sorted by creation dates in ascending order.");
+    }
+
+    /**
+     * Sorting list of user's tasks alphabetically (ascending)
+     * @param usersTasks list of user's tasks
+     */
+    private void sortTasksTitleAsc(ObservableList<Task> usersTasks) {
+        usersTasks.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
+        logger.info("Task list " + usersTasks.toString() + " sorted by title in ascending order.");
+    }
+
+    /**
+     * Sorting list of user's tasks alphabetically (descending)
+     * @param usersTasks list of user's tasks
+     */
+    private void sortTasksTitleDesc(ObservableList<Task> usersTasks) {
+        usersTasks.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
+        logger.info("Task list " + usersTasks.toString() + " sorted by title in descending order.");
     }
 
     /**
@@ -344,6 +434,10 @@ public class Overview {
         stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
+        if(!toggleArchiveButton.isSelected()) {
+            usersTasks.add(listManager.getLatestTask());
+        }
+        sortTasks(sortTaskListDropdown.getValue());
         overviewAddItemImage.setDisable(false);
 
     }
@@ -367,7 +461,7 @@ public class Overview {
 
     }
 
-    private ArrayList<Note> search(String filter, ObservableList<Note> list) {
+    private ArrayList<Note> searchNotes(String filter, ObservableList<Note> list) {
 
         //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
         ArrayList<Note> searchResult = new ArrayList<>();
@@ -385,6 +479,27 @@ public class Overview {
                 searchResult.addAll(list);
             }
             return searchResult;
+
+    }
+
+    private ArrayList<Task> searchTasks(String filter, ObservableList<Task> list) {
+
+        //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
+        ArrayList<Task> searchResult = new ArrayList<>();
+        if (!filter.isEmpty() && !filter.trim().equals("")) {
+            //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
+            for (Task t : list) {
+                if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
+                    searchResult.add(t);
+                }
+            }
+            return searchResult;
+        } else if (searchResult.isEmpty()) {
+            // debugLogger.info("No task found containing the filter: '" + filter + "'.");
+        } else {
+            searchResult.addAll(list);
+        }
+        return searchResult;
 
     }
 

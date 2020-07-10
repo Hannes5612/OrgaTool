@@ -17,7 +17,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.model.Note;
 import mainpackage.model.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,8 +53,12 @@ public class TaskCell extends JFXListCell<Task> {
         private ImageView cellDeleteButton;
         @FXML
         private ImageView cellEditButton;
+        @FXML
+        private ImageView cellArchiveButton;
 
         private FXMLLoader fxmlLoader;
+
+        private static final Logger logger = LogManager.getLogger(TaskCell.class);
 
         @FXML
         void initialize() {
@@ -120,12 +127,74 @@ public class TaskCell extends JFXListCell<Task> {
                         getListView().setDisable(false);
                 });
 
-                cellCheckbox.setOnMouseClicked(event -> {
+                // Archiving task when state = active/finished or reactivating task when state = archived
+                cellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
                         final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
                         final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
+                        int taskId = task.getId();
+                        logger.debug("Task at index " + selectedIdx + " selected.");
 
-                        //logger.info("Task at index " + selectedIdx + (cellCheckbox.isSelected() ? " checked." : " unchecked."));
+                        if (task.getState() != 2) { // state = active/finished --> note will be archived
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                                alert.setTitle("ARCHIVING TASK");
+                                alert.setHeaderText("You are about to archive a task!");
+                                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                                alert.showAndWait();
+
+                                if (alert.getResult() == ButtonType.YES) {
+                                        if (selectedIdx != -1) {
+                                                DatabaseHandler databaseHandler = new DatabaseHandler();
+                                                try {
+                                                        task.archive();
+                                                        databaseHandler.editTask(taskId, task);
+                                                        logger.debug("Task at index " + selectedIdx + " archived.");
+                                                } catch (SQLException throwables) {
+                                                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                                        error.showAndWait();
+                                                        logger.error("SQLException: " + throwables);
+                                                } catch (ClassNotFoundException e) {
+                                                        e.printStackTrace();
+                                                        logger.error("ClassNotFoundException: " + e);
+                                                }
+                                                listViewProperty().get().getItems().remove(selectedIdx);
+                                                logger.info("Removed from current ListView of active/finished tasks: Task '" + task.getTitle() + "'");
+                                        }
+                                }
+                        } else if (task.getState() == 2) { // state = archived --> note will be active
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                                alert.setTitle("REACTIVATING TASK");
+                                alert.setHeaderText("You are about to reactivate a task!");
+                                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                                alert.showAndWait();
+
+                                if (alert.getResult() == ButtonType.YES) {
+                                        if (selectedIdx != -1) {
+                                                DatabaseHandler databaseHandler = new DatabaseHandler();
+                                                try {
+                                                        task.reactivate();
+                                                        databaseHandler.editTask(taskId, task);
+                                                        logger.debug("Task at index " + selectedIdx + " reactivated.");
+                                                } catch (SQLException throwables) {
+                                                        Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                                        error.showAndWait();
+                                                        logger.error("SQLException: " + throwables);
+                                                } catch (ClassNotFoundException e) {
+                                                        e.printStackTrace();
+                                                        logger.error("ClassNotFoundException: " + e);
+                                                }
+                                                listViewProperty().get().getItems().remove(selectedIdx);
+                                                logger.info("Removed from current ListView of archived tasks: Task '" + task.getTitle() + "'");
+                                        }
+                                }
+                        }
+                });
+
+                cellCheckbox.setOnMouseClicked(event -> {
+
+                        final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
 
                         if(cellCheckbox.isSelected()) { task.finish(); }
                         else { task.reactivate(); }
@@ -154,7 +223,11 @@ public class TaskCell extends JFXListCell<Task> {
                         }
                 };
 
-                taskThread.setOnFailed(e -> System.out.println("ALERT EINFÜGEN!!!!!"));
+                taskThread.setOnFailed(e -> {
+                        Alert error = new Alert(Alert.AlertType.ERROR, "Thread to synchronize the database with the updated task failed!");
+                        error.showAndWait();
+                        logger.error("Thread to synchronize the database with the updated task failed! " + e);
+                });
 
                 new Thread(taskThread).start();
 
