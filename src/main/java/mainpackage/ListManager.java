@@ -20,8 +20,8 @@ public class ListManager {
     private static User user = new User();
     private static int countingTaskID;
     private static int countingNoteId;
-    private static final List<Task> taskList = FXCollections.observableArrayList();
-    private static final List<Note> noteList = FXCollections.observableArrayList();
+    private static final List<Task> taskList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
+    private static final List<Note> noteList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
 
     public ListManager() {
     }
@@ -149,6 +149,10 @@ public class ListManager {
 
     public synchronized Stream<Task> getTaskList() {
         return taskList.parallelStream();
+    }
+
+    public Stream<Note> getSeqNoteList(){
+        return noteList.stream();
     }
 
     public Note getLatestNote(){

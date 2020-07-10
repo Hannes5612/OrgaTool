@@ -193,8 +193,8 @@ public class NoteCell extends ListCell<Note> {
     }
 
     @Override
-    protected void updateItem(Note note, boolean empty) {
-        super.updateItem(note,empty);
+    protected synchronized void updateItem(Note note, boolean empty) {
+        super.updateItem(note, empty);
 
 //        this.setStyle("-fx-padding: 4px;");
 //        this.setStyle("-fx-background-color: white");
@@ -213,20 +213,18 @@ public class NoteCell extends ListCell<Note> {
                 }
             }
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    cellNoteTitle.setText(note.getTitle());
-                    cellNoteDescription.setText(note.getContent());
-                    cellNoteDescription.setWrapText(true);
-                    cellNoteDescription.maxWidth(394);
-                    cellNoteDescription.minWidth(394);
-                    cellNoteDate.setText(String.valueOf(note.getCreationDate()));
+            cellNoteTitle.setText(note.getTitle());
+            cellNoteDescription.setText(note.getContent());
+            cellNoteDescription.setWrapText(true);
+            cellNoteDescription.maxWidth(394);
+            cellNoteDescription.minWidth(394);
+            cellNoteDate.setText(String.valueOf(note.getCreationDate()));
 
-                    setText(null);
-                    setGraphic(rootPane);
-                }
-            });
+
+            setText(null);
+            setGraphic(rootPane);
+
+
         }
     }
 

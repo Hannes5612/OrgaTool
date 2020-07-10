@@ -171,7 +171,7 @@ public class Overview {
      */
     private synchronized void toggleArchive() {
         usersNotes.clear();
-        listManager.getNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
+        listManager.getSeqNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
         sortNotes(sortNoteListDropdown.getValue());
     }
 
@@ -181,11 +181,7 @@ public class Overview {
      */
     private void toggleActive() {
         usersNotes.clear();
-        listManager.getNoteList().forEach((n) -> {
-            if (n.getState() == 0) {
-                usersNotes.add(n);
-            }
-        });
+        listManager.getSeqNoteList().filter(n -> n.getState()==0).forEach(usersNotes::add);
         sortNotes(sortNoteListDropdown.getValue());
     }
 
