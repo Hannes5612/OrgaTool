@@ -188,8 +188,8 @@ public class Overview {
      * @param usersNotes list of user's notes
      */
     private void sortDateDesc(ObservableList<Note> usersNotes) {
-        usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
-        //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
+            usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
+            //debugLogger.info("List " + list.toString() + "  sorted by takdates in descending order.");
     }
 
     /**
@@ -277,12 +277,12 @@ public class Overview {
             }
         });
         taskListView.setCellFactory(TaskCell -> {
-            try {
-                return cellFactory.createCell("task");
-            } catch (UnsupportedCellType unsupportedCellType) {
-                unsupportedCellType.printStackTrace();
-                return new JFXListCell<>();
-            }
+           try {
+               return cellFactory.createCell("task");
+           } catch (UnsupportedCellType unsupportedCellType) {
+               unsupportedCellType.printStackTrace();
+               return new JFXListCell<>();
+           }
         });
         taskListView.setItems(usersTasks);
 
@@ -357,38 +357,24 @@ public class Overview {
 
     }
 
-
     private ArrayList<Note> search(String filter, ObservableList<Note> list) {
 
         //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
         ArrayList<Note> searchResult = new ArrayList<>();
-        if (!filter.isEmpty() && !filter.trim().equals("")) {
-            //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
-            for (Note t : list) {
-                if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
-                    searchResult.add(t);
+            if (!filter.isEmpty() && !filter.trim().equals("")) {
+                //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
+                for (Note t : list) {
+                    if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
+                        searchResult.add(t);
+                    }
                 }
+                return searchResult;
+            } else if (searchResult.isEmpty()) {
+                // debugLogger.info("No task found containing the filter: '" + filter + "'.");
+            } else {
+                searchResult.addAll(list);
             }
             return searchResult;
-        } else if (searchResult.isEmpty()) {
-            // debugLogger.info("No task found containing the filter: '" + filter + "'.");
-        } else {
-            searchResult.addAll(list);
-        }
-        return searchResult;
-
-    }
-
-    @FXML
-    void reload(ActionEvent event) {
-
-        // listManager.getTaskList().forEach(System.out::println);
-        listManager.getNoteList().forEach(System.out::println);
-
-        System.out.println("------------------------");
-        //setLists();
-        //usersTasks.clear();
-        //setUser(loggedInUser);
 
     }
 
@@ -407,5 +393,4 @@ public class Overview {
         new FadeIn(login).play();
 
     }
-
 }

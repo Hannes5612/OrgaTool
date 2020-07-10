@@ -64,7 +64,7 @@ public class NoteCell extends JFXListCell<Note> {
             // user selects note
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
-            logger.info("Note at index " + selectedIdx + " selected.");
+            logger.debug("Note at index " + selectedIdx + " selected.");
 
             // alert: delete note?
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
@@ -82,7 +82,7 @@ public class NoteCell extends JFXListCell<Note> {
                     try {
                         databaseHandler.deleteNote(note);
                         ListManager.deleteNote(itemToRemove.getId());
-                        logger.info("Note at index " + selectedIdx + " deleted.");
+                        logger.debug("Note at index " + selectedIdx + " deleted.");
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
@@ -97,12 +97,13 @@ public class NoteCell extends JFXListCell<Note> {
             }
         });
 
-
+        // opening new window to edit note (with title + content of old note)
+        // and updating note in ListView when note != null
         noteCellEditButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
-            logger.info("Note at index " + selectedIdx + " selected.");
+            logger.debug("Note at index " + selectedIdx + " selected.");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditNotes.fxml"));
             loader.setController(new EditNote(note, selectedIdx));
@@ -120,19 +121,21 @@ public class NoteCell extends JFXListCell<Note> {
             stage.setResizable(false);
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
             getListView().setDisable(true);
+            logger.info("Opened window to edit note " + note.getId() + ": '"+ note.getTitle() + "'.");
             stage.showAndWait();
             if(EditNote.getEditedNote() != null) { listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote()); }
             getListView().setDisable(false);
         });
 
+        // archiving note when state = active or reactivating note when state = archived
         noteCellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
             int noteId = note.getId();
-            logger.info("Note at index " + selectedIdx + " selected.");
+            logger.debug("Note at index " + selectedIdx + " selected.");
 
-            if (note.getState() == 0) {
+            if (note.getState() == 0) { // state = active --> note will be archived
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("ARCHIVING NOTE");
                 alert.setHeaderText("You are about to archive a note!");
@@ -146,18 +149,20 @@ public class NoteCell extends JFXListCell<Note> {
                         try {
                             databaseHandler.editNote(noteId, note, 2);
                             ListManager.archiveNote(note);
-                            logger.info("Note at index " + selectedIdx + " archived.");
+                            logger.debug("Note at index " + selectedIdx + " archived.");
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                             error.showAndWait();
+                            logger.error("SQLException: " + throwables);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
+                            logger.error("ClassNotFoundException: " + e);
                         }
-                        //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
                         listViewProperty().get().getItems().remove(selectedIdx);
+                        logger.info("Removed from current ListView of active notes: Note '" + note.getTitle() + "'");
                     }
                 }
-            } else if (note.getState() == 2) {
+            } else if (note.getState() == 2) { // state = archived --> note will be active
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("REACTIVATING NOTE");
                 alert.setHeaderText("You are about to reactivate a note!");
@@ -167,19 +172,21 @@ public class NoteCell extends JFXListCell<Note> {
 
                 if (alert.getResult() == ButtonType.YES) {
                     if (selectedIdx != -1) {
-                        System.out.println("Note at index " + selectedIdx + " selected.");
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.editNote(noteId, note, 0);
                             ListManager.reactivateNote(note);
+                            logger.debug("Note at index " + selectedIdx + " reactivated.");
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                             error.showAndWait();
+                            logger.error("SQLException: " + throwables);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
+                            logger.error("ClassNotFoundException: " + e);
                         }
-                        //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
                         listViewProperty().get().getItems().remove(selectedIdx);
+                        logger.info("Removed from current ListView of archived notes: Note '" + note.getTitle() + "'");
                     }
                 }
             }
@@ -204,6 +211,7 @@ public class NoteCell extends JFXListCell<Note> {
                     fxmlLoader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    logger.error("IOException: " + e);
                 }
             }
 

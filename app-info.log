@@ -1,33 +1,60 @@
-[INFO ] 2020-07-09 23:22:12.570 [JavaFX Application Thread] Main - Applichation started
-[INFO ] 2020-07-09 23:22:12.572 [JavaFX Application Thread] Main - Application started
-[INFO ] 2020-07-09 23:22:16.929 [Thread-3] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@306cd540
-[INFO ] 2020-07-09 23:22:16.992 [Thread-3] Main - User table with given credentials fetched: User{userName='h', password='h', userid='0'}
-[INFO ] 2020-07-09 23:22:17.168 [Thread-4] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@4175a33c
-[INFO ] 2020-07-09 23:22:17.217 [Thread-4] Main - Note loaded: {id=7, title='notiz', content='ja ganz wichtiges hierssss', creationDate='2020-06-22', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.217 [Thread-4] Main - Note loaded: {id=10, title='wefwef', content='eidhgeuiwhweuihfpiweufiuwezf niufzuweiz bnorifnwi uefnzoweif jewpof,jiweujfmoweihjm fiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezf niufzuweiz bnorifnwi uefnzoweif jewpof,jiweujfmoweihjm fiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezf niufzuweiz bnorifnwi uefnzoweif jewpof,jiweujfmoweihjm fiuwehfiuwehbnifuweghbpifuwepfw', creationDate='2020-06-26', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.218 [Thread-4] Main - Note loaded: {id=11, title='wedwed', content='eidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfweidhgeuiwhweuihfpiweufiuwezfniufzuweibnorifnwiuefnzoweifjewpof,jiweujfmoweihjmfiuwehfiuwehbnifuweghbpifuwepfw', creationDate='2020-06-26', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.219 [Thread-4] Main - Note loaded: {id=45, title='Hansestadt', content='Ja genau ui wopw hier stehen wörter aber wo ist der Sinnss', creationDate='2020-06-30', state='ARCHIVED' }
-[INFO ] 2020-07-09 23:22:17.220 [Thread-4] Main - Note loaded: {id=46, title='hAUSAUdd', content='JAAJ FDCKssssssss', creationDate='2020-06-30', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.220 [Thread-4] Main - Note loaded: {id=47, title='Note', content='The following is part of the List interface (which ArrayList implements):
-
-E e = list.get(list.size() - 1);ssssss
-E e = list.get(list.size() - 1);ssssss
-E e = list.get(list.size() - 1);ssssss
-E e = list.get(list.size() - 1);ssssss
-E e = list.get(list.size() - 1);ssssss', creationDate='2020-06-30', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.221 [Thread-4] Main - Note loaded: {id=48, title='Note2', content='There isn't an elegant way in vanilla Java.
-
-Google Gussava
-The Google Guava library is great - check out their Iterables class. This method will throw a ssNoSuchElementException if the list is empty, as opposed to an ssIndexOutOfBoundsExsssscepdddsation, as with the typical size()-1 approach - I find a NoSuchElementException much nicer, or the ability to specify a default:
-
-lastElement = Iterables.getLast(iterableList);
-You can also provide a default value if the list is empty, instead of an exception:
-
-lastElement = Iterables.getLast(iterableList, null);
-or, if you're using Options:
-
-lastElementRaw = Iterables.getLast(iterableList, null);
-lastElement = (lastElementRaw == null) ? Option.none() : Option.some(lastElementRaw);', creationDate='2020-06-30', state='ACTIVE' }
-[INFO ] 2020-07-09 23:22:17.222 [Thread-4] Main - Note loaded: {id=76, title='not22', content='', creationDate='2020-07-09', state='ARCHIVED' }
-[INFO ] 2020-07-09 23:22:17.420 [Thread-4] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@65695b41
-[INFO ] 2020-07-09 23:22:17.455 [Thread-4] Main - Tasks fetched from server
+[INFO ] 2020-07-10 00:35:25.428 [JavaFX Application Thread] Main - Applichation started
+[INFO ] 2020-07-10 00:35:25.430 [JavaFX Application Thread] Main - Application started
+[INFO ] 2020-07-10 00:35:27.768 [Thread-4] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@77b2508d
+[INFO ] 2020-07-10 00:35:27.768 [Thread-3] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@1af4a0e5
+[INFO ] 2020-07-10 00:35:27.809 [Thread-4] Main - User table with given credentials fetched: User{userName='m', password='m', userid='0'}
+[INFO ] 2020-07-10 00:35:27.810 [Thread-3] Main - User table with given credentials fetched: User{userName='m', password='m', userid='0'}
+[INFO ] 2020-07-10 00:35:27.976 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@58bc350f
+[INFO ] 2020-07-10 00:35:27.985 [Thread-6] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@eadd2d0
+[INFO ] 2020-07-10 00:35:28.029 [Thread-5] Main - Note loaded: {id=29, title='x', content='dwhzgtgduwahuoduhwd
+dwojiuadh
+skdposajdoihawiougtdi
+dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.029 [Thread-6] Main - Note loaded: {id=29, title='x', content='dwhzgtgduwahuoduhwd
+dwojiuadh
+skdposajdoihawiougtdi
+dsjsadhb', creationDate='2020-06-29', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=43, title='gjngh', content='gjghjg', creationDate='2020-06-30', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=43, title='gjngh', content='gjghjg', creationDate='2020-06-30', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=50, title='drtdt', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=50, title='drtdt', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-6] Main - Note loaded: {id=51, title='wwwww', content='- jdik
+- dksd
+- uwgiuwhd
+- uweiw', creationDate='2020-07-01', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.030 [Thread-5] Main - Note loaded: {id=51, title='wwwww', content='- jdik
+- dksd
+- uwgiuwhd
+- uweiw', creationDate='2020-07-01', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.031 [Thread-6] Main - Note loaded: {id=55, title='jhdhs', content='szugdagizsdw', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.031 [Thread-5] Main - Note loaded: {id=55, title='jhdhs', content='szugdagizsdw', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=57, title='edf', content='eff', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=57, title='edf', content='eff', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=59, title='a', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=59, title='a', content='', creationDate='2020-07-01', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=83, title='SCF', content='', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=83, title='SCF', content='', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-6] Main - Note loaded: {id=90, title='Zsghswwdw', content='dasdasd', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.032 [Thread-5] Main - Note loaded: {id=90, title='Zsghswwdw', content='dasdasd', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.033 [Thread-5] Main - Note loaded: {id=91, title='dfg', content='v dgg', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.033 [Thread-6] Main - Note loaded: {id=91, title='dfg', content='v dgg', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.033 [Thread-5] Main - Note loaded: {id=92, title='wdqw', content='awda', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.033 [Thread-6] Main - Note loaded: {id=92, title='wdqw', content='awda', creationDate='2020-07-09', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:28.034 [Thread-6] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.034 [Thread-5] Main - Note loaded: {id=93, title='qd', content='dqwd', creationDate='2020-07-09', state='ARCHIVED' }
+[INFO ] 2020-07-10 00:35:28.197 [Thread-5] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@70ff70b
+[INFO ] 2020-07-10 00:35:28.207 [Thread-6] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7b9d10a8
+[INFO ] 2020-07-10 00:35:28.218 [Thread-5] Main - Tasks fetched from server
+[INFO ] 2020-07-10 00:35:28.228 [Thread-6] Main - Tasks fetched from server
+[DEBUG] 2020-07-10 00:35:33.323 [JavaFX Application Thread] Main - Saving new note...
+[INFO ] 2020-07-10 00:35:33.324 [JavaFX Application Thread] Main - Note created: {id=94, title='dg', content='gfg', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:33.494 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@75829c83
+[DEBUG] 2020-07-10 00:35:33.532 [JavaFX Application Thread] Main - Note created: {id=94, title='dg', content='gfg', creationDate='2020-07-10', state='ACTIVE' }
+[DEBUG] 2020-07-10 00:35:37.849 [JavaFX Application Thread] Main - Saving new note...
+[INFO ] 2020-07-10 00:35:37.850 [JavaFX Application Thread] Main - Note created: {id=95, title='erg', content='ergeger', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:38.242 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@7f8dd357
+[DEBUG] 2020-07-10 00:35:38.270 [JavaFX Application Thread] Main - Note created: {id=95, title='erg', content='ergeger', creationDate='2020-07-10', state='ACTIVE' }
+[DEBUG] 2020-07-10 00:35:53.606 [JavaFX Application Thread] Main - Saving new note...
+[INFO ] 2020-07-10 00:35:53.606 [JavaFX Application Thread] Main - Note created: {id=96, title='gerge', content='gegergerger', creationDate='2020-07-10', state='ACTIVE' }
+[INFO ] 2020-07-10 00:35:54.028 [JavaFX Application Thread] Main - Database Connection created com.mysql.jdbc.JDBC4Connection@6505997c
+[DEBUG] 2020-07-10 00:35:54.180 [JavaFX Application Thread] Main - Note created: {id=96, title='gerge', content='gegergerger', creationDate='2020-07-10', state='ACTIVE' }
