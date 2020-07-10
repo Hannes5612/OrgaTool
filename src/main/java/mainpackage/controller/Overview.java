@@ -198,6 +198,10 @@ public class Overview {
      * @param choice selected String in DropDown
      */
     private void sortTasks(String choice) {
+        // Reset search to avoid issues.
+        usersTasksSearch.setAll(usersTasks);
+        taskListView.setItems(usersTasksSearch);
+
         switch (choice) {
             case "Sort by date (newest to oldest)":
                 sortTasksDateDesc(usersTasks);
@@ -210,6 +214,15 @@ public class Overview {
                 break;
             case "Sort alphabetically (Z-A)":
                 sortTasksTitleDesc(usersTasks);
+                break;
+            case "Sort by priority (high)":
+                sortTasksByPriority("H");
+                break;
+            case "Sort by priority (medium)":
+                sortTasksByPriority("M");
+                break;
+            case "Sort by priority (low)":
+                sortTasksByPriority("L");
                 break;
         }
     }
@@ -253,6 +266,11 @@ public class Overview {
         Platform.runLater(() -> taskListView.setItems(usersTasks));
         sortTasks(sortTaskListDropdown.getValue());
         logger.info("Active notes are now displayed.");
+    }
+
+    private void sortTasksByPriority(String priority) {
+        usersTasksSearch.setAll(searchTasksByPriority(priority, usersTasks));
+        taskListView.setItems(usersTasksSearch);
     }
 
     /**
@@ -496,6 +514,25 @@ public class Overview {
             return searchResult;
         } else if (searchResult.isEmpty()) {
             // debugLogger.info("No task found containing the filter: '" + filter + "'.");
+        } else {
+            searchResult.addAll(list);
+        }
+        return searchResult;
+
+    }
+
+    private ArrayList<Task> searchTasksByPriority(String filter, ObservableList<Task> list) {
+
+        ArrayList<Task> searchResult = new ArrayList<>();
+        if (!filter.isEmpty() && !filter.trim().equals("")) {
+            for (Task t : list) {
+                if (t.getPriority().equals(filter)) {
+                    searchResult.add(t);
+                }
+            }
+            return searchResult;
+        } else if (searchResult.isEmpty()) {
+            //
         } else {
             searchResult.addAll(list);
         }
