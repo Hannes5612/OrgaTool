@@ -1,6 +1,7 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXListCell;
+import javafx.scene.control.ListCell;
 import mainpackage.exceptions.UnsupportedCellType;
 
 public class CellFactory {
@@ -11,7 +12,7 @@ public class CellFactory {
      * @return Task or Note Cell
      * @throws UnsupportedCellType @param is not in the switch -> not implemented
      */
-    public JFXListCell createCell(String cellType) throws UnsupportedCellType {
+    public ListCell createCell(String cellType) throws UnsupportedCellType {
         switch (cellType){
             case "note": return new NoteCell();
             case "task": return new TaskCell();

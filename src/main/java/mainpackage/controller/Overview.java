@@ -1,6 +1,7 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -58,7 +60,7 @@ public class Overview {
     @FXML
     private ImageView overviewCalendarImage;
     @FXML
-    private JFXListView<Note> noteListView;
+    private ListView<Note> noteListView;
     @FXML
     private ImageView overviewExport;
     @FXML
@@ -68,7 +70,7 @@ public class Overview {
     @FXML
     private JFXToggleButton toggleArchiveButton;
     @FXML
-    private JFXListView<Task> taskListView;
+    private ListView<Task> taskListView;
     @FXML
     private JFXTextField taskListSearchField;
     @FXML
@@ -85,6 +87,7 @@ public class Overview {
 
     @FXML
     synchronized void initialize() {
+
 
         logger.info("Overview initializing");
         //listManager.getNoteList().forEach(usersNotes::add);
@@ -166,13 +169,9 @@ public class Overview {
      * Clearing list of user's note and adding only archived notes.
      * Result: only archived notes are shown when toggleArchiveButton is selected
      */
-    private void toggleArchive() {
+    private synchronized void toggleArchive() {
         usersNotes.clear();
-        listManager.getNoteList().forEach((n) -> {
-            if (n.getState() == 2) {
-                usersNotes.add(n);
-            }
-        });
+        listManager.getNoteList().filter(n -> n.getState()==2).forEach(usersNotes::add);
         sortNotes(sortNoteListDropdown.getValue());
     }
 

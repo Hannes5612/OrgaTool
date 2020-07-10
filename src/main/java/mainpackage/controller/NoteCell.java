@@ -1,14 +1,11 @@
 package mainpackage.controller;
 
-import com.jfoenix.controls.JFXListCell;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,7 +23,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class NoteCell extends JFXListCell<Note> {
+public class NoteCell extends ListCell<Note> {
 
     @FXML
     private ResourceBundle resources;
@@ -121,9 +118,10 @@ public class NoteCell extends JFXListCell<Note> {
             stage.setResizable(false);
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
             getListView().setDisable(true);
-            logger.info("Opened window to edit note " + note.getId() + ": '"+ note.getTitle() + "'.");
+            logger.info("Opened window to edit note " + note.getId() + ": '" + note.getTitle() + "'.");
             stage.showAndWait();
-            if(!(EditNote.getEditedNote()==null))listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
+            if (!(EditNote.getEditedNote() == null))
+                listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
             getListView().setDisable(false);
         });
 
@@ -196,10 +194,10 @@ public class NoteCell extends JFXListCell<Note> {
 
     @Override
     protected void updateItem(Note note, boolean empty) {
+        super.updateItem(note,empty);
 
-        super.updateItem(note, empty);
-        this.setStyle("-fx-padding: 4px;");
-        this.setStyle("-fx-background-color: white");
+//        this.setStyle("-fx-padding: 4px;");
+//        this.setStyle("-fx-background-color: white");
         if (empty || note == null) {
             setText(null);
             setGraphic(null);
@@ -215,15 +213,20 @@ public class NoteCell extends JFXListCell<Note> {
                 }
             }
 
-            cellNoteTitle.setText(note.getTitle());
-            cellNoteDescription.setText(note.getContent());
-            cellNoteDescription.setWrapText(true);
-            cellNoteDescription.maxWidth(394);
-            cellNoteDescription.minWidth(394);
-            cellNoteDate.setText(String.valueOf(note.getCreationDate()));
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    cellNoteTitle.setText(note.getTitle());
+                    cellNoteDescription.setText(note.getContent());
+                    cellNoteDescription.setWrapText(true);
+                    cellNoteDescription.maxWidth(394);
+                    cellNoteDescription.minWidth(394);
+                    cellNoteDate.setText(String.valueOf(note.getCreationDate()));
 
-            setText(null);
-            setGraphic(rootPane);
+                    setText(null);
+                    setGraphic(rootPane);
+                }
+            });
         }
     }
 
