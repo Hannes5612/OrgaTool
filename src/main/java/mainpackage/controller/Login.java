@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Entry point of the application.
@@ -53,6 +55,7 @@ public class Login {
     @FXML
     private Ellipse loginBlueXY;
 
+    private Executor exec ;
     Logger logger = LogManager.getLogger(Main.class.getName());
 
     /**
@@ -82,6 +85,13 @@ public class Login {
 
         //Trigger for login button
         loginLoginButton.setOnAction(event -> login());
+
+        // create executor that uses daemon threads:
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
 
         logger.info("Loginpage loaded");
     }
@@ -125,11 +135,11 @@ public class Login {
         new FadeIn(login).play();
 
         logger.info("Overview loaded");
-        Set<Thread> threads = Thread.getAllStackTraces().keySet();
-
-        for (Thread t : threads) {
-            System.out.println(t);
-        }
+//        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+//
+//        for (Thread t : threads) {
+//            System.out.println(t);
+//        }
     }
 
     /**
@@ -164,7 +174,7 @@ public class Login {
             spin();
 
             //new task for extra thread, databasehandler to fetch user
-            Task<ResultSet> task = new Task<>() {
+            Task<ResultSet> getUserFromDB = new Task<>() {
                 @Override
                 public ResultSet call() {
 
@@ -176,11 +186,9 @@ public class Login {
                 }
             };
 
-            Thread loginCheck = new Thread(task);
-
             //if task succeeded take resultSet and check whether it has values
-            task.setOnSucceeded(e -> {
-                ResultSet result = task.getValue();
+            getUserFromDB.setOnSucceeded(e -> {
+                ResultSet result = getUserFromDB.getValue();
                 String resUName = "";
                 String resPwd = "";
                 int counter = 0;
@@ -212,11 +220,11 @@ public class Login {
                             }
                         };
 
-                        Thread updateLists = new Thread(update);
                         //when finished call overview()
                         update.setOnSucceeded(succ -> overview());
 
-                        updateLists.start();
+                        //Run db request for user notes and tasks
+                        exec.execute(update);
 
                         //if no row exists stop spinner, shake again and display error message
                     } else {
@@ -244,15 +252,15 @@ public class Login {
 
 
             //if concurrentTask failed display connection error message
-            task.setOnFailed(e -> {
+            getUserFromDB.setOnFailed(e -> {
                 noSpin();
                 Alert connectionalert = new Alert(Alert.AlertType.ERROR, "Connection failed!", ButtonType.OK);
-                logger.info("Database connection failed");
                 connectionalert.showAndWait();
+                logger.info("Database connection failed" + getUserFromDB.getException());
             });
 
             //run database handler task
-            loginCheck.start();
+            exec.execute(getUserFromDB);
 
 
         }

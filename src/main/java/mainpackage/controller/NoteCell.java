@@ -193,11 +193,11 @@ public class NoteCell extends ListCell<Note> {
     }
 
     @Override
-    protected synchronized void updateItem(Note note, boolean empty) {
+    protected void updateItem(Note note, boolean empty) {
         super.updateItem(note, empty);
 
-//        this.setStyle("-fx-padding: 4px;");
-//        this.setStyle("-fx-background-color: white");
+        this.setStyle("-fx-padding: 4px;");
+        this.setStyle("-fx-background-color: white");
         if (empty || note == null) {
             setText(null);
             setGraphic(null);
