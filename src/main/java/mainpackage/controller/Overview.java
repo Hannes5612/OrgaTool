@@ -98,6 +98,7 @@ public class Overview {
             return t;
         });
 
+
         logger.info("Overview initializing");
 
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
@@ -145,23 +146,26 @@ public class Overview {
     private void sortNotes(String choice) {
         switch (choice) {
             case "Sort by date (newest to oldest)":
-                sortNotesDateDesc(usersNotes);
+                usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
+                logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in descending order.");
                 break;
             case "Sort by date (oldest to newest)":
-                sortNotesDateAsc(usersNotes);
+                usersNotes.sort(Comparator.comparing(Note::getCreationDate));
+                logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in ascending order.");
                 break;
             case "Sort alphabetically (A-Z)":
-                sortNotesTitleAsc(usersNotes);
+                usersNotes.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
+                logger.info("Note list " + usersNotes.toString() + " sorted by title in ascending order.");
                 break;
             case "Sort alphabetically (Z-A)":
-                sortNotesTitleDesc(usersNotes);
+                usersNotes.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
+                logger.info("Note list " + usersNotes.toString() + " sorted by title in descending order.");
                 break;
         }
     }
 
     /**
      * Sorting tasks depending on selected String in sortTaskListDropdown (dropdown menu to sort tasks in overview)
-     *
      * @param choice selected String in DropDown
      */
     private void sortTasks(String choice) {
@@ -274,45 +278,6 @@ public class Overview {
         taskListView.setItems(usersTasksSearch);
     }
 
-    /**
-     * Sorting list of user's notes by date (descending)
-     *
-     * @param usersNotes list of user's notes
-     */
-    private void sortNotesDateDesc(ObservableList<Note> usersNotes) {
-        usersNotes.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
-        logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in descending order.");
-    }
-
-    /**
-     * Sorting list of user's notes by date (ascending)
-     *
-     * @param usersNotes list of user's notes
-     */
-    private void sortNotesDateAsc(ObservableList<Note> usersNotes) {
-        usersNotes.sort(Comparator.comparing(Note::getCreationDate));
-        logger.info("Note list " + usersNotes.toString() + " sorted by creation dates in ascending order.");
-    }
-
-    /**
-     * Sorting list of user's notes alphabetically (ascending)
-     *
-     * @param usersNotes list of user's notes
-     */
-    private void sortNotesTitleAsc(ObservableList<Note> usersNotes) {
-        usersNotes.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
-        logger.info("Note list " + usersNotes.toString() + " sorted by title in ascending order.");
-    }
-
-    /**
-     * Sorting list of user's notes alphabetically (descending)
-     *
-     * @param usersNotes list of user's notes
-     */
-    private void sortNotesTitleDesc(ObservableList<Note> usersNotes) {
-        usersNotes.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
-        logger.info("Note list " + usersNotes.toString() + " sorted by title in descending order.");
-    }
 
     /**
      * Sorting list of user's tasks by date (descending)
@@ -387,7 +352,9 @@ public class Overview {
         CellFactory cellFactory = new CellFactory();
         taskListView.setCellFactory(TaskCell -> {
             try {
-                return cellFactory.createCell("task");
+                ListCell task = cellFactory.createCell("task");
+                task.setWrapText(true);
+                return task;
             } catch (UnsupportedCellType unsupportedCellType) {
                 unsupportedCellType.printStackTrace();
                 return new JFXListCell<>();
@@ -396,12 +363,15 @@ public class Overview {
 
         noteListView.setCellFactory(NoteCell -> {
             try {
-                return cellFactory.createCell("note");
+                ListCell note = cellFactory.createCell("note");
+                note.setWrapText(true);
+                return note;
             } catch (UnsupportedCellType unsupportedCellType) {
                 unsupportedCellType.printStackTrace();
                 return new ListCell<>();
             }
         });
+
 
 
     }
