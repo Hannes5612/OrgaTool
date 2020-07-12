@@ -27,6 +27,10 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Calendar {
 
@@ -44,6 +48,7 @@ public class Calendar {
     private HBox hPane;
 
     private boolean isListOpen = false;
+    private ExecutorService exec = Executors.newCachedThreadPool();
 
     // YearCombo
     private final int currentYear = Year.now().getValue();
@@ -97,7 +102,7 @@ public class Calendar {
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
                         openAlert.showAndWait();
                     } else {
-                        if(vPane.getChildren().toArray().length!=0)showClickedDayTasks(vPane.getChildren().get(0));
+                        if (vPane.getChildren().toArray().length != 0) showClickedDayTasks(vPane.getChildren().get(0));
                     }
 
                 });
@@ -120,6 +125,7 @@ public class Calendar {
     /**
      * Method for the right click context menu.
      * Opens a 'create Task' window to create a task a a specified day.
+     *
      * @param node containing the days number
      */
     private void loadAddTask(Node node) {
@@ -158,9 +164,18 @@ public class Calendar {
      * If a match was found, showDate gets called.
      */
     public void fillCalendarWithTasks() {
-
         ListManager listManager = new ListManager();
-        listManager.getTaskList().forEach(task -> {
+
+        javafx.concurrent.Task<List<Task>> getTasksTask = new javafx.concurrent.Task<>() {
+            @Override
+            public List<Task> call() {
+                return listManager.getTaskList()
+                        .filter(n -> n.getState() == 0 || n.getState() == 1)
+                        .collect(Collectors.toList());
+            }
+        };
+
+        getTasksTask.setOnSucceeded(e -> getTasksTask.getValue().forEach(task -> {
             String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
             String month = task.getDueMonth();
             String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
@@ -169,7 +184,21 @@ public class Calendar {
                 int day = task.getDueDate().toLocalDate().getDayOfMonth();
                 showDate(day, task);
             }
-        });
+        }));
+
+        exec.submit(getTasksTask);
+
+
+//        listManager.getTaskList().forEach(task -> {
+//            String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+//            String month = task.getDueMonth();
+//            String yearSelection = yearCombo.getSelectionModel().getSelectedItem();
+//            String monthSelection = monthCombo.getSelectionModel().getSelectedItem();
+//            if (year.equals(yearSelection) && month.equals(monthSelection)) {
+//                int day = task.getDueDate().toLocalDate().getDayOfMonth();
+//                showDate(day, task);
+//            }
+//        });
     }
 
 
@@ -267,8 +296,9 @@ public class Calendar {
     /**
      * Iterates the GridPane to check for a day match and then insert a children label with
      * the tasks title.
+     *
      * @param dayNumber of the day to add the tasks title as a label.
-     * @param task as the task to display on the given day.
+     * @param task      as the task to display on the given day.
      */
     public void showDate(int dayNumber, Task task) {
         for (Node node : calendarGrid.getChildren()) {
@@ -302,7 +332,8 @@ public class Calendar {
 
     /**
      * Opens a new window with a task list of the clicked day
-     * @param clickedDayNode  which is the day klicked
+     *
+     * @param clickedDayNode which is the day klicked
      */
     private void showClickedDayTasks(Node clickedDayNode) {
 
@@ -320,50 +351,106 @@ public class Calendar {
         //fetch current tasks
         ListManager listManager = new ListManager();
 
-        listManager.getTaskList().forEach(task -> {
-            String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
-            String month = task.getDueMonth();
-            int day = task.getDueDate().toLocalDate().getDayOfMonth();
-            if (year.equals(yearSelection) && month.equals(monthSelection) && dayClicked == day) {
-                clickedTasks.add(task);
+        javafx.concurrent.Task<List<Task>> getTasksTask = new javafx.concurrent.Task<>() {
+            @Override
+            public List<Task> call() {
+                return listManager.getTaskList()
+                        .filter(n -> n.getState() == 0 || n.getState() == 1)
+                        .collect(Collectors.toList());
             }
-        });
+        };
 
-        //if the lIst is not empty, show the windows
-        if (!clickedTasks.isEmpty()) {
-            isListOpen = true;
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/TaskViewCalendar.fxml"));
+        getTasksTask.setOnSucceeded(e -> {
+                    getTasksTask.getValue().forEach(task -> {
+                        String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+                        String month = task.getDueMonth();
+                        int day = task.getDueDate().toLocalDate().getDayOfMonth();
+                        if (year.equals(yearSelection) && month.equals(monthSelection) && dayClicked == day) {
+                            clickedTasks.add(task);
+                        }
+                    });
+                    //if the lIst is not empty, show the windows
+                    if (!clickedTasks.isEmpty()) {
+                        isListOpen = true;
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/view/TaskViewCalendar.fxml"));
 
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                        try {
+                            loader.load();
+                        } catch (IOException exx) {
+                            exx.printStackTrace();
+                        }
 
-            TaskViewCalendar controller = loader.getController();
-            controller.setTasks(clickedTasks);
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-            stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
-            stage.setResizable(true);
-            stage.setMinWidth(440);
-            stage.showAndWait();
+                        TaskViewCalendar controller = loader.getController();
+                        controller.setTasks(clickedTasks);
+                        Parent root = loader.getRoot();
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                        stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
+                        stage.setResizable(true);
+                        stage.setMinWidth(440);
+                        stage.showAndWait();
 
-            //after closing the window, reload the month, in case the user has deleted or changed a task
-            loadSelectedMonth();
-            fillCalendarWithTasks();
+                        //after closing the window, reload the month, in case the user has deleted or changed a task
+                        loadSelectedMonth();
+                        fillCalendarWithTasks();
 
-            isListOpen = false;
-        }
+                        isListOpen = false;
+                    }
+
+                }
+
+        );
+
+        exec.submit(getTasksTask);
+
+//
+//        listManager.getTaskList().forEach(task -> {
+//            String year = String.valueOf(task.getDueDate().toLocalDate().getYear());
+//            String month = task.getDueMonth();
+//            int day = task.getDueDate().toLocalDate().getDayOfMonth();
+//            if (year.equals(yearSelection) && month.equals(monthSelection) && dayClicked == day) {
+//                clickedTasks.add(task);
+//            }
+//        });
+//
+//        //if the lIst is not empty, show the windows
+//        if (!clickedTasks.isEmpty()) {
+//            isListOpen = true;
+//            FXMLLoader loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("/view/TaskViewCalendar.fxml"));
+//
+//            try {
+//                loader.load();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            TaskViewCalendar controller = loader.getController();
+//            controller.setTasks(clickedTasks);
+//            Parent root = loader.getRoot();
+//            Stage stage = new Stage();
+//            stage.setScene(new Scene(root));
+//            stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+//            stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
+//            stage.setResizable(true);
+//            stage.setMinWidth(440);
+//            stage.showAndWait();
+//
+//            //after closing the window, reload the month, in case the user has deleted or changed a task
+//            loadSelectedMonth();
+//            fillCalendarWithTasks();
+//
+//            isListOpen = false;
+//        }
 
 
     }
 
     /**
      * Helper method to reload the month when a user selects a new month or year
+     *
      * @param event changing dropdownList entiry
      */
     @FXML
@@ -374,6 +461,7 @@ public class Calendar {
 
     /**
      * Loads the Overview Stage and shows it
+     *
      * @param e Button click
      */
     private void backToOverview(ActionEvent e) {
@@ -395,6 +483,13 @@ public class Calendar {
 
     @FXML
     void initialize() {
+        // create executor that uses daemon threads:
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
         drawCalendarGrid();
         yearCombo.setItems(yearList());
         yearCombo.setValue(String.valueOf(currentYear));

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
  */
 
 public class Overview {
-
+    @FXML
     private AnchorPane rootPane;
     @FXML
     private Label dateLabel;
@@ -460,7 +461,7 @@ public class Overview {
 
     private void loadCalendar() {
 
-        Stage stage = (Stage) rootPane.getScene().getWindow();
+        Stage stage = (Stage) taskListView.getScene().getWindow();
         stage.setTitle("Calendar");
 
         AnchorPane calendar = null;
@@ -551,6 +552,7 @@ public class Overview {
         }
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
+
 
     }
 
