@@ -16,9 +16,7 @@ import java.sql.*;
  */
 public class DatabaseHandler extends Config {
 
-    Logger logger = LogManager.getLogger(Main.class.getName());
-
-    Connection dbConnection;
+    private final Logger logger = LogManager.getLogger(Main.class.getName());
 
     /**
      * Create the Connection object for a sql connection
@@ -31,64 +29,61 @@ public class DatabaseHandler extends Config {
         Class.forName("com.mysql.jdbc.Driver");
         String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
 
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
+        Connection dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
 
 
-        logger.info("Database Connection created " +dbConnection);
+        logger.info("Database Connection created " + dbConnection);
         return dbConnection;
 
     }
 
     /**
      * Create a new db entry for a user who wants to register
+     *
      * @param user to register
      * @throws SQLException
+     * @throws ClassNotFoundException
      */
     public void signupUser(User user) throws SQLException, ClassNotFoundException {
 
         String insert = "INSERT INTO " + USER_TABLE + "("
                 + USER_USERNAME + "," + USER_PASSWORD + ") VALUES(?,?)";
 
-        try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getPassword());
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+        preparedStatement.setString(1, user.getUserName());
+        preparedStatement.setString(2, user.getPassword());
 
-            preparedStatement.executeUpdate();
-            logger.info("User registered: " + user);
+        preparedStatement.executeUpdate();
+        logger.info("User registered: " + user);
 
-        }
 
     }
 
     /**
      * Ceck wheter a user is in the database
+     *
      * @param user to check
      */
-    public ResultSet getUser(User user) {
-
-        ResultSet resultSet = null;
+    public ResultSet getUser(User user) throws SQLException, ClassNotFoundException {
 
         String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_USERNAME + "=?" + " AND "
                 + USER_PASSWORD + "=?";
 
-        try {
-            PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getPassword());
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(query);
+        preparedStatement.setString(1, user.getUserName());
+        preparedStatement.setString(2, user.getPassword());
 
 
-            resultSet = preparedStatement.executeQuery();
-            logger.info("User table with given credentials fetched: " + user);
-
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
+        ResultSet resultSet = preparedStatement.executeQuery();
+        logger.info("User table with given credentials fetched: " + user);
 
         return resultSet;
 
     }
+
     /**
      * Create a database Entry for the current user with a new task
+     *
      * @param task to check
      */
     public void createTask(Task task) throws ClassNotFoundException, SQLException {
@@ -119,13 +114,14 @@ public class DatabaseHandler extends Config {
         preparedStatement.setInt(1, user.getUserid());
 
         ResultSet tasksResulSet = preparedStatement.executeQuery();
-        logger.info("Tasks fetched from server");
+        logger.info("Tasks fetched from server: " + tasksResulSet.getFetchSize() + " Rows");
         return tasksResulSet;
 
     }
 
     /**
      * Delete a task from the database
+     *
      * @param task to delete
      */
     public void deleteTask(Task task) throws SQLException, ClassNotFoundException {
@@ -137,11 +133,16 @@ public class DatabaseHandler extends Config {
 
             preparedStatement.executeUpdate();
 
-            logger.info("Task deleted from server");
+            logger.info("Task deleted from server: " + task);
         }
 
     }
 
+    /**
+     * Send a note to the database
+     *
+     * @param note to send
+     */
     public void createNote(Note note) throws ClassNotFoundException, SQLException {
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("
@@ -155,11 +156,17 @@ public class DatabaseHandler extends Config {
         preparedStatement.setDate(4, note.getCreationDate());
         preparedStatement.setInt(5, note.getState());
 
-
         preparedStatement.executeUpdate();
+
+        logger.info("Note was sent to the database: " + note);
 
     }
 
+    /**
+     * Delete a note from the database
+     *
+     * @param note to delete
+     */
     public void deleteNote(Note note) throws SQLException, ClassNotFoundException {
 
         String insert = "DELETE FROM " + NOTE_TABLE + " WHERE " + NOTE_ID + "=?";
@@ -167,13 +174,19 @@ public class DatabaseHandler extends Config {
         try (PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, note.getId());
 
-            System.out.println("Gelöschte Note: " + note);
             preparedStatement.executeUpdate();
+
+            logger.info("Note deleted from the database: " + note);
 
         }
 
     }
 
+    /**
+     * Edit a note in the database
+     *
+     * @param note to edit
+     */
     public void editNote(int noteId, Note note, int state) throws ClassNotFoundException, SQLException {
 
         String insert = "UPDATE " + NOTE_TABLE + " SET " + NOTE_TITLE + "=?, " + NOTE_CONTENT + "=?, " + NOTE_STATE + "=" + state + " WHERE " + NOTE_ID + "=" + noteId;
@@ -184,8 +197,13 @@ public class DatabaseHandler extends Config {
 
         preparedStatement.executeUpdate();
 
+        logger.info("Note edited in the database: " + note);
+
     }
 
+    /**
+     * Get notes from the database
+     */
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
 
         String query = "SELECT * FROM " + NOTE_TABLE + " WHERE " + NOTE_USER + "=?";
@@ -194,10 +212,16 @@ public class DatabaseHandler extends Config {
 
         ResultSet notesResultSet = preparedStatement.executeQuery();
 
+        logger.info("Notes fetched from server: " + notesResultSet.getFetchSize() + " Rows");
         return notesResultSet;
 
     }
 
+    /**
+     * Edit a task in the database
+     *
+     * @param task to edit
+     */
     public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
 
         String insert = "UPDATE " + TASK_TABLE +
@@ -216,29 +240,7 @@ public class DatabaseHandler extends Config {
 
         preparedStatement.executeUpdate();
 
-    }
-
-    public void archiveTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
-
-        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_STATE + "=? WHERE " + TASK_ID + "=?";
-
-        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
-        preparedStatement.setInt(1, 2);
-        preparedStatement.setInt(2, taskId);
-
-        preparedStatement.executeUpdate();
-
-    }
-
-    public void reactivateTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
-
-        String insert = "UPDATE " + TASK_TABLE + " SET " + TASK_STATE + "=? WHERE " + TASK_ID + "=?";
-
-        PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
-        preparedStatement.setInt(1, 0);
-        preparedStatement.setInt(2, taskId);
-
-        preparedStatement.executeUpdate();
+        logger.info("Task edited in the database: " + task);
 
     }
 
@@ -250,6 +252,7 @@ public class DatabaseHandler extends Config {
 
         ResultSet tasksResultSet = preparedStatement.executeQuery();
 
+        logger.info("Tasks fetched from server: " + tasksResultSet.getFetchSize() + " Rows");
         return tasksResultSet;
 
     }

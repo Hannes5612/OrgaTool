@@ -12,13 +12,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 
+/**
+ * Entry point of the application, directly loads the Login screen
+ */
 public class Main extends Application {
 
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        String log4jConfPath = "src/main/resources/log4j2.xml";
-//        PropertyConfigurator.configure(log4jConfPath);
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
 
@@ -38,10 +39,7 @@ public class Main extends Application {
 
         new FadeIn(root).play();
 
-        //logger.debug("Application started");
-        logger.info("Applichation started");
-        //logger.error("Applichation started");
-        //logger.info("Application started");
+        logger.info("Application started");
     }
 
     public static void main(String[] args) {

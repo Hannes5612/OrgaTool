@@ -23,6 +23,7 @@ public class TaskViewCalendar{
 
     @FXML
     void initialize() {
+        //Placeholder when the user deleted all tasks
         taskViewCalendarList.setPlaceholder(new Label("Deleted all tasks, please close!"));
     }
 

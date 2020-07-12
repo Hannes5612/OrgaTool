@@ -146,7 +146,7 @@ public class NoteCell extends ListCell<Note> {
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.editNote(noteId, note, 2);
-                            ListManager.archiveNote(note);
+                            note.archive();
                             logger.debug("Note at index " + selectedIdx + " archived.");
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
@@ -173,7 +173,7 @@ public class NoteCell extends ListCell<Note> {
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         try {
                             databaseHandler.editNote(noteId, note, 0);
-                            ListManager.reactivateNote(note);
+                            note.reactivate();
                             logger.debug("Note at index " + selectedIdx + " reactivated.");
                         } catch (SQLException throwables) {
                             Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");

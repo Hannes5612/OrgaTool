@@ -4,6 +4,9 @@ import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+/**
+ * Fade in transformation for Nodes
+ */
 public class FadeIn {
 
     private FadeTransition fadeTransition;

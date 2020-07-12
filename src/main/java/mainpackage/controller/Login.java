@@ -24,7 +24,6 @@ import mainpackage.model.User;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -48,15 +47,9 @@ public class Login {
     private JFXSpinner loginSpinner;
     @FXML
     private Label loginMessage;
-    @FXML
-    private Ellipse loginBlueX;
-    @FXML
-    private Ellipse loginBlueY;
-    @FXML
-    private Ellipse loginBlueXY;
 
     private Executor exec ;
-    Logger logger = LogManager.getLogger(Main.class.getName());
+    private final Logger logger = LogManager.getLogger(Main.class.getName());
 
     /**
      * Handle button presses.
@@ -66,6 +59,7 @@ public class Login {
      */
     @FXML
     void initialize() {
+
 
         //Hide error messages
         loginMessage.setVisible(false);
@@ -131,6 +125,9 @@ public class Login {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Overview");
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
 
@@ -176,7 +173,7 @@ public class Login {
             //new task for extra thread, databasehandler to fetch user
             Task<ResultSet> getUserFromDB = new Task<>() {
                 @Override
-                public ResultSet call() {
+                public ResultSet call() throws SQLException, ClassNotFoundException {
 
                     final DatabaseHandler databaseHandler = new DatabaseHandler();
                     //Catch the tables' row of the search result, given the users credentials

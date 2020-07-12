@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import org.junit.Test;
 import mainpackage.model.Task;

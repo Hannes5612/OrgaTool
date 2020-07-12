@@ -15,13 +15,18 @@ public class ClockThread extends Thread{
     Label timeLabel;
     Label dateLabel;
 
-    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private final Logger logger = LogManager.getLogger(Main.class.getName());
     private String time = "", month = "", day = "";
 
+    //setting the labels, the clock needs to access
     public void setLabels(Label time, Label date){
         this.timeLabel = time;
         this.dateLabel = date;
     }
+
+    /**
+     * Runnable for the background Thread
+     */
     @Override
     public void run() {
         logger.info("Clock running");
@@ -48,11 +53,13 @@ public class ClockThread extends Thread{
 
                 });
 
+                //wait a second
                 Thread.sleep(1000);
             }
         } catch (Exception e) { //Error check
             dateLabel.setText("");
             timeLabel.setText("Error occurred!!");
+            logger.error("Clock thread has failed: " + e);
         }
 
 

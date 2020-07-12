@@ -4,6 +4,9 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+/**
+ * Shake animation for nodes
+ */
 public class Shake {
     private TranslateTransition translateTransition;
 

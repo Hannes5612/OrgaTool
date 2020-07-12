@@ -6,34 +6,29 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Ellipse;
+import mainpackage.Main;
 import mainpackage.animation.FadeIn;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
 import mainpackage.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Signup {
 
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -43,18 +38,13 @@ public class Signup {
     @FXML
     private JFXButton signupSignupButton;
     @FXML
-    private Ellipse loginBlueX;
-    @FXML
-    private Ellipse loginBlueY;
-    @FXML
-    private Ellipse loginBlueXY;
-    @FXML
     private JFXSpinner signupSpinner;
     @FXML
     private Label signupMessage;
     @FXML
     private JFXButton signupGobackButton;
 
+    private final Logger logger = LogManager.getLogger(Main.class.getName());
 
 
     /**
@@ -62,6 +52,7 @@ public class Signup {
      */
     @FXML
     void initialize() {
+
         //Hide error messages
         signupMessage.setVisible(false);
         //Hide login loading spinner
@@ -77,6 +68,9 @@ public class Signup {
 
 
         signupSignupButton.setOnAction(e -> signup());
+
+
+        logger.info("SignUp page loaded");
     }
 
 
@@ -154,10 +148,13 @@ public class Signup {
                         DatabaseHandler databaseHandler = new DatabaseHandler();
                         databaseHandler.signupUser(signupUser);
                     } catch (SQLIntegrityConstraintViolationException integrity) {
+                        logger.warn("User already exists.");
                         noSpin();
                         this.done();
                         return 0;
                     } catch (SQLException | ClassNotFoundException throwable) {
+
+                        logger.error("Database connection failed: " + throwable);
                         noSpin();
                         this.done();
                         return 1;
@@ -174,6 +171,7 @@ public class Signup {
             //if task succeeded take resultset and check wether it has values
             task.setOnSucceeded(e -> {
                 signupMessage.setText("Account created, go back");
+                logger.debug("New user was created.");
 
                 // 0 if username is already given
                 if (task.getValue() == 0) {

@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
  */
 
 public class Overview {
+
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -104,11 +105,14 @@ public class Overview {
         overviewCalendarImage.setOnMouseClicked(mouseEvent -> loadCalendar());
         overviewAddItemImage.setOnMouseClicked(mouseEvent -> loadAddTask());
         overviewAddNoteImage.setOnMouseClicked(mouseEvent -> loadAddNote());
+
+        //Handler to export ones entries
         overviewExport.setOnMouseClicked(mouseEvent -> export());
 
         // ToggleButton to switch between archived and active notes/tasks
         toggleArchiveButton.selectedProperty().addListener(this::toggleSwitched);
 
+        //listener for changed search field
         noteListSearchField.textProperty().addListener(this::changedNotesSearchField);
 
         // sorting notes when DropDown value is changed
@@ -117,6 +121,7 @@ public class Overview {
         // setting default sorting mechanism to "Sort by date (newest to oldest)"
         sortNoteListDropdown.setValue("Sort by date (newest to oldest)");
 
+        //listener for changed search field
         taskListSearchField.textProperty().addListener(this::changedTaskSearchField);
 
         // sorting tasks when DropDown value is changed
@@ -203,7 +208,7 @@ public class Overview {
      * Clearing list of user's notes/tasks and adding only archived notes/tasks.
      * Result: only archived notes/tasks are shown when toggleArchiveButton is selected.
      */
-    private synchronized void toggleArchive() {
+    private void toggleArchive() {
 
         usersNotes.clear();
         usersTasks.clear();
@@ -213,10 +218,9 @@ public class Overview {
         javafx.concurrent.Task<List<Note>> getNotesTask = new javafx.concurrent.Task<>() {
             @Override
             public List<Note> call() {
-                List<Note> notes = listManager.getNoteList()
+                return listManager.getNoteList()
                         .filter(n -> n.getState() == 2)
                         .collect(Collectors.toList());
-                return notes;
             }
         };
 
@@ -323,11 +327,14 @@ public class Overview {
      * Exporting notes and tasks into a .txt file on user's computer
      */
     private void export() {
+        //Create a file with assigned path
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setInitialFileName("Orga-Exports.txt");
         File file = fileChooser.showSaveDialog(rootPane.getScene().getWindow());
+
+        //If file and path was chosen, open a file saving thread with the respective thread
         if (file != null) {
             SaveThread save = new SaveThread(file);
             save.setDaemon(true);
@@ -350,7 +357,7 @@ public class Overview {
 
 
         CellFactory cellFactory = new CellFactory();
-        taskListView.setCellFactory(TaskCell -> {
+        taskListView.setCellFactory(ListCell -> {
             try {
                 ListCell task = cellFactory.createCell("task");
                 task.setWrapText(true);
@@ -361,7 +368,7 @@ public class Overview {
             }
         });
 
-        noteListView.setCellFactory(NoteCell -> {
+        noteListView.setCellFactory(ListCell -> {
             try {
                 ListCell note = cellFactory.createCell("note");
                 note.setWrapText(true);

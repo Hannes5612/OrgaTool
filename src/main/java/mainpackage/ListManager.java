@@ -20,41 +20,61 @@ public class ListManager {
     private static User user = new User();
     private static int countingTaskID;
     private static int countingNoteId;
+
+    //Synchronized Observable Lists
     private static final List<Task> taskList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private static final List<Note> noteList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
 
+    //constructor
     public ListManager() {
     }
 
+    //getters
     public static int getUserId() {
         return user.getUserid();
     }
 
-    public static int getCountingTaskID(){
+    public static int getCountingTaskID() {
         return countingTaskID;
     }
 
-    public static int getCountingNoteId() { return countingNoteId; }
+    public static int getCountingNoteId() {
+        return countingNoteId;
+    }
 
-    public static void incrementCountingTaskId(){
+    //Methods to increase the note and task id's for a correct creation
+    public static void incrementCountingTaskId() {
         countingTaskID++;
     }
 
-    public static void incrementCountingNoteId(){
+    public static void incrementCountingNoteId() {
         countingNoteId++;
     }
 
+    /**
+     * Run the databasehandlers of both notes and tasks.
+     *
+     * @throws SQLException           on a failed connection
+     * @throws ClassNotFoundException
+     */
     public void update() throws SQLException, ClassNotFoundException {
         updateNotes();
         updateTasks();
     }
 
+    /**
+     * Update the observable notelist from the database
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public void updateNotes() throws SQLException, ClassNotFoundException {
         noteList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet noteRow = databaseHandler.getNotes();
         logger.info("Notes from database fetched");
 
+        //loading the ResultSet into the Observable List
         while (noteRow.next()) {
             int noteid = noteRow.getInt("notesid");
             String title = noteRow.getString("title");
@@ -69,11 +89,21 @@ public class ListManager {
         logger.info("Notes in local list loaded");
     }
 
+    /**
+     * Update the observable tasklist from the database
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+
     public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
         ResultSet taskRow = databaseHandler.getTasks(user);
         logger.info("Tasks from database fetched");
+
+
+        //loading the ResultSet into the Observable List
         while (taskRow.next()) {
             int id = taskRow.getInt("taskid");
             String title = taskRow.getString("title");
@@ -92,47 +122,39 @@ public class ListManager {
         logger.info("Tasks in local list loaded");
     }
 
+    //static methods
     public static void setUser(User user) {
         ListManager.user = user;
     }
 
-    public static void deleteTask(int taskId){
+    public static void deleteTask(int taskId) {
         taskList.removeIf(task -> task.getId() == taskId);
     }
-    public static void deleteNote(int noteId){
+
+    public static void deleteNote(int noteId) {
         noteList.removeIf(note -> note.getId() == noteId);
-    }
-
-    public static void archiveNote(Note note) {
-        note.archive();
-    }
-
-    public static void reactivateNote(Note note) {
-        note.reactivate();
     }
 
     public static void editNote(Note note) {
 
-        int remove=0;
+        int remove = 0;
         for (Note note1 : noteList) {
-            if(note.getId() == note1.getId()){
+            if (note.getId() == note1.getId()) {
                 noteList.set(remove, note);
             }
             remove++;
         }
-
     }
 
     public static void editTask(Task task) {
 
-        int remove=0;
+        int remove = 0;
         for (Task task1 : taskList) {
-            if(task.getId() == task1.getId()) {
+            if (task.getId() == task1.getId()) {
                 taskList.set(remove, task);
             }
             remove++;
         }
-
     }
 
     public static void addTask(Task task) {
@@ -143,30 +165,46 @@ public class ListManager {
         noteList.add(note);
     }
 
+
+    /**
+     * Synchronized mehtod to parallel stream the noteLists items
+     *
+     * @return stream of notes
+     */
     public synchronized Stream<Note> getNoteList() {
         return noteList.parallelStream();
     }
 
+    /**
+     * Synchronized method to parallel stream the taskLists items
+     *
+     * @return stream of tasks
+     */
     public synchronized Stream<Task> getTaskList() {
         return taskList.parallelStream();
     }
 
-    public Stream<Note> getSeqNoteList(){
-        return noteList.stream();
-    }
 
-    public Note getLatestNote(){
+    //Methods to access the latest Entry and fetch it
+    public Note getLatestNote() {
         return noteList.get(noteList.size() - 1);
     }
 
-    public Task getLatestTask() { return taskList.get(taskList.size() - 1); }
+    public Task getLatestTask() {
+        return taskList.get(taskList.size() - 1);
+    }
 
-    public static void wipe(){
+    /**
+     * On logout, all data needs to be deleted, in case of exceptions
+     */
+    public static void wipe() {
         taskList.clear();
         noteList.clear();
         user = new User();
         countingNoteId = -1;
         countingTaskID = -1;
+
+        logger.warn("All Lists and the user were wiped.");
     }
 
 }

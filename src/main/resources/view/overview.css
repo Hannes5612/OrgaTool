@@ -1,7 +1,4 @@
 /** CSS **/
-.mylistview{
-	-fx-border-color:derive(gray,80%);
-}
 
 /* The main scrollbar CSS class of ListView */
 .mylistview .scroll-bar:horizontal ,
@@ -13,14 +10,12 @@
 /* The increment and decrement button CSS class of scrollbar */
 .mylistview .increment-button ,.mylistview .decrement-button {
     -fx-background-color:transparent;
-	-fx-border-color:derive(gray,80%);
 }
 
 /* The main scrollbar **track** CSS class  */
 .mylistview .scroll-bar:horizontal .track ,
 .mylistview .scroll-bar:vertical .track{
      -fx-background-color: transparent;
-	 -fx-border-color:derive(gray,80%);
 	 -fx-background-radius: 0em;
 }
 
