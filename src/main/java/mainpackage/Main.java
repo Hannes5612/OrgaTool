@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mainpackage.animation.FadeIn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +34,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Login");
         assert root != null;
-        primaryStage.setScene(new Scene(root));
+        Scene login = new Scene(root);
+        primaryStage.setScene(login);
         primaryStage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
         primaryStage.setResizable(false);
         primaryStage.show();

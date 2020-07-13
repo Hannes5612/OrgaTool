@@ -18,10 +18,10 @@ public class ClockThread extends Thread{
     private final Logger logger = LogManager.getLogger(Main.class.getName());
     private String time = "", month = "", day = "";
 
-    //setting the labels, the clock needs to access
-    public void setLabels(Label time, Label date){
-        this.timeLabel = time;
-        this.dateLabel = date;
+
+    public ClockThread(Label timeLabel, Label dateLabel) {
+        this.timeLabel = timeLabel;
+        this.dateLabel = dateLabel;
     }
 
     /**

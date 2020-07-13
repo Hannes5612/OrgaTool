@@ -86,7 +86,7 @@ public class Overview {
     private final ObservableList<Task> usersTasksSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotes = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotesSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
-    private final ClockThread clock = new ClockThread();
+    private  ClockThread clock;
     private ExecutorService exec = Executors.newCachedThreadPool();
 
     @FXML
@@ -137,7 +137,7 @@ public class Overview {
         setListViews();
 
         //Initializing clock
-        clock.setLabels(timeLabel, dateLabel);
+        clock = new ClockThread(timeLabel,dateLabel);
         clock.setDaemon(true);
         clock.start();
 
@@ -171,6 +171,7 @@ public class Overview {
 
     /**
      * Sorting tasks depending on selected String in sortTaskListDropdown (dropdown menu to sort tasks in overview)
+     *
      * @param choice selected String in DropDown
      */
     private void sortTasks(String choice) {
@@ -210,14 +211,11 @@ public class Overview {
      */
     private void toggleArchive() {
 
-        usersNotes.clear();
-        usersTasks.clear();
-
-        logger.info("Archived notes/tasks are now displayed.");
 
         javafx.concurrent.Task<List<Note>> getNotesTask = new javafx.concurrent.Task<>() {
             @Override
             public List<Note> call() {
+                logger.info("Fetching archived notes.");
                 return listManager.getNoteList()
                         .filter(n -> n.getState() == 2)
                         .collect(Collectors.toList());
@@ -227,14 +225,25 @@ public class Overview {
         javafx.concurrent.Task<List<Task>> getTasksTask = new javafx.concurrent.Task<>() {
             @Override
             public List<Task> call() {
+                logger.info("Fetching archived tasks.");
                 return listManager.getTaskList()
                         .filter(n -> n.getState() == 2)
                         .collect(Collectors.toList());
             }
         };
 
-        getTasksTask.setOnSucceeded(e -> usersTasks.setAll(getTasksTask.getValue()));
-        getNotesTask.setOnSucceeded(e -> usersNotes.setAll(getNotesTask.getValue()));
+        getTasksTask.setOnSucceeded(e -> {
+            usersTasks.clear();
+            usersTasks.setAll(getTasksTask.getValue());
+            sortNotes(sortNoteListDropdown.getValue());
+            logger.info("Archived Tasks are now displayed.");
+        });
+        getNotesTask.setOnSucceeded(e -> {
+            usersNotes.clear();
+            usersNotes.setAll(getNotesTask.getValue());
+            sortTasks(sortTaskListDropdown.getValue());
+            logger.info("Archived notes are now displayed.");
+        });
 
         exec.submit(getTasksTask);
         exec.submit(getNotesTask);
@@ -246,14 +255,11 @@ public class Overview {
      */
     private void toggleActive() {
 
-        usersNotes.clear();
-        usersTasks.clear();
-
-        logger.info("Active notes are now displayed.");
 
         javafx.concurrent.Task<List<Note>> getNotesTask = new javafx.concurrent.Task<>() {
             @Override
             public List<Note> call() {
+                logger.info("Fetching active notes.");
                 return listManager.getNoteList()
                         .filter(n -> n.getState() == 0)
                         .collect(Collectors.toList());
@@ -263,14 +269,26 @@ public class Overview {
         javafx.concurrent.Task<List<Task>> getTasksTask = new javafx.concurrent.Task<>() {
             @Override
             public List<Task> call() {
+
+                logger.info("Fetching active tasks.");
                 return listManager.getTaskList()
                         .filter(n -> n.getState() == 0 || n.getState() == 1)
                         .collect(Collectors.toList());
             }
         };
 
-        getTasksTask.setOnSucceeded(e -> usersTasks.setAll(getTasksTask.getValue()));
-        getNotesTask.setOnSucceeded(e -> usersNotes.setAll(getNotesTask.getValue()));
+        getTasksTask.setOnSucceeded(e -> {
+            usersTasks.clear();
+            usersTasks.setAll(getTasksTask.getValue());
+            sortTasks(sortNoteListDropdown.getValue());
+            logger.info("Active Tasks are now displayed.");
+        });
+        getNotesTask.setOnSucceeded(e -> {
+            usersNotes.clear();
+            usersNotes.setAll(getNotesTask.getValue());
+            sortNotes(sortTaskListDropdown.getValue());
+            logger.info("Active notes are now displayed.");
+        });
 
         exec.submit(getTasksTask);
         exec.submit(getNotesTask);
@@ -380,7 +398,6 @@ public class Overview {
         });
 
 
-
     }
 
     private void loadAddNote() {
@@ -402,7 +419,9 @@ public class Overview {
         overviewAddNoteImage.setDisable(true);
         stage.showAndWait();
         if (!toggleArchiveButton.isSelected()) {
-            usersNotes.add(listManager.getLatestNote());
+            toggleActive();
+        } else {
+            toggleArchive();
         }
         sortNotes(sortNoteListDropdown.getValue());
         overviewAddNoteImage.setDisable(false);
@@ -429,11 +448,12 @@ public class Overview {
         overviewAddItemImage.setDisable(true);
         stage.showAndWait();
         if (!toggleArchiveButton.isSelected()) {
-            usersTasks.add(listManager.getLatestTask());
+            toggleActive();
+        } else {
+            toggleArchive();
         }
         sortTasks(sortTaskListDropdown.getValue());
         overviewAddItemImage.setDisable(false);
-
     }
 
     private void loadCalendar() {
@@ -527,6 +547,9 @@ public class Overview {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Login");
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
 

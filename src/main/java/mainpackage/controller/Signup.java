@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Ellipse;
+import javafx.stage.Stage;
 import mainpackage.Main;
 import mainpackage.animation.FadeIn;
 import mainpackage.animation.Shake;
@@ -86,7 +87,8 @@ public class Signup {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.setTitle("Login");
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
     }

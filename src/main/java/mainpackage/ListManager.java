@@ -54,7 +54,7 @@ public class ListManager {
     /**
      * Run the databasehandlers of both notes and tasks.
      *
-     * @throws SQLException           on a failed connection
+     * @throws SQLException on a failed connection
      * @throws ClassNotFoundException
      */
     public void update() throws SQLException, ClassNotFoundException {

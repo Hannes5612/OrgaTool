@@ -2,12 +2,17 @@ package mainpackage.controller;
 
 import com.jfoenix.controls.*;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
@@ -38,6 +43,8 @@ public class Login {
     @FXML
     private TextField loginUsername;
     @FXML
+    private AnchorPane loginDragger;
+    @FXML
     private PasswordField loginPassword;
     @FXML
     private Button loginLoginButton;
@@ -50,6 +57,7 @@ public class Login {
 
     private Executor exec ;
     private final Logger logger = LogManager.getLogger(Main.class.getName());
+    private double initialX, initialY;
 
     /**
      * Handle button presses.
@@ -59,7 +67,6 @@ public class Login {
      */
     @FXML
     void initialize() {
-
 
         //Hide error messages
         loginMessage.setVisible(false);
@@ -277,6 +284,4 @@ public class Login {
         loginPassword.setVisible(true);
         loginSpinner.setVisible(false);
     }
-
-
 }

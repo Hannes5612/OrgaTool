@@ -23,10 +23,6 @@ import java.util.ResourceBundle;
 public class CreateNote {
 
     @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
-    @FXML
     private JFXTextField newNoteTitle;
     @FXML
     private JFXTextArea newNoteContent;
