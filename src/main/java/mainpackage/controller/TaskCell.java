@@ -1,7 +1,6 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.model.Note;
 import mainpackage.model.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

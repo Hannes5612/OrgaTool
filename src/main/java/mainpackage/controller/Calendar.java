@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -22,6 +23,7 @@ import mainpackage.animation.FadeIn;
 import mainpackage.model.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -110,17 +112,6 @@ public class Calendar {
                 vPane.setPadding(new Insets(0, 0, 0, 0));
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
 
-                //Eventhandler to click a day and get its tasks
-                vPane.setOnMouseClicked(e -> {
-                    if (isListOpen) {
-                        Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
-                        openAlert.showAndWait();
-                    } else {
-                        if (vPane.getChildren().toArray().length != 0) showClickedDayTasks(vPane.getChildren().get(0));
-                    }
-
-                });
-
                 //Add a rightclick menu
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem edit = new MenuItem("New Task for this day");
@@ -128,6 +119,19 @@ public class Calendar {
 
                 // Add MenuItem to ContextMenu
                 contextMenu.getItems().addAll(edit);
+
+                //Eventhandler to click a day and get its tasks, prevent right klick to be detected
+                vPane.setOnMouseClicked(e -> {
+                    if (isListOpen&&e.getButton()== MouseButton.PRIMARY) {
+                        Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
+                        openAlert.showAndWait();
+                    } else {
+                        if (vPane.getChildren().toArray().length != 0 &&e.getButton()== MouseButton.PRIMARY) showClickedDayTasks(vPane.getChildren().get(0));
+                    }
+
+                });
+
+
                 //Add EventListener
                 vPane.setOnContextMenuRequested(event -> contextMenu.show(vPane, event.getScreenX(), event.getScreenY()));
                 // Add it to the grid
@@ -407,7 +411,7 @@ public class Calendar {
                         stage.setTitle("Tasks for " + dayClicked + " of " + monthSelection + " " + yearSelection);
                         stage.setResizable(true);
                         stage.setMinWidth(440);
-                        logger.debug("A window with tasks for day" + dayClicked + "." + monthSelection +" was opened.");
+                        logger.debug("A window with tasks for day" + dayClicked + "." + monthSelection + " was opened.");
                         stage.showAndWait();
 
                         //after closing the window, reload the month, in case the user has deleted or changed a task
