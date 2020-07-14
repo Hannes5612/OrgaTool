@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mainpackage.animation.FadeIn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +22,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //new ProcessBuilder().command("gsettings set org.gnome.desktop.interface scaling-factor 2").start();
-
 
         URL fxmlFileUrl = getClass().getClassLoader().getResource("view/Login.fxml");
         Parent root = null;

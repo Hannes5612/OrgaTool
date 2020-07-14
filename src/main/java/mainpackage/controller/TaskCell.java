@@ -1,8 +1,6 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXListCell;
-import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -54,8 +52,6 @@ public class TaskCell extends ListCell<Task> {
     private JFXCheckBox cellCheckbox;
     @FXML
     private Label checkboxLabel;
-    @FXML
-    private JFXToggleButton toggleArchiveButton;
 
     private FXMLLoader fxmlLoader;
 
@@ -123,10 +119,12 @@ public class TaskCell extends ListCell<Task> {
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+            getListView().setDisable(true);
             logger.info("Opened window to edit task " + task.getId() + ": '" + task.getTitle() + "'.");
             stage.showAndWait();
-            if (EditTask.getEditedTask() != null)
+            if (EditTask.getEditedTask() != null) {
                 listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask());
+            }
             getListView().setDisable(false);
         });
 
@@ -193,14 +191,6 @@ public class TaskCell extends ListCell<Task> {
                     }
                 }
             }
-        });
-
-        rootAnchorPane.setOnMouseClicked(e -> {
-
-            final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
-
-            System.out.println(task.getState());
-
         });
 
         checkboxLabel.setOnMouseClicked(e -> {

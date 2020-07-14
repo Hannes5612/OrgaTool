@@ -16,3 +16,7 @@ If you use such a screen make the application scale with the following command:
 
 The factor for e.g. a 4k screen would be 2 :)
 
+## Screenshots
+
+![Login Page](/screenshots/LoginPage.png)
+![Overview Screen](/screenshots/MainScreen.png)

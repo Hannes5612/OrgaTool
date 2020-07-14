@@ -59,6 +59,7 @@ public class Login {
     private final Logger logger = LogManager.getLogger(Main.class.getName());
     private double initialX, initialY;
 
+
     /**
      * Handle button presses.
      * Signup button press calls signup() method.
