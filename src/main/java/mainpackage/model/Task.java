@@ -15,6 +15,7 @@ public class Task extends Entry {
      * color -
      * dueDate -
      */
+    // ToDo: priority to char
     private String priority;
     private String color;
     private Date dueDate;

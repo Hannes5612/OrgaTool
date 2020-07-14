@@ -2,6 +2,7 @@ package mainpackage.controller;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.model.Note;
 import mainpackage.model.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +37,6 @@ public class TaskCell extends ListCell<Task> {
     @FXML
     private Label cellTaskDescription;
     @FXML
-    private JFXCheckBox cellCheckbox;
-    @FXML
     private Label cellDateLabel;
     @FXML
     private Label cellCreatedLabel;
@@ -52,6 +50,12 @@ public class TaskCell extends ListCell<Task> {
     private ImageView cellEditButton;
     @FXML
     private ImageView cellArchiveButton;
+    @FXML
+    private JFXCheckBox cellCheckbox;
+    @FXML
+    private Label checkboxLabel;
+    @FXML
+    private JFXToggleButton toggleArchiveButton;
 
     private FXMLLoader fxmlLoader;
 
@@ -61,8 +65,8 @@ public class TaskCell extends ListCell<Task> {
     void initialize() {
 
         Tooltip.install(cellDeleteButton, new Tooltip("Delete task"));
-        Tooltip.install(cellDeleteButton, new Tooltip("Edit task"));
-        Tooltip.install(cellDeleteButton, new Tooltip("Archive task"));
+        Tooltip.install(cellEditButton, new Tooltip("Edit task"));
+        Tooltip.install(cellArchiveButton, new Tooltip("Archive task"));
 
         cellDeleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
@@ -111,6 +115,7 @@ public class TaskCell extends ListCell<Task> {
                 loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error("IOException: " + e);
             }
 
             Parent root = loader.getRoot();
@@ -118,15 +123,14 @@ public class TaskCell extends ListCell<Task> {
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-            getListView().setDisable(true);
+            logger.info("Opened window to edit task " + task.getId() + ": '" + task.getTitle() + "'.");
             stage.showAndWait();
-            if (EditTask.getEditedTask() != null) {
+            if (EditTask.getEditedTask() != null)
                 listViewProperty().get().getItems().set(selectedIdx, EditTask.getEditedTask());
-            }
             getListView().setDisable(false);
         });
 
-        // Archiving task when state = active/finished or reactivating task when state = archived
+        // Archiving task when state = active/finished or reactivating task when state = archived.
         cellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
@@ -191,16 +195,30 @@ public class TaskCell extends ListCell<Task> {
             }
         });
 
-        cellCheckbox.setOnMouseClicked(event -> {
+        rootAnchorPane.setOnMouseClicked(e -> {
 
             final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
 
-            if (cellCheckbox.isSelected()) {
+            System.out.println(task.getState());
+
+        });
+
+        checkboxLabel.setOnMouseClicked(e -> {
+
+            final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
+
+            if(task.getState() == 2) { return; }
+            if(task.getState() == 0) {
+                cellCheckbox.setSelected(true);
                 task.finish();
             } else {
+                cellCheckbox.setSelected(false);
                 task.reactivate();
             }
+
             synchronizeDatabase(task);
+
+            // ToDo: logger
 
         });
 
@@ -263,7 +281,11 @@ public class TaskCell extends ListCell<Task> {
             cellDateLabel.setText(String.valueOf(task.getDueDate()));
             cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
             cellTaskDescription.setWrapText(true);
-            cellCheckbox.setSelected(task.getState() == 1);
+            if(task.getState() == 2) { cellCheckbox.setVisible(false); } // Deactivate checkbox for archived tasks.
+            else {
+                cellCheckbox.setVisible(true);
+                cellCheckbox.setSelected(task.getState() == 1);
+            }
 
             setText(null);
             setGraphic(rootAnchorPane);

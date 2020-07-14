@@ -112,6 +112,8 @@ public class Overview {
         // ToggleButton to switch between archived and active notes/tasks
         toggleArchiveButton.selectedProperty().addListener(this::toggleSwitched);
 
+        // ToDo: notes/tasks in eine Zeile
+
         //listener for changed search field
         noteListSearchField.textProperty().addListener(this::changedNotesSearchField);
 
@@ -175,9 +177,6 @@ public class Overview {
      * @param choice selected String in DropDown
      */
     private void sortTasks(String choice) {
-        // Reset search to avoid issues.
-        usersTasksSearch.setAll(usersTasks);
-        taskListView.setItems(usersTasksSearch);
 
         switch (choice) {
             case "Sort by date (newest to oldest)":
@@ -192,18 +191,29 @@ public class Overview {
             case "Sort alphabetically (Z-A)":
                 sortTasksTitleDesc(usersTasks);
                 break;
-            case "Sort by priority (high)":
-                sortTasksByPriority("H");
-                break;
-            case "Sort by priority (medium)":
-                sortTasksByPriority("M");
-                break;
-            case "Sort by priority (low)":
-                sortTasksByPriority("L");
+            case "Sort by priority":
+                sortTasksByPriority();
                 break;
         }
+
     }
 
+    private void sortTasksByPriority() {
+
+        usersTasks.sort((t1, t2) -> {
+            String firstPriority = t1.getPriority();
+            String secondPriority = t2.getPriority();
+            System.out.println(firstPriority.compareTo(secondPriority));
+            if(firstPriority.equals(secondPriority)) return 0;
+            if(firstPriority.equals("H")) return -1;
+            if(secondPriority.equals("H")) return 1;
+            if(firstPriority.equals("M")) return -1;
+            if(secondPriority.equals("M")) return 1;
+            if(firstPriority.equals("L")) return -1;
+            return 1;
+        });
+
+    }
 
     /**
      * Clearing list of user's notes/tasks and adding only archived notes/tasks.
@@ -232,17 +242,17 @@ public class Overview {
             }
         };
 
-        getTasksTask.setOnSucceeded(e -> {
-            usersTasks.clear();
-            usersTasks.setAll(getTasksTask.getValue());
-            sortNotes(sortNoteListDropdown.getValue());
-            logger.info("Archived Tasks are now displayed.");
-        });
         getNotesTask.setOnSucceeded(e -> {
             usersNotes.clear();
             usersNotes.setAll(getNotesTask.getValue());
-            sortTasks(sortTaskListDropdown.getValue());
+            sortNotes(sortNoteListDropdown.getValue());
             logger.info("Archived notes are now displayed.");
+        });
+        getTasksTask.setOnSucceeded(e -> {
+            usersTasks.clear();
+            usersTasks.setAll(getTasksTask.getValue());
+            sortTasks(sortTaskListDropdown.getValue());
+            logger.info("Archived Tasks are now displayed.");
         });
 
         exec.submit(getTasksTask);
@@ -295,11 +305,12 @@ public class Overview {
 
     }
 
+    /*
     private void sortTasksByPriority(String priority) {
         usersTasksSearch.setAll(searchTasksByPriority(priority, usersTasks));
         taskListView.setItems(usersTasksSearch);
     }
-
+    */
 
     /**
      * Sorting list of user's tasks by date (descending)

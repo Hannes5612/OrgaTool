@@ -42,9 +42,7 @@
                      <String fx:value="Sort by date (oldest to newest)" />
                      <String fx:value="Sort alphabetically (A-Z)" />
                      <String fx:value="Sort alphabetically (Z-A)" />
-                     <String fx:value="Sort by priority (high)" />
-                     <String fx:value="Sort by priority (medium)" />
-                     <String fx:value="Sort by priority (low)" />
+                     <String fx:value="Sort by priority" />
                   </FXCollections>
                </items>
             </JFXComboBox>

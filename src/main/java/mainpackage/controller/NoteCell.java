@@ -45,7 +45,8 @@ public class NoteCell extends ListCell<Note> {
     private ImageView noteCellArchiveButton;
 
     private FXMLLoader fxmlLoader;
-    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     @FXML
     void initialize() {
@@ -120,12 +121,12 @@ public class NoteCell extends ListCell<Note> {
             getListView().setDisable(true);
             logger.info("Opened window to edit note " + note.getId() + ": '" + note.getTitle() + "'.");
             stage.showAndWait();
-            if (!(EditNote.getEditedNote() == null))
+            if (EditNote.getEditedNote() != null)
                 listViewProperty().get().getItems().set(selectedIdx, EditNote.getEditedNote());
             getListView().setDisable(false);
         });
 
-        // archiving note when state = active or reactivating note when state = archived
+        // Archiving note when state = active or reactivating note when state = archived.
         noteCellArchiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
