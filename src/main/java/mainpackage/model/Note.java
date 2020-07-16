@@ -19,7 +19,8 @@ public class Note extends Entry {
     /**
      * Creating note with only title and content
      * The rest is set automatically
-     * @param title title of note
+     *
+     * @param title   title of note
      * @param content description of note
      */
     public Note(int id, String title, String content) {
@@ -31,30 +32,42 @@ public class Note extends Entry {
 
     /**
      * Creating note
-     * @param id note ID, unique
-     * @param title title of note
-     * @param content description of note
+     *
+     * @param id           note ID, unique
+     * @param title        title of note
+     * @param content      description of note
      * @param creationDate date when note was created
-     * @param state state of note (ACTIVE/ARCHIVED/FINISHED)
+     * @param state        state of note (ACTIVE/ARCHIVED/FINISHED)
      */
     public Note(int id, String title, String content, Date creationDate, int state) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.creationDate = creationDate;
-        if (state == 0) { this.state = State.ACTIVE;   }
-        if (state == 1) { this.state = State.FINISHED; }
-        if (state == 2) { this.state = State.ARCHIVED; }
+        if (state == 0) {
+            this.state = State.ACTIVE;
+        }
+        if (state == 1) {
+            this.state = State.FINISHED;
+        }
+        if (state == 2) {
+            this.state = State.ARCHIVED;
+        }
         logger.info("Note loaded: " + this);
     }
 
+    /**
+     * method writes note object information into String
+     *
+     * @return String with all note information
+     */
     @Override
     public String toString() {
         return "{" + "id=" + id +
-                ", title='"         + title        + '\'' +
-                ", content='"      + content      + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", creationDate='" + creationDate + '\'' +
-                ", state='"        + state        + '\'' +
+                ", state='" + state + '\'' +
                 " }";
     }
 }

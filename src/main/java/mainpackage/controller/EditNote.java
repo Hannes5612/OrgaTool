@@ -21,6 +21,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * window to edit an existing note
+ */
 public class EditNote implements Initializable {
 
     @FXML
@@ -102,6 +105,10 @@ public class EditNote implements Initializable {
         });
     }
 
+    /**
+     * getting note that has been edited in EditNote window
+     * @return edited note
+     */
     public static Note getEditedNote() {
         return editedNote;
     }

@@ -74,7 +74,7 @@ public class ListManager {
         ResultSet noteRow = databaseHandler.getNotes();
         logger.info("Notes from database fetched");
 
-        //loading the ResultSet into the Observable List
+        // loading the ResultSet into the Observable List
         while (noteRow.next()) {
             int noteid = noteRow.getInt("notesid");
             String title = noteRow.getString("title");
@@ -95,7 +95,6 @@ public class ListManager {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-
     public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
         DatabaseHandler databaseHandler = new DatabaseHandler();
@@ -103,7 +102,7 @@ public class ListManager {
         logger.info("Tasks from database fetched");
 
 
-        //loading the ResultSet into the Observable List
+        // loading the ResultSet into the Observable List
         while (taskRow.next()) {
             int id = taskRow.getInt("taskid");
             String title = taskRow.getString("title");
@@ -122,7 +121,7 @@ public class ListManager {
         logger.info("Tasks in local list loaded");
     }
 
-    //static methods
+    // static methods
     public static void setUser(User user) {
         ListManager.user = user;
     }
@@ -131,16 +130,26 @@ public class ListManager {
         taskList.removeIf(task -> task.getId() == taskId);
     }
 
+    /**
+     * deleting note from list of notes
+     * @param noteId ID of note to be deleted
+     */
     public static void deleteNote(int noteId) {
         noteList.removeIf(note -> note.getId() == noteId);
+        logger.info("Deleted note from list of notes.");
     }
 
+    /**
+     * editing note in list of notes
+     * @param note edited note which will be shown in list of notes
+     */
     public static void editNote(Note note) {
 
         int remove = 0;
         for (Note note1 : noteList) {
             if (note.getId() == note1.getId()) {
                 noteList.set(remove, note);
+                logger.info("Edited note in list of notes.");
             }
             remove++;
         }
@@ -161,6 +170,10 @@ public class ListManager {
         taskList.add(task);
     }
 
+    /**
+     * adding note to list of notes
+     * @param note note to be added to list of notes
+     */
     public static void addNote(Note note) {
         noteList.add(note);
     }

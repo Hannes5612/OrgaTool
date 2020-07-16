@@ -16,10 +16,11 @@ import mainpackage.model.Note;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
+/**
+ * window to create a new note
+ */
 public class CreateNote {
 
     @FXML
