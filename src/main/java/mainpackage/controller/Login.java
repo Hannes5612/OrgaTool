@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
@@ -55,8 +57,8 @@ public class Login {
     /**
      * Handle button presses.
      * Signup button press calls signup() method.
-     * Login button press creates a databaseHandler and checks the user input for registered users. After a successful
-     * chek the login() method gets called with the fetched user.
+     * Login button press creates a databaseHandler and checks the user input for registered users.
+     * After a successful check, the login() method gets called with the fetched user.
      */
     @FXML
     void initialize() {
@@ -88,14 +90,15 @@ public class Login {
         });
 
         logger.info("Loginpage loaded");
+
     }
 
 
     /**
      * Loads signup.xfml
      */
-
     private void signup() {
+
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setTitle("Signup");
 
@@ -109,15 +112,14 @@ public class Login {
         rootPane.getChildren().setAll(signup);                                            //Show Signup page
         new FadeIn(signup).play();
         logger.info("Signup Loaded");
+
     }
 
     /**
      * Closes current window after successful user check from database.
      * Opens the overview and passes the logged in user.
      */
-
     private void overview() {
-
 
         AnchorPane login = null;
         try {
@@ -132,6 +134,7 @@ public class Login {
         new FadeIn(login).play();
 
         logger.info("Overview loaded");
+        // ToDo: entfernen?
 //        Set<Thread> threads = Thread.getAllStackTraces().keySet();
 //
 //        for (Thread t : threads) {
@@ -140,10 +143,11 @@ public class Login {
     }
 
     /**
-     * Login handler, checks the entered credentials and in case of matching ones fetch the tasks and
-     * notes from the database
+     * Login handler checks the entered credentials and in case of matching ones
+     * fetch the tasks and notes from the database.
      */
     private void login() {
+
         //hide error messages after retry
         loginMessage.setVisible(false);
 
@@ -236,13 +240,20 @@ public class Login {
                     }
 
                     //catch a SQLException in any case
-                } catch (SQLException | IllegalIdentification sqlException) {
+                } catch(IllegalIdentification illegalIdentException) {
                     noSpin();
 
-                    Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.", ButtonType.OK);
+                    Alert error = new Alert(Alert.AlertType.ERROR,"Error while fetching the user occured!\nIllegal identification!",ButtonType.OK);
                     error.showAndWait();
 
-                    logger.info("Sql exception occured: " + sqlException);
+                    logger.error("Error while fetching the user occured: " + illegalIdentException);
+                } catch (SQLException sqlException) {
+                    noSpin();
+
+                    Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);
+                    error.showAndWait();
+
+                    logger.error("Sql exception occured: " + sqlException);
                 }
             });
 
@@ -258,9 +269,7 @@ public class Login {
             //run database handler task
             exec.execute(getUserFromDB);
 
-
         }
-
 
     }
 
@@ -277,4 +286,5 @@ public class Login {
         loginPassword.setVisible(true);
         loginSpinner.setVisible(false);
     }
+
 }

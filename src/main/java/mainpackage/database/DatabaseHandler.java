@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 /**
- * Database Handler class to process database requests
+ * Database Handler class to process database requests.
  */
 public class DatabaseHandler extends Config {
 
@@ -41,8 +41,8 @@ public class DatabaseHandler extends Config {
      * Create a new db entry for a user who wants to register
      *
      * @param user to register
-     * @throws SQLException
-     * @throws ClassNotFoundException
+     * @throws SQLException - SQLException
+     * @throws ClassNotFoundException - class not found
      */
     public void signupUser(User user) throws SQLException, ClassNotFoundException {
 

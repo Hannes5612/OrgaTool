@@ -40,8 +40,7 @@ public class CreateTask {
     private LocalDate date;
     private boolean dateSet;
 
-    public CreateTask() {
-    }
+    public CreateTask() {}
 
     public CreateTask(LocalDate date) {
         this.date = date;
@@ -65,7 +64,7 @@ public class CreateTask {
             String color = String.valueOf(newTaskColor.getValue());
             Date duedate = Date.valueOf(newTaskDueDate.getValue());
 
-            Task createdTask = new Task(ListManager.getCountingTaskID(), title, content, prio, color, duedate, today);
+            Task createdTask = new Task(ListManager.getCountingTaskID(), title, content, prio, color, duedate, today, 0);
 
 
             DatabaseHandler databaseHandler = new DatabaseHandler();

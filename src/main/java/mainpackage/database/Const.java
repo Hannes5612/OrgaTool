@@ -1,7 +1,7 @@
 package mainpackage.database;
 
 /**
- * SQL configuration of the applications database tables and rows
+ * SQL configuration of the applications database tables and rows.
  */
 public class Const {
     protected static final String USER_TABLE = "users";

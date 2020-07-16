@@ -3,19 +3,17 @@ package mainpackage.model;
 import mainpackage.exceptions.IllegalIdentification;
 
 /**
- * Used to create a user Objet with the important userID
+ * Class creates user objects with a unique id.
  */
 public class User {
     private String userName, password;
     private int userid;
 
-    //constructors
-
     /**
      * Creating user with name and password
      *
-     * @param userName name of user
-     * @param password password for account of user
+     * @param userName - name of user
+     * @param password - password for account of user
      */
     public User(String userName, String password) {
         this.userName = userName;
@@ -25,10 +23,7 @@ public class User {
     /**
      * Creating user without variables
      */
-    public User() {
-    }
-
-    // getters
+    public User() {}
 
     /**
      * getting ID of user
@@ -80,9 +75,9 @@ public class User {
     @Override
     public java.lang.String toString() {
         return "User{" +
-                "userName='" + userName + '\'' +
+                "userName='"   + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", userid='" + userid + '\'' +
+                ", userid='"   + userid + '\'' +
                 '}';
     }
 }

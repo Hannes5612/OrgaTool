@@ -64,13 +64,16 @@ public class TaskCell extends ListCell<Task> {
         Tooltip.install(cellEditButton, new Tooltip("Edit task"));
         Tooltip.install(cellArchiveButton, new Tooltip("Archive task"));
 
+        // deleting task from database and ListView
         cellDeleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
+            // user selects task
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
+            logger.debug("Task at index " + selectedIdx + " selected.");
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + task.getTitle() + " ?", ButtonType.YES, ButtonType.CANCEL);
-            alert.setTitle("Confirmation");
+            alert.setTitle("DELETING TASK");
             alert.setHeaderText("You are about to delete a task!");
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
@@ -79,30 +82,34 @@ public class TaskCell extends ListCell<Task> {
             if (alert.getResult() == ButtonType.YES) {
                 if (selectedIdx != -1) {
                     Task itemToRemove = listViewProperty().get().getSelectionModel().getSelectedItem();
-                    ListManager.deleteTask(itemToRemove.getId());
-                    //debugLogger.info(selectedIdx);
 
                     DatabaseHandler databaseHandler = new DatabaseHandler();
                     try {
                         databaseHandler.deleteTask(task);
+                        ListManager.deleteTask(itemToRemove.getId());
+                        logger.debug("Task at index " + selectedIdx + " deleted.");
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
+                        logger.error("SQLException: " + throwables);
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
+                        logger.error("ClassNotFoundException: " + e);
                     }
-                    //debugLogger.info("Removed from Listview " + itemToRemove.getTaskName());
                     listViewProperty().get().getItems().remove(selectedIdx);
+                    logger.info("Removed from ListView: Task '" + itemToRemove.getTitle() + "'");
                 }
 
             }
         });
 
+        // opening new window to edit task (with title + content of old task)
+        // and updating task in ListView when task != null
         cellEditButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
             final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
-            System.out.println("Task at index " + selectedIdx + " selected.");
+            logger.debug("Task at index " + selectedIdx + " selected.");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditTasks.fxml"));
             loader.setController(new EditTask(task, selectedIdx));
@@ -136,7 +143,7 @@ public class TaskCell extends ListCell<Task> {
             int taskId = task.getId();
             logger.debug("Task at index " + selectedIdx + " selected.");
 
-            if (task.getState() != 2) { // state = active/finished --> note will be archived
+            if (task.getState() != 2) { // state = active/finished --> task will be archived
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("ARCHIVING TASK");
                 alert.setHeaderText("You are about to archive a task!");
@@ -163,7 +170,7 @@ public class TaskCell extends ListCell<Task> {
                         logger.info("Removed from current ListView of active/finished tasks: Task '" + task.getTitle() + "'");
                     }
                 }
-            } else if (task.getState() == 2) { // state = archived --> note will be active
+            } else if (task.getState() == 2) { // state = archived --> task will be active
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setTitle("REACTIVATING TASK");
                 alert.setHeaderText("You are about to reactivate a task!");
@@ -210,16 +217,19 @@ public class TaskCell extends ListCell<Task> {
 
             synchronizeDatabase(task);
 
-            // ToDo: logger
+            logger.info("Checkbox clicked of task: '" + task.getTitle() + "'");
 
         });
 
     }
 
     /**
-     * New thread to synchronize the database with the updated task.
+     * New thread to synchronize the database with the updated task after clicking the checkbox.
+     * @param task - Selected task with updated state.
      */
     private void synchronizeDatabase(Task task) {
+
+        final int selectedIdx = listViewProperty().get().getSelectionModel().getSelectedIndex();
 
         DatabaseHandler databaseHandler = new DatabaseHandler();
 
@@ -228,15 +238,21 @@ public class TaskCell extends ListCell<Task> {
             public Void call() {
                 try {
                     databaseHandler.editTask(task.getId(), task);
-                } catch (ClassNotFoundException | SQLException e) {
+                    logger.debug("Task at index " + selectedIdx + " edited.");
+                } catch (SQLException throwables) {
+                    Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                    error.showAndWait();
+                    logger.error("SQLException: " + throwables);
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
+                    logger.error("ClassNotFoundException: " + e);
                 }
                 return null;
             }
         };
 
         taskThread.setOnFailed(e -> {
-            Alert error = new Alert(Alert.AlertType.ERROR, "Thread to synchronize the database with the updated task failed!");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Thread to synchronize the database with the updated task failed! Task: '" + task.getTitle() + "'");
             error.showAndWait();
             logger.error("Thread to synchronize the database with the updated task failed! " + e);
         });
@@ -245,6 +261,14 @@ public class TaskCell extends ListCell<Task> {
 
     }
 
+    /**
+     * The method is called every time the cells in the ListView were updated.
+     * It adds click triggers to the cells and loads their fxml resource.
+     * The cells will be reloaded with their (updated) tasks.
+     *
+     * @param task - task objects of the taskList
+     * @param empty - boolean of the superclass
+     */
     @Override
     protected void updateItem(Task task, boolean empty) {
 
@@ -262,6 +286,7 @@ public class TaskCell extends ListCell<Task> {
                     fxmlLoader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    logger.error("IOException: " + e);
                 }
             }
 
@@ -285,6 +310,7 @@ public class TaskCell extends ListCell<Task> {
             setGraphic(rootAnchorPane);
 
         }
+
     }
 
 }

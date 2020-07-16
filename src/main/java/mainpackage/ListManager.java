@@ -54,8 +54,8 @@ public class ListManager {
     /**
      * Run the databasehandlers of both notes and tasks.
      *
-     * @throws SQLException           on a failed connection
-     * @throws ClassNotFoundException
+     * @throws SQLException - on a failed connection
+     * @throws ClassNotFoundException - class not found
      */
     public void update() throws SQLException, ClassNotFoundException {
         updateNotes();
@@ -65,8 +65,8 @@ public class ListManager {
     /**
      * Update the observable notelist from the database
      *
-     * @throws SQLException
-     * @throws ClassNotFoundException
+     * @throws SQLException - SQLException
+     * @throws ClassNotFoundException - class not found
      */
     public void updateNotes() throws SQLException, ClassNotFoundException {
         noteList.clear();
@@ -92,8 +92,8 @@ public class ListManager {
     /**
      * Update the observable tasklist from the database
      *
-     * @throws SQLException
-     * @throws ClassNotFoundException
+     * @throws SQLException - SQLException
+     * @throws ClassNotFoundException - class not found
      */
     public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
@@ -183,7 +183,7 @@ public class ListManager {
 
 
     /**
-     * Synchronized mehtod to parallel stream the noteLists items
+     * Synchronized method to parallel stream the noteLists items
      *
      * @return stream of notes
      */

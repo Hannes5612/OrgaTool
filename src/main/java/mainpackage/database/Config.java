@@ -1,7 +1,7 @@
 package mainpackage.database;
 
 /**
- * SQL Configuration login to schema
+ * SQL Configuration login to schema.
  */
 public class Config extends Const {
     protected String dbHost = "37.24.72.40";

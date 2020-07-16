@@ -43,7 +43,8 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
- * Main view after log in. Shows three different views of the created tasks.
+ * Main view after log in.
+ * Shows three different views of the created tasks.
  */
 
 public class Overview {
@@ -143,9 +144,9 @@ public class Overview {
     }
 
     /**
-     * Sorting notes depending on selected String in sortNoteListDropdown (dropdown menu to sort notes in overview)
+     * Sorting notes depending on selected String in sortNoteListDropdown (dropdown menu to sort notes in overview).
      *
-     * @param choice selected String in DropDown
+     * @param choice - selected String in DropDown
      */
     private void sortNotes(String choice) {
         switch (choice) {
@@ -169,9 +170,9 @@ public class Overview {
     }
 
     /**
-     * Sorting tasks depending on selected String in sortTaskListDropdown (dropdown menu to sort tasks in overview)
+     * Sorting tasks depending on selected String in sortTaskListDropdown (dropdown menu to sort tasks in overview).
      *
-     * @param choice selected String in DropDown
+     * @param choice - selected String in DropDown
      */
     private void sortTasks(String choice) {
 
@@ -200,13 +201,12 @@ public class Overview {
         usersTasks.sort((t1, t2) -> {
             String firstPriority = t1.getPriority();
             String secondPriority = t2.getPriority();
-            System.out.println(firstPriority.compareTo(secondPriority));
-            if (firstPriority.equals(secondPriority)) return 0;
-            if (firstPriority.equals("H")) return -1;
-            if (secondPriority.equals("H")) return 1;
-            if (firstPriority.equals("M")) return -1;
-            if (secondPriority.equals("M")) return 1;
-            if (firstPriority.equals("L")) return -1;
+            if(firstPriority.equals(secondPriority)) return 0;
+            if(firstPriority.equals("H")) return -1;
+            if(secondPriority.equals("H")) return 1;
+            if(firstPriority.equals("M")) return -1;
+            if(secondPriority.equals("M")) return 1;
+            if(firstPriority.equals("L")) return -1;
             return 1;
         });
 
@@ -217,7 +217,6 @@ public class Overview {
      * Result: only archived notes/tasks are shown when toggleArchiveButton is selected.
      */
     private void toggleArchive() {
-
 
         javafx.concurrent.Task<List<Note>> getNotesTask = new javafx.concurrent.Task<>() {
             @Override
@@ -254,6 +253,7 @@ public class Overview {
 
         exec.submit(getTasksTask);
         exec.submit(getNotesTask);
+
     }
 
     /**
@@ -261,7 +261,6 @@ public class Overview {
      * Result: only active notes/tasks are shown when toggleArchiveButton is not selected.
      */
     private void toggleActive() {
-
 
         javafx.concurrent.Task<List<Note>> getNotesTask = new javafx.concurrent.Task<>() {
             @Override
@@ -302,7 +301,7 @@ public class Overview {
 
     }
 
-    /*
+    /* ToDo: entfernen?
     private void sortTasksByPriority(String priority) {
         usersTasksSearch.setAll(searchTasksByPriority(priority, usersTasks));
         taskListView.setItems(usersTasksSearch);
@@ -310,9 +309,9 @@ public class Overview {
     */
 
     /**
-     * Sorting list of user's tasks by date (descending)
+     * Sorting list of user's tasks by date (descending).
      *
-     * @param usersTasks list of user's tasks
+     * @param usersTasks - list of user's tasks
      */
     private void sortTasksDateDesc(ObservableList<Task> usersTasks) {
         usersTasks.sort((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
@@ -320,9 +319,9 @@ public class Overview {
     }
 
     /**
-     * Sorting list of user's tasks by date (ascending)
+     * Sorting list of user's tasks by date (ascending).
      *
-     * @param usersTasks list of user's tasks
+     * @param usersTasks - list of user's tasks
      */
     private void sortTasksDateAsc(ObservableList<Task> usersTasks) {
         usersTasks.sort(Comparator.comparing(Task::getCreationDate));
@@ -330,9 +329,9 @@ public class Overview {
     }
 
     /**
-     * Sorting list of user's tasks alphabetically (ascending)
+     * Sorting list of user's tasks alphabetically (ascending).
      *
-     * @param usersTasks list of user's tasks
+     * @param usersTasks - list of user's tasks
      */
     private void sortTasksTitleAsc(ObservableList<Task> usersTasks) {
         usersTasks.sort(Comparator.comparing(n -> n.getTitle().toUpperCase()));
@@ -340,9 +339,9 @@ public class Overview {
     }
 
     /**
-     * Sorting list of user's tasks alphabetically (descending)
+     * Sorting list of user's tasks alphabetically (descending).
      *
-     * @param usersTasks list of user's tasks
+     * @param usersTasks - list of user's tasks
      */
     private void sortTasksTitleDesc(ObservableList<Task> usersTasks) {
         usersTasks.sort((n1, n2) -> n2.getTitle().toUpperCase().compareTo(n1.getTitle().toUpperCase()));
@@ -350,9 +349,10 @@ public class Overview {
     }
 
     /**
-     * Exporting notes and tasks into a .txt file on user's computer
+     * Exporting notes and tasks into a .txt file on user's computer.
      */
     private void export() {
+
         //Create a file with assigned path
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -366,10 +366,11 @@ public class Overview {
             save.setDaemon(true);
             save.start();
         }
+
     }
 
     /**
-     * Initializing the ListViews to display correct Cells
+     * Initializing the ListViews to display correct cells.
      */
     private void setListViews() {
 
@@ -404,7 +405,6 @@ public class Overview {
                 return new ListCell<>();
             }
         });
-
 
     }
 
@@ -462,6 +462,7 @@ public class Overview {
         }
         sortTasks(sortTaskListDropdown.getValue());
         overviewAddItemImage.setDisable(false);
+
     }
 
     private void loadCalendar() {
@@ -485,10 +486,10 @@ public class Overview {
 
     private ArrayList<Note> searchNotes(String filter, ObservableList<Note> list) {
 
-        //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
+        logger.info("Searching for the filter : " + filter + "in list " + list.toString());
         ArrayList<Note> searchResult = new ArrayList<>();
         if (!filter.isEmpty() && !filter.trim().equals("")) {
-            //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
+            logger.info("Searching for a note containing the filter: '" + filter + "'.");
             for (Note t : list) {
                 if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
                     searchResult.add(t);
@@ -496,7 +497,7 @@ public class Overview {
             }
             return searchResult;
         } else if (searchResult.isEmpty()) {
-            // debugLogger.info("No task found containing the filter: '" + filter + "'.");
+            logger.info("No note found containing the filter: '" + filter + "'.");
         } else {
             searchResult.addAll(list);
         }
@@ -506,10 +507,10 @@ public class Overview {
 
     private ArrayList<Task> searchTasks(String filter, ObservableList<Task> list) {
 
-        //debugLogger.info("Searching for the filter : " + filter + "in list " + list.toString());
+        logger.info("Searching for the filter : " + filter + "in list " + list.toString());
         ArrayList<Task> searchResult = new ArrayList<>();
         if (!filter.isEmpty() && !filter.trim().equals("")) {
-            //debugLogger.info("Searching for a task containing the filter: '" + filter + "'.");
+            logger.info("Searching for a task containing the filter: '" + filter + "'.");
             for (Task t : list) {
                 if (t.getTitle().toLowerCase().contains(filter.toLowerCase()) || t.getContent().toLowerCase().contains(filter.toLowerCase()) || t.getCreationDate().toString().contains(filter.toLowerCase())) {
                     searchResult.add(t);
@@ -517,26 +518,7 @@ public class Overview {
             }
             return searchResult;
         } else if (searchResult.isEmpty()) {
-            // debugLogger.info("No task found containing the filter: '" + filter + "'.");
-        } else {
-            searchResult.addAll(list);
-        }
-        return searchResult;
-
-    }
-
-    private ArrayList<Task> searchTasksByPriority(String filter, ObservableList<Task> list) {
-
-        ArrayList<Task> searchResult = new ArrayList<>();
-        if (!filter.isEmpty() && !filter.trim().equals("")) {
-            for (Task t : list) {
-                if (t.getPriority().equals(filter)) {
-                    searchResult.add(t);
-                }
-            }
-            return searchResult;
-        } else if (searchResult.isEmpty()) {
-            //
+            logger.info("No task found containing the filter: '" + filter + "'.");
         } else {
             searchResult.addAll(list);
         }
@@ -561,11 +543,10 @@ public class Overview {
         rootPane.getChildren().setAll(login);
         new FadeIn(login).play();
 
-
     }
 
     private void changedTaskSearchField(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
+        logger.debug("Value Changed from: " + oldValue + " to " + newValue);
 
         if (!newValue.trim().isEmpty() && usersTasks.size() > 0) {
             usersTasksSearch.setAll(searchTasks(taskListSearchField.getText(), usersTasks));
@@ -576,7 +557,7 @@ public class Overview {
     }
 
     private void changedNotesSearchField(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        //debugLogger.debug("Value Changed from: " + oldValue + " to " + newValue);
+        logger.debug("Value Changed from: " + oldValue + " to " + newValue);
 
         if (!newValue.trim().isEmpty() && usersNotes.size() > 0) {
             usersNotesSearch.setAll(searchNotes(noteListSearchField.getText(), usersNotes));
@@ -597,4 +578,5 @@ public class Overview {
             toggleActive();
         }
     }
+
 }

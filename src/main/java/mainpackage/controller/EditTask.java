@@ -94,7 +94,7 @@ public class EditTask implements Initializable {
                     String color = String.valueOf(newTaskColor.getValue());
                     Date dueDate = Date.valueOf(newTaskDueDate.getValue());
 
-                    editedTask = new Task(taskId, title, content, priority, color, dueDate, creationDate);
+                    editedTask = new Task(taskId, title, content, priority, color, dueDate, creationDate, 0);
                     DatabaseHandler databaseHandler = new DatabaseHandler();
 
                     try {

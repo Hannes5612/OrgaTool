@@ -50,7 +50,6 @@ public class NoteCell extends ListCell<Note> {
     @FXML
     void initialize() {
 
-        // Tooltips for note buttons
         Tooltip.install(noteCellDeleteButton, new Tooltip("Delete note"));
         Tooltip.install(noteCellEditButton, new Tooltip("Edit note"));
         Tooltip.install(noteCellArchiveButton, new Tooltip("Archive note"));
@@ -63,7 +62,6 @@ public class NoteCell extends ListCell<Note> {
             final Note note = listViewProperty().get().getSelectionModel().getSelectedItem();
             logger.debug("Note at index " + selectedIdx + " selected.");
 
-            // alert: delete note?
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
             alert.setTitle("DELETING NOTE");
             alert.setHeaderText("You are about to delete a note!");
@@ -192,6 +190,14 @@ public class NoteCell extends ListCell<Note> {
 
     }
 
+    /**
+     * The method is called every time the cells in the ListView were updated and
+     * It adds click triggers to the cells and loads their fxml resource.
+     * The cells will be reloaded with their (updated) notes.
+     *
+     * @param note - note objects of the noteList
+     * @param empty - boolean of the superclass
+     */
     @Override
     protected void updateItem(Note note, boolean empty) {
         super.updateItem(note, empty);
@@ -220,9 +226,9 @@ public class NoteCell extends ListCell<Note> {
             cellNoteDescription.minWidth(394);
             cellNoteDate.setText(String.valueOf(note.getCreationDate()));
 
-
             setText(null);
             setGraphic(rootPane);
         }
+
     }
 }

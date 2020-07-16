@@ -46,7 +46,7 @@ public class Signup {
 
 
     /**
-     * Signup handler to create an account
+     * Signup handler to create an account.
      */
     @FXML
     void initialize() {
@@ -64,16 +64,14 @@ public class Signup {
             }
         });
 
-
         signupSignupButton.setOnAction(e -> signup());
-
 
         logger.info("SignUp page loaded");
     }
 
 
     /**
-     * Loads the login screen
+     * Loads the login screen.
      */
 
     private void goback() {
@@ -91,7 +89,7 @@ public class Signup {
     }
 
     /**
-     * show the loading spinner
+     * Show the loading spinner.
      */
     private void spin() {
         signupUsername.setVisible(false);
@@ -100,7 +98,7 @@ public class Signup {
     }
 
     /**
-     * hide the loading spinner
+     * Hide the loading spinner.
      */
     private void noSpin() {
         signupUsername.setVisible(true);
@@ -109,7 +107,7 @@ public class Signup {
     }
 
     /**
-     * signup the user with given credentials
+     * Signup the user with given credentials.
      */
     private void signup() {
         //hide error messages after retry
@@ -196,7 +194,8 @@ public class Signup {
                 }
             });
 
-
         }
+
     }
+
 }

@@ -12,8 +12,15 @@ public enum State {
     private final int id;
     private final String state;
 
+    /**
+     * Creating state enum.
+     *
+     * @param id - integer 0, 1 or 2
+     * @param state - state of the enum
+     */
     State(final int id, final String state) {
         this.id = id;
         this.state = state;
     }
+
 }

@@ -3,18 +3,18 @@ package mainpackage.model;
 import java.sql.Date;
 
 /**
+ * The class customizes and extends the structure of the class Entry.
  * The Task object contains variables with user input
- * which will be displayed at the ToDoList and can also be accessed through the calendar.
+ * which will be displayed at the TaskList and can also be accessed through the calendar.
  * The user can create as many tasks as he wants.
  * The task data will be stored in the database.
  */
 public class Task extends Entry {
 
     /**
-     * ToDo:
-     * priority -
-     * color -
-     * dueDate -
+     * priority - priority of a task
+     * color - color of a task
+     * dueDate - date when a task should be finished
      */
     // ToDo: priority to char
     private String priority;
@@ -22,20 +22,15 @@ public class Task extends Entry {
     private Date dueDate;
 
     /**
-     * ToDo: Description
-     */
-    public Task(int taskId, String title, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.id = taskId;
-        this.title = title;
-        this.content = content;
-        this.priority = priority;
-        this.color = color;
-        this.creationDate = creationDate;
-        this.dueDate = dueDate;
-    }
-
-    /**
-     * ToDo: Description
+     * Creating task.
+     *
+     * @param id - unique id of task
+     * @param title - title of task
+     * @param content - description of task
+     * @param priority - priority of task
+     * @param color - color of task
+     * @param dueDate - date when a task should be finished
+     * @param creationDate - timestamp when an entry object is created
      */
     public Task(int id, String title, String content, String priority, String color, java.sql.Date dueDate, java.sql.Date creationDate, int state) {
         this.id = id;
@@ -45,15 +40,9 @@ public class Task extends Entry {
         this.color = color;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
-        if (state == 0) {
-            this.state = State.ACTIVE;
-        }
-        if (state == 1) {
-            this.state = State.FINISHED;
-        }
-        if (state == 2) {
-            this.state = State.ARCHIVED;
-        }
+        if (state == 0) { this.state = State.ACTIVE;   }
+        if (state == 1) { this.state = State.FINISHED; }
+        if (state == 2) { this.state = State.ARCHIVED; }
     }
 
     public String getPriority() {
@@ -68,7 +57,12 @@ public class Task extends Entry {
         return dueDate;
     }
 
-    public String getDueMonth() {
+    /**
+     * Method converts the dueDate of the object into a month.
+     *
+     * @return String - month
+     */
+    public String getDueMonth(){
         String month = "";
         switch (dueDate.toLocalDate().getMonthValue()) {
             case 1:

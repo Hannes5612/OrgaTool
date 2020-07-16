@@ -22,11 +22,11 @@ public class TaskViewCalendar {
 
     @FXML
     void initialize() {
-        //Placeholder when the user deleted all tasks
+        // Placeholder when the user deletes all tasks.
         taskViewCalendarList.setPlaceholder(new Label("Deleted all tasks, please close!"));
     }
 
-    //Sets the cells of the ListView, inserts per cell one task
+    // Sets the cells of the ListView nad inserts per cell one task.
     public void setTasks(ObservableList<Task> clickedTasks) {
         taskViewCalendarList.setCellFactory(Cell -> new TaskCell());
         taskViewCalendarList.setItems(clickedTasks);
