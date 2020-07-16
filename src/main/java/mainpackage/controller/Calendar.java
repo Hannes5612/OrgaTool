@@ -122,11 +122,12 @@ public class Calendar {
 
                 //Eventhandler to click a day and get its tasks, prevent right klick to be detected
                 vPane.setOnMouseClicked(e -> {
-                    if (isListOpen&&e.getButton()== MouseButton.PRIMARY) {
+                    if (isListOpen && e.getButton() == MouseButton.PRIMARY) {
                         Alert openAlert = new Alert(Alert.AlertType.INFORMATION, "Close other TaskList window first to update calendar", ButtonType.OK);
                         openAlert.showAndWait();
                     } else {
-                        if (vPane.getChildren().toArray().length != 0 &&e.getButton()== MouseButton.PRIMARY) showClickedDayTasks(vPane.getChildren().get(0));
+                        if (vPane.getChildren().toArray().length != 0 && e.getButton() == MouseButton.PRIMARY)
+                            showClickedDayTasks(vPane.getChildren().get(0));
                     }
 
                 });

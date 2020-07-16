@@ -22,16 +22,17 @@ public class SaveThread extends Thread {
 
     /**
      * Method for creating the File with a save location popup window.
+     *
      * @throws IOException
      */
     private void createFile() throws IOException {
-        FileWriter writer = new FileWriter(file,false );
+        FileWriter writer = new FileWriter(file, false);
 
         writer.write("NOTES: \n\n");
 
         listManager.getNoteList().forEach(note -> {
             try {
-                writer.write(note+"\n");
+                writer.write(note + "\n");
             } catch (IOException e) {
                 logger.error("Note could not be written in File: " + e);
             }
@@ -41,9 +42,9 @@ public class SaveThread extends Thread {
         writer.write("\n");
         writer.write("TASKS: \n\n");
 
-        listManager.getTaskList().forEach(task->{
+        listManager.getTaskList().forEach(task -> {
             try {
-                writer.write(task+"\n");
+                writer.write(task + "\n");
             } catch (IOException e) {
                 logger.error("Task could not be written in File: " + e);
             }
@@ -53,8 +54,9 @@ public class SaveThread extends Thread {
         logger.debug("Tasks written in File");
         writer.close();
     }
+
     @Override
-    public void run(){
+    public void run() {
         try {
             createFile();
             logger.debug("File written: " + file);

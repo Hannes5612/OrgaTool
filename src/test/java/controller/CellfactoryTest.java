@@ -20,6 +20,7 @@ public class CellfactoryTest {
 
     /**
      * Test for the creation of specific cells from the factory
+     *
      * @throws UnsupportedCellType
      */
     @Test
@@ -34,6 +35,7 @@ public class CellfactoryTest {
 
     /**
      * Test to intentionally throw the custom Exception
+     *
      * @throws UnsupportedCellType
      */
     @Test(expected = UnsupportedCellType.class)

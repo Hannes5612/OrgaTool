@@ -18,6 +18,7 @@ import java.net.URL;
 public class Main extends Application {
 
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 

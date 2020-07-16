@@ -40,7 +40,8 @@ public class CreateTask {
     private LocalDate date;
     private boolean dateSet;
 
-    public CreateTask() {}
+    public CreateTask() {
+    }
 
     public CreateTask(LocalDate date) {
         this.date = date;
@@ -52,19 +53,19 @@ public class CreateTask {
 
         newTaskDueDate.setValue(date);
 
-        ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
+        ObservableList<String> priorities = FXCollections.observableArrayList("High", "Medium", "Low");
         newTaskPriority.setItems(priorities);
         newTaskPriority.setValue("Medium");
-        if(!dateSet)newTaskDueDate.setValue(LocalDate.now().plusDays(1));
+        if (!dateSet) newTaskDueDate.setValue(LocalDate.now().plusDays(1));
 
-        newTaskCreateButton.setOnAction(e ->{
+        newTaskCreateButton.setOnAction(e -> {
             String title = newTaskTitle.getText().trim();
             String content = newTaskContent.getText().trim();
-            String prio = newTaskPriority.getValue().substring(0,1);
+            String prio = newTaskPriority.getValue().substring(0, 1);
             String color = String.valueOf(newTaskColor.getValue());
             Date duedate = Date.valueOf(newTaskDueDate.getValue());
 
-            Task createdTask = new Task(ListManager.getCountingTaskID(),title,content,prio,color,duedate,today);
+            Task createdTask = new Task(ListManager.getCountingTaskID(), title, content, prio, color, duedate, today);
 
 
             DatabaseHandler databaseHandler = new DatabaseHandler();
@@ -78,8 +79,8 @@ public class CreateTask {
             } catch (ClassNotFoundException classNotFoundException) {
                 classNotFoundException.printStackTrace();
             } catch (SQLException throwables) {
-                String msg = checkError(title,content);
-                Alert error = new Alert(Alert.AlertType.ERROR,msg);
+                String msg = checkError(title, content);
+                Alert error = new Alert(Alert.AlertType.ERROR, msg);
                 error.showAndWait();
             }
         });
@@ -87,13 +88,15 @@ public class CreateTask {
     }
 
     private String checkError(String title, String content) {
-        if (title.length()>28) return "Title can't be longer than 45 chars." ;
-        if (content.length()>1024) return "Content can't be longer than 1024 chars.";
+        if (title.length() > 28) return "Title can't be longer than 45 chars.";
+        if (content.length() > 1024) return "Content can't be longer than 1024 chars.";
         return "Connection failed.\nPlease check your connection or try again.";
     }
 
     @FXML
-    void close(ActionEvent event) { newTaskTitle.getScene().getWindow().hide(); }
+    void close(ActionEvent event) {
+        newTaskTitle.getScene().getWindow().hide();
+    }
 
 
 }

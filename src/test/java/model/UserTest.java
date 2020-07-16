@@ -35,6 +35,7 @@ public class UserTest {
 
     /**
      * testing if user's ID is set correctly
+     *
      * @throws IllegalIdentification thrown when ID is invalid
      */
     @Test
@@ -47,6 +48,7 @@ public class UserTest {
 
     /**
      * Test to intentionally throw the custom Exception
+     *
      * @throws IllegalIdentification thrown when ID is invalid
      */
     @Test(expected = IllegalIdentification.class)

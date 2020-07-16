@@ -126,8 +126,8 @@ public class ListManagerTest {
         ListManager.deleteTask(task.getId());
         int afterTasks = (int) listManager.getTaskList().count();
         int afterNotes = (int) listManager.getNoteList().count();
-        assertEquals(beforeNotes,afterNotes);
-        assertEquals(beforeTasks,afterTasks);
+        assertEquals(beforeNotes, afterNotes);
+        assertEquals(beforeTasks, afterTasks);
     }
 
     /**

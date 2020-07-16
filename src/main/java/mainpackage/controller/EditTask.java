@@ -59,12 +59,18 @@ public class EditTask implements Initializable {
 
         //newTaskDueDate.setValue((LocalDate) task.getDueDate());
 
-        ObservableList<String> priorities = FXCollections.observableArrayList("High","Medium","Low");
+        ObservableList<String> priorities = FXCollections.observableArrayList("High", "Medium", "Low");
         newTaskPriority.setItems(priorities);
-        switch(task.getPriority()) {
-            case "H": newTaskPriority.setValue("High");   break;
-            case "M": newTaskPriority.setValue("Medium"); break;
-            case "L": newTaskPriority.setValue("Low");    break;
+        switch (task.getPriority()) {
+            case "H":
+                newTaskPriority.setValue("High");
+                break;
+            case "M":
+                newTaskPriority.setValue("Medium");
+                break;
+            case "L":
+                newTaskPriority.setValue("Low");
+                break;
         }
         newTaskColor.setValue(Color.web(task.getColor()));
         newTaskDueDate.setValue(LocalDate.now().plusDays(1));
@@ -84,7 +90,7 @@ public class EditTask implements Initializable {
 
                     String title = newTaskTitle.getText().trim();
                     String content = newTaskContent.getText().trim();
-                    String priority = newTaskPriority.getValue().substring(0,1);
+                    String priority = newTaskPriority.getValue().substring(0, 1);
                     String color = String.valueOf(newTaskColor.getValue());
                     Date dueDate = Date.valueOf(newTaskDueDate.getValue());
 
@@ -116,7 +122,7 @@ public class EditTask implements Initializable {
     }
 
 
-    public static Task getEditedTask(){
+    public static Task getEditedTask() {
         return editedTask;
     }
 

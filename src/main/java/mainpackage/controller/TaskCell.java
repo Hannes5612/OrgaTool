@@ -197,8 +197,10 @@ public class TaskCell extends ListCell<Task> {
 
             final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
 
-            if(task.getState() == 2) { return; }
-            if(task.getState() == 0) {
+            if (task.getState() == 2) {
+                return;
+            }
+            if (task.getState() == 0) {
                 cellCheckbox.setSelected(true);
                 task.finish();
             } else {
@@ -271,7 +273,9 @@ public class TaskCell extends ListCell<Task> {
             cellDateLabel.setText(String.valueOf(task.getDueDate()));
             cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
             cellTaskDescription.setWrapText(true);
-            if(task.getState() == 2) { cellCheckbox.setVisible(false); } // Deactivate checkbox for archived tasks.
+            if (task.getState() == 2) {
+                cellCheckbox.setVisible(false);
+            } // Deactivate checkbox for archived tasks.
             else {
                 cellCheckbox.setVisible(true);
                 cellCheckbox.setSelected(task.getState() == 1);

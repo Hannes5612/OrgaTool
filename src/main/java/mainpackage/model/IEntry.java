@@ -22,6 +22,7 @@ public interface IEntry {
     int getId();
 
     String getTitle();
+
     String getContent();
 
     Date getCreationDate();

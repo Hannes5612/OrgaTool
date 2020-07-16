@@ -1,16 +1,15 @@
 package mainpackage.controller;
 
 import com.jfoenix.controls.JFXListView;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import mainpackage.model.Task;
 
-public class TaskViewCalendar{
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class TaskViewCalendar {
 
     @FXML
     private ResourceBundle resources;

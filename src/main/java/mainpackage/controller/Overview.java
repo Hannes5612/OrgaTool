@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -36,11 +35,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -86,7 +83,7 @@ public class Overview {
     private final ObservableList<Task> usersTasksSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotes = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private final ObservableList<Note> usersNotesSearch = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
-    private  ClockThread clock;
+    private ClockThread clock;
     private ExecutorService exec = Executors.newCachedThreadPool();
 
     @FXML
@@ -139,7 +136,7 @@ public class Overview {
         setListViews();
 
         //Initializing clock
-        clock = new ClockThread(timeLabel,dateLabel);
+        clock = new ClockThread(timeLabel, dateLabel);
         clock.setDaemon(true);
         clock.start();
 
@@ -204,12 +201,12 @@ public class Overview {
             String firstPriority = t1.getPriority();
             String secondPriority = t2.getPriority();
             System.out.println(firstPriority.compareTo(secondPriority));
-            if(firstPriority.equals(secondPriority)) return 0;
-            if(firstPriority.equals("H")) return -1;
-            if(secondPriority.equals("H")) return 1;
-            if(firstPriority.equals("M")) return -1;
-            if(secondPriority.equals("M")) return 1;
-            if(firstPriority.equals("L")) return -1;
+            if (firstPriority.equals(secondPriority)) return 0;
+            if (firstPriority.equals("H")) return -1;
+            if (secondPriority.equals("H")) return 1;
+            if (firstPriority.equals("M")) return -1;
+            if (secondPriority.equals("M")) return 1;
+            if (firstPriority.equals("L")) return -1;
             return 1;
         });
 

@@ -47,7 +47,7 @@ public class Login {
     @FXML
     private Label loginMessage;
 
-    private Executor exec ;
+    private Executor exec;
     private final Logger logger = LogManager.getLogger(Main.class.getName());
     private double initialX, initialY;
 
@@ -84,7 +84,7 @@ public class Login {
         exec = Executors.newCachedThreadPool(runnable -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
-            return t ;
+            return t;
         });
 
         logger.info("Loginpage loaded");
@@ -239,13 +239,12 @@ public class Login {
                 } catch (SQLException | IllegalIdentification sqlException) {
                     noSpin();
 
-                    Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);
+                    Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.", ButtonType.OK);
                     error.showAndWait();
 
-                    logger.info("Sql exception occured: " +sqlException);
+                    logger.info("Sql exception occured: " + sqlException);
                 }
             });
-
 
 
             //if concurrentTask failed display connection error message
@@ -264,6 +263,7 @@ public class Login {
 
 
     }
+
     // show loading spinner
     private void spin() {
         loginUsername.setVisible(false);

@@ -4,13 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import javafx.concurrent.Task;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -18,7 +12,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import mainpackage.Main;
 import mainpackage.animation.FadeIn;
@@ -27,6 +20,10 @@ import mainpackage.database.DatabaseHandler;
 import mainpackage.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class Signup {
 
@@ -110,6 +107,7 @@ public class Signup {
         signupPassword.setVisible(true);
         signupSpinner.setVisible(false);
     }
+
     /**
      * signup the user with given credentials
      */

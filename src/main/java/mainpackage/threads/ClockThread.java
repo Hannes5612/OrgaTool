@@ -3,7 +3,6 @@ package mainpackage.threads;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import mainpackage.Main;
-import mainpackage.controller.Overview;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ClockThread extends Thread{
+public class ClockThread extends Thread {
     Label timeLabel;
     Label dateLabel;
 

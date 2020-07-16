@@ -13,6 +13,7 @@ public class User {
 
     /**
      * Creating user with name and password
+     *
      * @param userName name of user
      * @param password password for account of user
      */
@@ -24,17 +25,23 @@ public class User {
     /**
      * Creating user without variables
      */
-    public User() {}
+    public User() {
+    }
 
     // getters
+
     /**
      * getting ID of user
+     *
      * @return user ID
      */
-    public int getUserid(){return this.userid;}
+    public int getUserid() {
+        return this.userid;
+    }
 
     /**
      * getting user's name
+     *
      * @return user's name
      */
     public String getUserName() {
@@ -43,6 +50,7 @@ public class User {
 
     /**
      * getting user's password
+     *
      * @return user's password
      */
     public String getPassword() {
@@ -50,8 +58,10 @@ public class User {
     }
 
     // setters
+
     /**
      * setting the ID of a user
+     *
      * @param userid new user ID
      */
     public void setUserid(int userid) throws IllegalIdentification {

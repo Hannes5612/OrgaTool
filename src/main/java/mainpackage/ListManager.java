@@ -54,7 +54,7 @@ public class ListManager {
     /**
      * Run the databasehandlers of both notes and tasks.
      *
-     * @throws SQLException on a failed connection
+     * @throws SQLException           on a failed connection
      * @throws ClassNotFoundException
      */
     public void update() throws SQLException, ClassNotFoundException {
@@ -132,6 +132,7 @@ public class ListManager {
 
     /**
      * deleting note from list of notes
+     *
      * @param noteId ID of note to be deleted
      */
     public static void deleteNote(int noteId) {
@@ -141,6 +142,7 @@ public class ListManager {
 
     /**
      * editing note in list of notes
+     *
      * @param note edited note which will be shown in list of notes
      */
     public static void editNote(Note note) {
@@ -172,6 +174,7 @@ public class ListManager {
 
     /**
      * adding note to list of notes
+     *
      * @param note note to be added to list of notes
      */
     public static void addNote(Note note) {

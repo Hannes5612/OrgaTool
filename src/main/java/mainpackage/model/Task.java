@@ -10,7 +10,8 @@ import java.sql.Date;
  */
 public class Task extends Entry {
 
-    /** ToDo:
+    /**
+     * ToDo:
      * priority -
      * color -
      * dueDate -
@@ -23,8 +24,8 @@ public class Task extends Entry {
     /**
      * ToDo: Description
      */
-    public Task(int taskId,String title, String content, String priority, String color, Date dueDate, Date creationDate) {
-        this.id=taskId;
+    public Task(int taskId, String title, String content, String priority, String color, Date dueDate, Date creationDate) {
+        this.id = taskId;
         this.title = title;
         this.content = content;
         this.priority = priority;
@@ -44,9 +45,15 @@ public class Task extends Entry {
         this.color = color;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
-        if (state == 0) { this.state = State.ACTIVE;   }
-        if (state == 1) { this.state = State.FINISHED; }
-        if (state == 2) { this.state = State.ARCHIVED; }
+        if (state == 0) {
+            this.state = State.ACTIVE;
+        }
+        if (state == 1) {
+            this.state = State.FINISHED;
+        }
+        if (state == 2) {
+            this.state = State.ARCHIVED;
+        }
     }
 
     public String getPriority() {
@@ -61,7 +68,7 @@ public class Task extends Entry {
         return dueDate;
     }
 
-    public String getDueMonth(){
+    public String getDueMonth() {
         String month = "";
         switch (dueDate.toLocalDate().getMonthValue()) {
             case 1:

@@ -30,16 +30,16 @@ public class CalendarTest {
 
     /**
      * Testing of the generated year List with exemplary values
-      */
+     */
     @Test
     public void testCurrentYear() {
 
         //positive and negative testing
-        assertEquals("1981", calendar.yearList().get(calendar.yearList().size()-1));
+        assertEquals("1981", calendar.yearList().get(calendar.yearList().size() - 1));
         assertEquals("2030", calendar.yearList().get(0));
         assertEquals(50, calendar.yearList().size());
         assertNotEquals(100, calendar.yearList().size());
-        assertNotEquals("1980", calendar.yearList().get(calendar.yearList().size()-1));
+        assertNotEquals("1980", calendar.yearList().get(calendar.yearList().size() - 1));
 
     }
 }
