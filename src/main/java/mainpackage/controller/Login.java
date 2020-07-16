@@ -1,30 +1,22 @@
 package mainpackage.controller;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
-
+import mainpackage.ListManager;
 import mainpackage.Main;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import mainpackage.animation.FadeIn;
 import mainpackage.animation.Shake;
 import mainpackage.database.DatabaseHandler;
-import mainpackage.ListManager;
+import mainpackage.exceptions.IllegalIdentification;
 import mainpackage.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -244,7 +236,7 @@ public class Login {
                     }
 
                     //catch a SQLException in any case
-                } catch (SQLException  sqlException) {
+                } catch (SQLException | IllegalIdentification sqlException) {
                     noSpin();
 
                     Alert error = new Alert(Alert.AlertType.ERROR,"Database connection failed \n Please check your connection or try again.",ButtonType.OK);

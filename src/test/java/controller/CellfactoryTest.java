@@ -33,7 +33,7 @@ public class CellfactoryTest {
     }
 
     /**
-     * Test to intentional throw the custom Exception
+     * Test to intentionally throw the custom Exception
      * @throws UnsupportedCellType
      */
     @Test(expected = UnsupportedCellType.class)

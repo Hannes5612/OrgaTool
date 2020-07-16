@@ -1,4 +1,5 @@
 import mainpackage.ListManager;
+import mainpackage.exceptions.IllegalIdentification;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -31,7 +32,7 @@ public class ListManagerTest {
      * The user gets set before every test method
      */
     @Before
-    public void setUser() {
+    public void setUser() throws IllegalIdentification {
         User user = new User();
         user.setUserid(1);
         ListManager.setUser(user);

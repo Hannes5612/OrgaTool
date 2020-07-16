@@ -59,7 +59,7 @@ public class Note extends Entry {
     /**
      * method writes note object information into String
      *
-     * @return String with all note information
+     * @return String with all of the note's information
      */
     @Override
     public String toString() {

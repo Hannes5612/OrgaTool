@@ -1,9 +1,9 @@
 package database;
 
 
-import com.mysql.jdbc.Connection;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.IllegalIdentification;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
@@ -85,7 +84,7 @@ public class DatabaseHandlerTest {
      * @throws ClassNotFoundException
      */
     @Test
-    public void fetchTaskTest() throws SQLException, ClassNotFoundException {
+    public void fetchTaskTest() throws SQLException, ClassNotFoundException, IllegalIdentification {
         User user = new User();
         user.setUserid(1);
         ListManager.setUser(user);
@@ -106,7 +105,7 @@ public class DatabaseHandlerTest {
      * @throws ClassNotFoundException
      */
     @Test
-    public void fetchNotesTest() throws SQLException, ClassNotFoundException {
+    public void fetchNotesTest() throws SQLException, ClassNotFoundException, IllegalIdentification {
         User user = new User();
         user.setUserid(1);
         ListManager.setUser(user);
