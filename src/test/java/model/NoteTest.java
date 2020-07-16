@@ -1,12 +1,12 @@
 package model;
 
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Note;
 import org.junit.Test;
 
 import java.sql.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class NoteTest {
 
@@ -21,7 +21,7 @@ public class NoteTest {
     Note note6 = new Note(568377433, "hello", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", date1, 2);
 
     /**
-     * testing if note ID is set correctly
+     * Testing if note ID is set correctly.
      */
     @Test
     public void noteTestId() {
@@ -31,7 +31,7 @@ public class NoteTest {
     }
 
     /**
-     * testing if note title is set correctly
+     * Testing if note title is set correctly.
      */
     @Test
     public void noteTestTitle() {
@@ -42,7 +42,7 @@ public class NoteTest {
     }
 
     /**
-     * testing if note content is set correctly
+     * Testing if note content is set correctly.
      */
     @Test
     public void noteTestContent() {
@@ -54,7 +54,7 @@ public class NoteTest {
     }
 
     /**
-     * testing if note creationDate is set correctly
+     * Testing if note creationDate is set correctly.
      */
     @Test
     public void noteTestDate() {
@@ -63,13 +63,14 @@ public class NoteTest {
     }
 
     /**
-     * testing if note state is set correctly
+     * Testing if note state is set correctly.
      */
     @Test
-    public void noteTestState() {
+    public void noteTestState() throws UnsupportedStateType {
         assertEquals(0, note1.getState());
         assertEquals(0, note4.getState());
         assertEquals(1, note5.getState());
         assertEquals(2, note6.getState());
     }
+
 }

@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.animation.FadeIn;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -195,7 +196,15 @@ public class Calendar {
             @Override
             public List<Task> call() {
                 return listManager.getTaskList()
-                        .filter(n -> n.getState() == 0 || n.getState() == 1)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 0 || n.getState() == 1;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };
@@ -376,7 +385,15 @@ public class Calendar {
             @Override
             public List<Task> call() {
                 return listManager.getTaskList()
-                        .filter(n -> n.getState() == 0 || n.getState() == 1)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 0 || n.getState() == 1;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };

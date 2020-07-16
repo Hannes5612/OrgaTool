@@ -12,8 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
+import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.sql.Date;
@@ -39,6 +43,8 @@ public class EditTask implements Initializable {
     private JFXDatePicker newTaskDueDate;
     @FXML
     private JFXButton newTaskEditButton;
+
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     private Task task;
     private int selectedIdx;
@@ -100,15 +106,19 @@ public class EditTask implements Initializable {
                     try {
                         databaseHandler.editTask(taskId, editedTask);
                         ListManager.editTask(editedTask);
-                        System.out.println("Task edited");
+                        logger.debug("Task edited: " + editedTask);
                     } catch (ClassNotFoundException classNotFoundException) {
                         classNotFoundException.printStackTrace();
+                        logger.error("ClassNotFoundException: " + classNotFoundException);
                     } catch (SQLException throwables) {
                         Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                         error.showAndWait();
+                        logger.error("SQLException: " + throwables);
+                    } catch (UnsupportedStateType unsupportedStateType) {
+                        unsupportedStateType.printStackTrace();
+                        logger.error("Unsupported state type!");
                     }
                 }
-
                 newTaskEditButton.getScene().getWindow().hide();
             }
 

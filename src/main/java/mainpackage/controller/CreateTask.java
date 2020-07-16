@@ -7,8 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import mainpackage.ListManager;
+import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.sql.Date;
@@ -36,6 +40,8 @@ public class CreateTask {
     @FXML
     private JFXButton newTaskCreateButton;
 
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
     private final Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     private LocalDate date;
     private boolean dateSet;
@@ -57,6 +63,8 @@ public class CreateTask {
         newTaskPriority.setValue("Medium");
         if (!dateSet) newTaskDueDate.setValue(LocalDate.now().plusDays(1));
 
+        // Closing CreateTask window and saving new task (in database and ListManager)
+        // only when title is set.
         newTaskCreateButton.setOnAction(e -> {
             String title = newTaskTitle.getText().trim();
             String content = newTaskContent.getText().trim();
@@ -73,15 +81,20 @@ public class CreateTask {
 
                 ListManager.incrementCountingTaskId();
                 ListManager.addTask(createdTask);
-
-                newTaskCreateButton.getScene().getWindow().hide();
+                logger.debug("Task created: " + createdTask);
             } catch (ClassNotFoundException classNotFoundException) {
                 classNotFoundException.printStackTrace();
+                logger.error("ClassNotFoundException: " + classNotFoundException);
             } catch (SQLException throwables) {
                 String msg = checkError(title, content);
                 Alert error = new Alert(Alert.AlertType.ERROR, msg);
                 error.showAndWait();
+                logger.error("SQLException: " + throwables);
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
+            newTaskCreateButton.getScene().getWindow().hide();
         });
 
     }

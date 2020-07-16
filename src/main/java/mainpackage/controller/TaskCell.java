@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,60 +144,65 @@ public class TaskCell extends ListCell<Task> {
             int taskId = task.getId();
             logger.debug("Task at index " + selectedIdx + " selected.");
 
-            if (task.getState() != 2) { // state = active/finished --> task will be archived
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-                alert.setTitle("ARCHIVING TASK");
-                alert.setHeaderText("You are about to archive a task!");
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-                alert.showAndWait();
+            try {
+                if (task.getState() != 2) { // state = active/finished --> task will be archived
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                    alert.setTitle("ARCHIVING TASK");
+                    alert.setHeaderText("You are about to archive a task!");
+                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                    alert.showAndWait();
 
-                if (alert.getResult() == ButtonType.YES) {
-                    if (selectedIdx != -1) {
-                        DatabaseHandler databaseHandler = new DatabaseHandler();
-                        try {
-                            task.archive();
-                            databaseHandler.editTask(taskId, task);
-                            logger.debug("Task at index " + selectedIdx + " archived.");
-                        } catch (SQLException throwables) {
-                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                            error.showAndWait();
-                            logger.error("SQLException: " + throwables);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                            logger.error("ClassNotFoundException: " + e);
+                    if (alert.getResult() == ButtonType.YES) {
+                        if (selectedIdx != -1) {
+                            DatabaseHandler databaseHandler = new DatabaseHandler();
+                            try {
+                                task.archive();
+                                databaseHandler.editTask(taskId, task);
+                                logger.debug("Task at index " + selectedIdx + " archived.");
+                            } catch (SQLException throwables) {
+                                Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                error.showAndWait();
+                                logger.error("SQLException: " + throwables);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                                logger.error("ClassNotFoundException: " + e);
+                            }
+                            listViewProperty().get().getItems().remove(selectedIdx);
+                            logger.info("Removed from current ListView of active/finished tasks: Task '" + task.getTitle() + "'");
                         }
-                        listViewProperty().get().getItems().remove(selectedIdx);
-                        logger.info("Removed from current ListView of active/finished tasks: Task '" + task.getTitle() + "'");
+                    }
+                } else if (task.getState() == 2) { // state = archived --> task will be active
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                    alert.setTitle("REACTIVATING TASK");
+                    alert.setHeaderText("You are about to reactivate a task!");
+                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                    alert.showAndWait();
+
+                    if (alert.getResult() == ButtonType.YES) {
+                        if (selectedIdx != -1) {
+                            DatabaseHandler databaseHandler = new DatabaseHandler();
+                            try {
+                                task.reactivate();
+                                databaseHandler.editTask(taskId, task);
+                                logger.debug("Task at index " + selectedIdx + " reactivated.");
+                            } catch (SQLException throwables) {
+                                Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                error.showAndWait();
+                                logger.error("SQLException: " + throwables);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                                logger.error("ClassNotFoundException: " + e);
+                            }
+                            listViewProperty().get().getItems().remove(selectedIdx);
+                            logger.info("Removed from current ListView of archived tasks: Task '" + task.getTitle() + "'");
+                        }
                     }
                 }
-            } else if (task.getState() == 2) { // state = archived --> task will be active
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + task.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-                alert.setTitle("REACTIVATING TASK");
-                alert.setHeaderText("You are about to reactivate a task!");
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-                alert.showAndWait();
-
-                if (alert.getResult() == ButtonType.YES) {
-                    if (selectedIdx != -1) {
-                        DatabaseHandler databaseHandler = new DatabaseHandler();
-                        try {
-                            task.reactivate();
-                            databaseHandler.editTask(taskId, task);
-                            logger.debug("Task at index " + selectedIdx + " reactivated.");
-                        } catch (SQLException throwables) {
-                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                            error.showAndWait();
-                            logger.error("SQLException: " + throwables);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                            logger.error("ClassNotFoundException: " + e);
-                        }
-                        listViewProperty().get().getItems().remove(selectedIdx);
-                        logger.info("Removed from current ListView of archived tasks: Task '" + task.getTitle() + "'");
-                    }
-                }
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
         });
 
@@ -204,15 +210,25 @@ public class TaskCell extends ListCell<Task> {
 
             final Task task = listViewProperty().get().getSelectionModel().getSelectedItem();
 
-            if (task.getState() == 2) {
-                return;
+            try {
+                if (task.getState() == 2) {
+                    return;
+                }
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
-            if (task.getState() == 0) {
-                cellCheckbox.setSelected(true);
-                task.finish();
-            } else {
-                cellCheckbox.setSelected(false);
-                task.reactivate();
+            try {
+                if (task.getState() == 0) {
+                    cellCheckbox.setSelected(true);
+                    task.finish();
+                } else {
+                    cellCheckbox.setSelected(false);
+                    task.reactivate();
+                }
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
 
             synchronizeDatabase(task);
@@ -246,6 +262,9 @@ public class TaskCell extends ListCell<Task> {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                     logger.error("ClassNotFoundException: " + e);
+                } catch (UnsupportedStateType unsupportedStateType) {
+                    unsupportedStateType.printStackTrace();
+                    logger.error("Unsupported state type!");
                 }
                 return null;
             }
@@ -298,12 +317,17 @@ public class TaskCell extends ListCell<Task> {
             cellDateLabel.setText(String.valueOf(task.getDueDate()));
             cellCreatedLabel.setText(String.valueOf(task.getCreationDate()));
             cellTaskDescription.setWrapText(true);
-            if (task.getState() == 2) {
-                cellCheckbox.setVisible(false);
-            } // Deactivate checkbox for archived tasks.
-            else {
-                cellCheckbox.setVisible(true);
-                cellCheckbox.setSelected(task.getState() == 1);
+            try {
+                if (task.getState() == 2) {
+                    cellCheckbox.setVisible(false);
+                } // Deactivate checkbox for archived tasks.
+                else {
+                    cellCheckbox.setVisible(true);
+                    cellCheckbox.setSelected(task.getState() == 1);
+                }
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
 
             setText(null);

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Note;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,15 +31,15 @@ public class CreateNote {
     @FXML
     private JFXButton newNoteCreateButton;
 
-    private static Note createdNote;
-
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
+    private static Note createdNote;
 
     @FXML
     void initialize() {
 
-        // closing CreateNote window and saving new note (in database and ListManager)
-        // only when title is set
+        // Closing CreateNote window and saving new note (in database and ListManager)
+        // only when title is set.
         newNoteCreateButton.setOnAction(e -> {
             logger.debug("Saving new note...");
             if (newNoteTitle.getText() == null || newNoteTitle.getText().trim().isEmpty()) {
@@ -58,6 +59,7 @@ public class CreateNote {
                 DatabaseHandler databaseHandler = new DatabaseHandler();
                 try {
                     databaseHandler.createNote(createdNote);
+
                     ListManager.incrementCountingNoteId();
                     ListManager.addNote(createdNote);
                     logger.debug("Note created: " + createdNote);
@@ -68,6 +70,9 @@ public class CreateNote {
                     Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
                     error.showAndWait();
                     logger.error("SQLException: " + throwables);
+                } catch (UnsupportedStateType unsupportedStateType) {
+                    unsupportedStateType.printStackTrace();
+                    logger.error("Unsupported state type!");
                 }
                 newNoteCreateButton.getScene().getWindow().hide();
             }

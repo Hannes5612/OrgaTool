@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.User;
 import mainpackage.model.Note;
 import org.apache.logging.log4j.LogManager;
@@ -81,14 +82,19 @@ public class EditNote implements Initializable {
                     // getting values of edited note and storing it
                     String title = newNoteTitle.getText().trim();
                     String content = newNoteContent.getText().trim();
-                    int state = note.getState();
+                    int state = 0;
+                    try {
+                        state = note.getState();
+                    } catch (UnsupportedStateType unsupportedStateType) {
+                        unsupportedStateType.printStackTrace();
+                        logger.error("Unsupported state type!");
+                    }
 
                     editedNote = new Note(noteId, title, content);
-
                     DatabaseHandler databaseHandler = new DatabaseHandler();
+
                     try {
-                        Note dbNote = editedNote;
-                        databaseHandler.editNote(noteId, dbNote, state);
+                        databaseHandler.editNote(noteId, editedNote, state);
                         ListManager.editNote(editedNote);
                         logger.debug("Note edited: " + editedNote);
                     } catch (ClassNotFoundException classNotFoundException) {
