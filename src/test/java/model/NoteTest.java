@@ -20,6 +20,9 @@ public class NoteTest {
     Note note5 = new Note(5, "test", "hi", date2, 1);
     Note note6 = new Note(568377433, "hallo", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", date1, 2);
 
+    /**
+     * testing if note ID ist set correctly
+     */
     @Test
     public void noteTestId() {
         assertEquals(1, note1.getId());
@@ -27,6 +30,9 @@ public class NoteTest {
         assertEquals(568377433, note6.getId());
     }
 
+    /**
+     * testing if note title ist set correctly
+     */
     @Test
     public void noteTestTitle() {
         assertEquals("Hallo", note1.getTitle());
@@ -35,6 +41,9 @@ public class NoteTest {
         assertEquals("xxx", note4.getTitle());
     }
 
+    /**
+     * testing if note content ist set correctly
+     */
     @Test
     public void noteTestContent() {
         assertEquals("", note1.getContent());
@@ -44,12 +53,18 @@ public class NoteTest {
         assertEquals("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", note6.getContent());
     }
 
+    /**
+     * testing if note creationDate ist set correctly
+     */
     @Test
     public void noteTestDate() {
         assertEquals(date1, note4.getCreationDate());
         assertEquals(date2, note5.getCreationDate());
     }
 
+    /**
+     * testing if note state ist set correctly
+     */
     @Test
     public void noteTestState() {
         assertEquals(0, note1.getState());
