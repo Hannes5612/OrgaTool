@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.database.DatabaseHandler;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Note;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -131,60 +132,65 @@ public class NoteCell extends ListCell<Note> {
             int noteId = note.getId();
             logger.debug("Note at index " + selectedIdx + " selected.");
 
-            if (note.getState() == 0) { // state = active --> note will be archived
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-                alert.setTitle("ARCHIVING NOTE");
-                alert.setHeaderText("You are about to archive a note!");
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-                alert.showAndWait();
+            try {
+                if (note.getState() == 0) { // state = active --> note will be archived
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Archive " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                    alert.setTitle("ARCHIVING NOTE");
+                    alert.setHeaderText("You are about to archive a note!");
+                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                    alert.showAndWait();
 
-                if (alert.getResult() == ButtonType.YES) {
-                    if (selectedIdx != -1) {
-                        DatabaseHandler databaseHandler = new DatabaseHandler();
-                        try {
-                            databaseHandler.editNote(noteId, note, 2);
-                            note.archive();
-                            logger.debug("Note at index " + selectedIdx + " archived.");
-                        } catch (SQLException throwables) {
-                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                            error.showAndWait();
-                            logger.error("SQLException: " + throwables);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                            logger.error("ClassNotFoundException: " + e);
+                    if (alert.getResult() == ButtonType.YES) {
+                        if (selectedIdx != -1) {
+                            DatabaseHandler databaseHandler = new DatabaseHandler();
+                            try {
+                                databaseHandler.editNote(noteId, note, 2);
+                                note.archive();
+                                logger.debug("Note at index " + selectedIdx + " archived.");
+                            } catch (SQLException throwables) {
+                                Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                error.showAndWait();
+                                logger.error("SQLException: " + throwables);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                                logger.error("ClassNotFoundException: " + e);
+                            }
+                            listViewProperty().get().getItems().remove(selectedIdx);
+                            logger.info("Removed from current ListView of active notes: Note '" + note.getTitle() + "'");
                         }
-                        listViewProperty().get().getItems().remove(selectedIdx);
-                        logger.info("Removed from current ListView of active notes: Note '" + note.getTitle() + "'");
+                    }
+                } else if (note.getState() == 2) { // state = archived --> note will be active
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
+                    alert.setTitle("REACTIVATING NOTE");
+                    alert.setHeaderText("You are about to reactivate a note!");
+                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
+                    alert.showAndWait();
+
+                    if (alert.getResult() == ButtonType.YES) {
+                        if (selectedIdx != -1) {
+                            DatabaseHandler databaseHandler = new DatabaseHandler();
+                            try {
+                                databaseHandler.editNote(noteId, note, 0);
+                                note.reactivate();
+                                logger.debug("Note at index " + selectedIdx + " reactivated.");
+                            } catch (SQLException throwables) {
+                                Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
+                                error.showAndWait();
+                                logger.error("SQLException: " + throwables);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                                logger.error("ClassNotFoundException: " + e);
+                            }
+                            listViewProperty().get().getItems().remove(selectedIdx);
+                            logger.info("Removed from current ListView of archived notes: Note '" + note.getTitle() + "'");
+                        }
                     }
                 }
-            } else if (note.getState() == 2) { // state = archived --> note will be active
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reactivate " + note.getTitle() + "?", ButtonType.YES, ButtonType.CANCEL);
-                alert.setTitle("REACTIVATING NOTE");
-                alert.setHeaderText("You are about to reactivate a note!");
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image("icon/Logo organizingTool 75x75 blue.png"));
-                alert.showAndWait();
-
-                if (alert.getResult() == ButtonType.YES) {
-                    if (selectedIdx != -1) {
-                        DatabaseHandler databaseHandler = new DatabaseHandler();
-                        try {
-                            databaseHandler.editNote(noteId, note, 0);
-                            note.reactivate();
-                            logger.debug("Note at index " + selectedIdx + " reactivated.");
-                        } catch (SQLException throwables) {
-                            Alert error = new Alert(Alert.AlertType.ERROR, "Database connection failed \n Please check your connection or try again.");
-                            error.showAndWait();
-                            logger.error("SQLException: " + throwables);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                            logger.error("ClassNotFoundException: " + e);
-                        }
-                        listViewProperty().get().getItems().remove(selectedIdx);
-                        logger.info("Removed from current ListView of archived notes: Note '" + note.getTitle() + "'");
-                    }
-                }
+            } catch (UnsupportedStateType unsupportedStateType) {
+                unsupportedStateType.printStackTrace();
+                logger.error("Unsupported state type!");
             }
         });
 
@@ -200,6 +206,7 @@ public class NoteCell extends ListCell<Note> {
      */
     @Override
     protected void updateItem(Note note, boolean empty) {
+
         super.updateItem(note, empty);
 
         this.setStyle("-fx-padding: 4px;");
@@ -231,4 +238,5 @@ public class NoteCell extends ListCell<Note> {
         }
 
     }
+
 }

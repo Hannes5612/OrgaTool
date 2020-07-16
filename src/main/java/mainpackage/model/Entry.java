@@ -1,5 +1,7 @@
 package mainpackage.model;
 
+import mainpackage.exceptions.UnsupportedStateType;
+
 import java.sql.Date;
 
 /**
@@ -63,7 +65,7 @@ public abstract class Entry implements IEntry {
      *
      * @return integer 0, 1 or 2
      */
-    public int getState() {
+    public int getState() throws UnsupportedStateType {
         switch (state) {
             case ACTIVE:
                 return 0;
@@ -72,7 +74,7 @@ public abstract class Entry implements IEntry {
             case ARCHIVED:
                 return 2;
             default:
-                throw new RuntimeException("Illegal type State!"); //TODO new Exception?
+                throw new UnsupportedStateType("Unsupported state type!");
         }
     }
 

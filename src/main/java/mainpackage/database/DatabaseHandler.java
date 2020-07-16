@@ -2,6 +2,7 @@ package mainpackage.database;
 
 import mainpackage.ListManager;
 import mainpackage.Main;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.model.User;
@@ -86,7 +87,7 @@ public class DatabaseHandler extends Config {
      *
      * @param task to check
      */
-    public void createTask(Task task) throws ClassNotFoundException, SQLException {
+    public void createTask(Task task) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 
         String insert = "INSERT INTO " + TASK_TABLE + "("
                 + TASK_USER + "," + TASK_TYPE + "," + TASK_TITLE + "," + TASK_CONTENT + "," + TASK_PRIO + "," +
@@ -143,7 +144,7 @@ public class DatabaseHandler extends Config {
      *
      * @param note to send
      */
-    public void createNote(Note note) throws ClassNotFoundException, SQLException {
+    public void createNote(Note note) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 
         String insert = "INSERT INTO " + NOTE_TABLE + "("
                 + NOTE_USER + "," + NOTE_TITLE + "," + NOTE_CONTENT + "," + NOTE_DATE + "," +
@@ -222,7 +223,7 @@ public class DatabaseHandler extends Config {
      *
      * @param task to edit
      */
-    public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException {
+    public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 
         String insert = "UPDATE " + TASK_TABLE +
                 " SET " + TASK_TITLE + "=?, " + TASK_CONTENT + "=?, " + TASK_PRIO + "=?, " + TASK_COLOR + "=?, " +

@@ -1,5 +1,7 @@
 package mainpackage.model;
 
+import mainpackage.exceptions.UnsupportedStateType;
+
 import java.sql.Date;
 
 public interface IEntry {
@@ -27,5 +29,5 @@ public interface IEntry {
 
     Date getCreationDate();
 
-    int getState();
+    int getState() throws UnsupportedStateType;
 }

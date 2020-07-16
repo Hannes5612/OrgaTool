@@ -26,6 +26,7 @@ import mainpackage.ListManager;
 import mainpackage.Main;
 import mainpackage.animation.FadeIn;
 import mainpackage.exceptions.UnsupportedCellType;
+import mainpackage.exceptions.UnsupportedStateType;
 import mainpackage.model.Note;
 import mainpackage.model.Task;
 import mainpackage.threads.ClockThread;
@@ -223,7 +224,15 @@ public class Overview {
             public List<Note> call() {
                 logger.info("Fetching archived notes.");
                 return listManager.getNoteList()
-                        .filter(n -> n.getState() == 2)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 2;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };
@@ -233,7 +242,15 @@ public class Overview {
             public List<Task> call() {
                 logger.info("Fetching archived tasks.");
                 return listManager.getTaskList()
-                        .filter(n -> n.getState() == 2)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 2;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };
@@ -267,7 +284,15 @@ public class Overview {
             public List<Note> call() {
                 logger.info("Fetching active notes.");
                 return listManager.getNoteList()
-                        .filter(n -> n.getState() == 0)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 0;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };
@@ -278,7 +303,15 @@ public class Overview {
 
                 logger.info("Fetching active tasks.");
                 return listManager.getTaskList()
-                        .filter(n -> n.getState() == 0 || n.getState() == 1)
+                        .filter(n -> {
+                            try {
+                                return n.getState() == 0 || n.getState() == 1;
+                            } catch (UnsupportedStateType unsupportedStateType) {
+                                unsupportedStateType.printStackTrace();
+                                logger.error("Unsupported state type!");
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         };
@@ -300,13 +333,6 @@ public class Overview {
         exec.submit(getNotesTask);
 
     }
-
-    /* ToDo: entfernen?
-    private void sortTasksByPriority(String priority) {
-        usersTasksSearch.setAll(searchTasksByPriority(priority, usersTasks));
-        taskListView.setItems(usersTasksSearch);
-    }
-    */
 
     /**
      * Sorting list of user's tasks by date (descending).
