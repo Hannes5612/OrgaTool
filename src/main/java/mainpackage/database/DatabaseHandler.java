@@ -23,7 +23,8 @@ public class DatabaseHandler extends Config {
      * Create the Connection object for a sql connection
      *
      * @return the created connection object
-     * @throws ClassNotFoundException, SQLException
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
 
@@ -42,8 +43,8 @@ public class DatabaseHandler extends Config {
      * Create a new db entry for a user who wants to register
      *
      * @param user to register
-     * @throws SQLException - SQLException
-     * @throws ClassNotFoundException - class not found
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void signupUser(User user) throws SQLException, ClassNotFoundException {
 
@@ -64,7 +65,9 @@ public class DatabaseHandler extends Config {
      * Ceck wheter a user is in the database
      *
      * @param user to check
-     */
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
+     *      */
     public ResultSet getUser(User user) throws SQLException, ClassNotFoundException {
 
         String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_USERNAME + "=?" + " AND "
@@ -86,6 +89,8 @@ public class DatabaseHandler extends Config {
      * Create a database Entry for the current user with a new task
      *
      * @param task to check
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void createTask(Task task) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 
@@ -124,6 +129,8 @@ public class DatabaseHandler extends Config {
      * Delete a task from the database
      *
      * @param task to delete
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void deleteTask(Task task) throws SQLException, ClassNotFoundException {
 
@@ -143,6 +150,8 @@ public class DatabaseHandler extends Config {
      * Send a note to the database
      *
      * @param note to send
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void createNote(Note note) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 
@@ -167,6 +176,8 @@ public class DatabaseHandler extends Config {
      * Delete a note from the database
      *
      * @param note to delete
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void deleteNote(Note note) throws SQLException, ClassNotFoundException {
 
@@ -186,7 +197,8 @@ public class DatabaseHandler extends Config {
     /**
      * Edit a note in the database
      *
-     * @param note to edit
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void editNote(int noteId, Note note, int state) throws ClassNotFoundException, SQLException {
 
@@ -204,6 +216,8 @@ public class DatabaseHandler extends Config {
 
     /**
      * Get notes from the database
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public ResultSet getNotes() throws SQLException, ClassNotFoundException {
 
@@ -222,6 +236,8 @@ public class DatabaseHandler extends Config {
      * Edit a task in the database
      *
      * @param task to edit
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void editTask(int taskId, Task task) throws ClassNotFoundException, SQLException, UnsupportedStateType {
 

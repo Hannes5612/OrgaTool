@@ -34,23 +34,41 @@ public class ListManager {
     }
 
     // getters
+    /**
+     * get the users id
+     * @return userid
+     */
     public static int getUserId() {
         return user.getUserid();
     }
 
+    /**
+     * Get the current highest task ID
+     * @return taskid
+     */
     public static int getCountingTaskID() {
         return countingTaskID;
     }
 
+    /**
+     * get the current highest note id
+     * @return noteid
+     */
     public static int getCountingNoteId() {
         return countingNoteId;
     }
 
     // Methods to increase the note and task id's for a correct creation
+    /**
+     * Increase the current highest task id for future tasks to create with the right id.
+     */
     public static void incrementCountingTaskId() {
         countingTaskID++;
     }
 
+    /**
+     *  Increase the current highest notes id for future notes to create with the right id.
+     */
     public static void incrementCountingNoteId() {
         countingNoteId++;
     }
@@ -58,8 +76,8 @@ public class ListManager {
     /**
      * Run the databasehandlers of both notes and tasks.
      *
-     * @throws SQLException - on a failed connection
-     * @throws ClassNotFoundException - class not found
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void update() throws SQLException, ClassNotFoundException {
         updateNotes();
@@ -69,8 +87,8 @@ public class ListManager {
     /**
      * Update the observable notelist from the database
      *
-     * @throws SQLException - SQLException
-     * @throws ClassNotFoundException - class not found
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void updateNotes() throws SQLException, ClassNotFoundException {
         noteList.clear();
@@ -96,8 +114,8 @@ public class ListManager {
     /**
      * Update the observable tasklist from the database
      *
-     * @throws SQLException - SQLException
-     * @throws ClassNotFoundException - class not found
+     * @throws SQLException on a failed connection
+     * @throws ClassNotFoundException when the to be loaded class can not be found
      */
     public void updateTasks() throws SQLException, ClassNotFoundException {
         taskList.clear();
@@ -125,18 +143,25 @@ public class ListManager {
         logger.info("Tasks in local list loaded");
     }
 
-    // static methods
+    /**
+     * Set the user that just logged in
+     * @param user to be set
+     */
     public static void setUser(User user) {
         ListManager.user = user;
     }
 
+
+    /**
+     * Method to delete a task from the list
+     * @param taskId of the task to be deleted
+     */
     public static void deleteTask(int taskId) {
         taskList.removeIf(task -> task.getId() == taskId);
     }
 
     /**
      * deleting note from list of notes
-     *
      * @param noteId ID of note to be deleted
      */
     public static void deleteNote(int noteId) {
@@ -146,7 +171,6 @@ public class ListManager {
 
     /**
      * editing note in list of notes
-     *
      * @param note edited note which will be shown in list of notes
      */
     public static void editNote(Note note) {
@@ -161,6 +185,10 @@ public class ListManager {
         }
     }
 
+    /**
+     * Deletes a task for the users task list
+     * @param task that shall be deleted
+     */
     public static void editTask(Task task) {
 
         int remove = 0;
@@ -172,6 +200,10 @@ public class ListManager {
         }
     }
 
+    /**
+     * Adds a tas to the tasklist
+     * @param task to be added
+     */
     public static void addTask(Task task) {
         taskList.add(task);
     }
@@ -205,11 +237,18 @@ public class ListManager {
     }
 
 
-    //Methods to access the latest Entry and fetch it
+    /**
+     * get the last added note
+     * @return the latest note
+     */
     public Note getLatestNote() {
         return noteList.get(noteList.size() - 1);
     }
 
+    /**
+     * get the last added task
+     * @return the last task
+     */
     public Task getLatestTask() {
         return taskList.get(taskList.size() - 1);
     }
