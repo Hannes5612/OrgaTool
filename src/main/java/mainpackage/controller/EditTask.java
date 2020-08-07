@@ -86,7 +86,7 @@ public class EditTask implements Initializable {
         newTaskDueDate.setValue(task.getDueDate().toLocalDate());
 
         newTaskEditButton.setOnAction(e -> {
-            System.out.println("'Save' button pressed");
+            logger.debug("Saving task...");
             if (newTaskTitle.getText() == null || newTaskTitle.getText().trim().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please enter a title for your task.", ButtonType.OK);
                 alert.setTitle("MISSING TITLE");
