@@ -35,7 +35,7 @@ public class NoteTest {
      */
     @Test
     public void noteTestTitle() {
-        assertEquals("Hallo", note1.getTitle());
+        assertEquals("Hello", note1.getTitle());
         assertNull(note2.getTitle());
         assertEquals("", note3.getTitle());
         assertEquals("xxx", note4.getTitle());
