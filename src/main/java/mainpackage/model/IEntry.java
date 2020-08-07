@@ -4,6 +4,9 @@ import mainpackage.exceptions.UnsupportedStateType;
 
 import java.sql.Date;
 
+/**
+ * Interface for entries with basic methods.
+ */
 public interface IEntry {
 
     /**

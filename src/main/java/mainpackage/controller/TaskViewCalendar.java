@@ -9,6 +9,9 @@ import mainpackage.model.Task;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Separate view on tasks for a single day.
+ */
 public class TaskViewCalendar {
 
     @FXML

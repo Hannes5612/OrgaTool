@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Seperate thread to run a clock without haveing the javafx thread do it.
+ */
 public class ClockThread extends Thread {
     Label timeLabel;
     Label dateLabel;

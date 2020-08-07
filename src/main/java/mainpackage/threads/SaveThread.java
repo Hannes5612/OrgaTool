@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
+/**
+ * A separate thread to execute the export of user entries
+ */
 public class SaveThread extends Thread {
     private final ListManager listManager = new ListManager();
     private final File file;

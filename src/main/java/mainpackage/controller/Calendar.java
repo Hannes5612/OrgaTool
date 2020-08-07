@@ -85,7 +85,9 @@ public class Calendar {
             "February", "March", "April", "May", "June", "July", "August", "September",
             "October", "November", "December");
 
-    // returns the current month
+    /**
+     * returns the current month
+     */
     public String getCurrentMonth() {
         String[] monthName = {"January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December"};

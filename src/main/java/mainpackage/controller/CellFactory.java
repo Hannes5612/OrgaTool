@@ -10,7 +10,7 @@ public class CellFactory {
      *
      * @param cellType is the type of cell to get created
      * @return Task or Note Cell
-     * @throws UnsupportedCellType @param is not in the switch -> not implemented
+     * @throws UnsupportedCellType if the wanted cell is not in the switch
      */
     public ListCell createCell(String cellType) throws UnsupportedCellType {
         switch (cellType) {
