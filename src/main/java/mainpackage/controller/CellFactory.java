@@ -3,6 +3,9 @@ package mainpackage.controller;
 import javafx.scene.control.ListCell;
 import mainpackage.exceptions.UnsupportedCellType;
 
+/**
+ * This class is the factory to return an object either from type NoteCell or TaskCell.
+ */
 public class CellFactory {
 
     /**

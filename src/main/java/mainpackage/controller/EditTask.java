@@ -25,6 +25,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+/**
+ * window to edit an existing task
+ */
 public class EditTask implements Initializable {
 
     @FXML

@@ -18,7 +18,7 @@ public class FadeIn {
         fadeTransition.setToValue(1);
     }
 
-    //play the transition
+    // play the transition
     public void play() {
         fadeTransition.play();
     }

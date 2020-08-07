@@ -14,6 +14,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Class manages the ObservableLists for Tasks and Notes
+ * and synchronizes them with the database.
+ */
 public class ListManager {
 
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
@@ -21,15 +25,15 @@ public class ListManager {
     private static int countingTaskID;
     private static int countingNoteId;
 
-    //Synchronized Observable Lists
+    // Synchronized Observable Lists
     private static final List<Task> taskList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private static final List<Note> noteList = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
 
-    //constructor
+    // constructor
     public ListManager() {
     }
 
-    //getters
+    // getters
     public static int getUserId() {
         return user.getUserid();
     }
@@ -42,7 +46,7 @@ public class ListManager {
         return countingNoteId;
     }
 
-    //Methods to increase the note and task id's for a correct creation
+    // Methods to increase the note and task id's for a correct creation
     public static void incrementCountingTaskId() {
         countingTaskID++;
     }

@@ -21,6 +21,9 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+/**
+ * window to create a new task
+ */
 public class CreateTask {
 
     @FXML
@@ -109,6 +112,5 @@ public class CreateTask {
     void close(ActionEvent event) {
         newTaskTitle.getScene().getWindow().hide();
     }
-
 
 }

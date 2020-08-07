@@ -498,8 +498,8 @@ public class Calendar {
         loadSelectedMonth();
         fillCalendarWithTasks();
 
-        //Due to a javafx bug, this is neccessary to display the combobox list, otherwise it is "confused"
-        //whether the list is already showing or not
+        // Due to a javafx bug, this is neccessary to display the combobox list, otherwise it is "confused"
+        // whether the list is already showing or not
         hPane.requestFocus();
 
         calendarBackButton.setOnAction(this::backToOverview);

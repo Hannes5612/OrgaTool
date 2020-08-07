@@ -23,6 +23,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Class manages the click events of the TaskCells.
+ */
 public class TaskCell extends ListCell<Task> {
 
     @FXML

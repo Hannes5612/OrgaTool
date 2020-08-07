@@ -23,6 +23,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Class manages the click events of the NoteCells.
+ */
 public class NoteCell extends ListCell<Note> {
 
     @FXML

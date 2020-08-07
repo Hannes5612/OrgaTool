@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
+/**
+ * Class handles the login screen and manages the user login/logout system.
+ */
 public class Signup {
 
     @FXML
@@ -43,7 +46,6 @@ public class Signup {
     private JFXButton signupGobackButton;
 
     private final Logger logger = LogManager.getLogger(Main.class.getName());
-
 
     /**
      * Signup handler to create an account.
@@ -67,13 +69,12 @@ public class Signup {
         signupSignupButton.setOnAction(e -> signup());
 
         logger.info("SignUp page loaded");
-    }
 
+    }
 
     /**
      * Loads the login screen.
      */
-
     private void goback() {
 
         AnchorPane login = null;
