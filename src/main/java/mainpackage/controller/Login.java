@@ -7,8 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import mainpackage.ListManager;
 import mainpackage.Main;
@@ -134,12 +132,6 @@ public class Login {
         new FadeIn(login).play();
 
         logger.info("Overview loaded");
-        // ToDo: entfernen?
-//        Set<Thread> threads = Thread.getAllStackTraces().keySet();
-//
-//        for (Thread t : threads) {
-//            System.out.println(t);
-//        }
     }
 
     /**

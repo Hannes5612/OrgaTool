@@ -111,8 +111,6 @@ public class Overview {
         // ToggleButton to switch between archived and active notes/tasks
         toggleArchiveButton.selectedProperty().addListener(this::toggleSwitched);
 
-        // ToDo: notes/tasks in eine Zeile
-
         //listener for changed search field
         noteListSearchField.textProperty().addListener(this::changedNotesSearchField);
 

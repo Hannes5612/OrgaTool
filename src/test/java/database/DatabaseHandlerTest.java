@@ -29,7 +29,7 @@ public class DatabaseHandlerTest {
 
     DatabaseHandler databaseHandler = new DatabaseHandler();
 
-    /** ToDo:
+    /**
      * Basic test, whether the connection gets created
      *
      * @throws SQLException - SQLException
