@@ -5,7 +5,16 @@ Data is stored on a seperate server and cann be accessed with only username and 
 Main features are the simple creation of tasks and the neat looking windows you can choose between to get different views of your tasks.
 It will also feature the current time, date and weather.
 
-Submission date is expected to be the second of July 2020
+Submission date is 10th of August 2020
+
+# Run the Program
+
+Simply download the orgatool.jar from the main directory and execute it. Java sdk 11+ is needed to run it.
+
+## API Documentation
+
+Can be found under https://hfrey.de/orgadoc/apidocs/index.html
+
 
 ## Note
 
