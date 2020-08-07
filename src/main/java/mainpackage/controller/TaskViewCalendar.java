@@ -33,7 +33,6 @@ public class TaskViewCalendar {
     public void setTasks(ObservableList<Task> clickedTasks) {
         taskViewCalendarList.setCellFactory(Cell -> new TaskCell());
         taskViewCalendarList.setItems(clickedTasks);
-
     }
 
 }
