@@ -141,7 +141,7 @@ public class DatabaseHandlerTest {
     @Test
     public void fetchNotesTest() throws SQLException, ClassNotFoundException, IllegalIdentification {
         User user = new User();
-        user.setUserid(1);
+        user.setUserid(99999999);
         ListManager.setUser(user);
         //A next row does not exist(No created notes)
         assertFalse(databaseHandler.getNotes().next());
